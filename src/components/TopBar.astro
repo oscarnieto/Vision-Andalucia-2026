@@ -275,9 +275,9 @@ const base = import.meta.env.BASE_URL;
       gap: 0;
       height: auto;
       background: var(--color-amarillo);
-      padding: clamp(1.5rem, 7vw, 3rem) var(--margen-lateral)
-        clamp(2rem, 8vw, 3.5rem);
-      overflow-y: auto;
+      padding: clamp(0.75rem, 2.4vh, 2rem) var(--margen-lateral);
+      /* El menú entra completo sin scroll: los tamaños escalan con la altura */
+      overflow: hidden;
       z-index: 110;
       /* animación: se despliega de arriba hacia abajo (efecto cortina) */
       clip-path: inset(0 0 100% 0);
@@ -292,8 +292,10 @@ const base = import.meta.env.BASE_URL;
     .topmenu__link {
       display: inline-block;
       height: auto;
-      padding: 0.5rem 0;
-      font-size: clamp(1.5rem, 6vw, 2rem);
+      /* El tamaño escala con la altura para que todo quepa sin scroll */
+      padding: clamp(0.1rem, 0.8vh, 0.5rem) 0;
+      font-size: clamp(1rem, 3.4vh, 1.9rem);
+      line-height: 1.1;
       color: var(--color-negro);
     }
     /* En el overlay, "Ediciones anteriores" no va en negrita por defecto */
@@ -304,7 +306,7 @@ const base = import.meta.env.BASE_URL;
     /* savills.es: empujado al fondo y en rojo */
     .topmenu__savills {
       margin-top: auto;
-      padding-top: 2rem;
+      padding-top: clamp(0.75rem, 2vh, 1.75rem);
     }
     .topmenu__savills .topmenu__link {
       color: #8a2531;
