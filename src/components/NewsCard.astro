@@ -65,20 +65,19 @@ const { size = "small", image, title, description, href = "#" } = Astro.props;
     line-height: 1.2;
     margin-top: 1.25rem;
   }
-  /* Subrayado amarillo animado de izquierda a derecha (abraza el texto) */
+  /* Resaltado amarillo con el alto del texto, animado de izquierda a derecha */
   .card__title-text {
     display: inline;
     background-image: linear-gradient(var(--color-amarillo), var(--color-amarillo));
     background-repeat: no-repeat;
-    background-position: 0 100%;
-    background-size: 0% 0.28em;
+    background-position: 0 0;
+    background-size: 0% 100%;
     transition: background-size 0.4s ease;
-    padding-bottom: 0.05em;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
   }
   .card:hover .card__title-text {
-    background-size: 100% 0.28em;
+    background-size: 100% 100%;
   }
   .card__desc {
     font-size: 0.9rem;
