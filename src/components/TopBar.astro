@@ -34,6 +34,11 @@ const base = import.meta.env.BASE_URL;
     </button>
 
     <ul class="topmenu__list" id="menu-principal">
+      <li class="topmenu__only-mobile">
+        <a href={base} data-label="Inicio" class="topmenu__link">
+          <span class="topmenu__link-text">Inicio</span>
+        </a>
+      </li>
       {
         nav.map((item) => (
           <li>
@@ -47,6 +52,11 @@ const base = import.meta.env.BASE_URL;
           </li>
         ))
       }
+      <li class="topmenu__only-mobile topmenu__savills">
+        <a href="https://www.savills.es" data-label="savills.es" class="topmenu__link">
+          <span class="topmenu__link-text">savills.es</span>
+        </a>
+      </li>
     </ul>
 
     <!-- Marcador amarillo que se desliza entre enlaces (solo escritorio) -->
@@ -116,6 +126,11 @@ const base = import.meta.env.BASE_URL;
     display: flex;
   }
 
+  /* "Inicio" y "savills.es" solo se muestran en el menú móvil */
+  .topmenu__only-mobile {
+    display: none;
+  }
+
   /* Cada enlace reserva el ancho de su versión en negrita (::before oculto),
      así al pasar a bold en hover el resto del menú no se desplaza. */
   .topmenu__link {
@@ -174,11 +189,14 @@ const base = import.meta.env.BASE_URL;
     white-space: nowrap;
   }
 
-  /* ============ Responsive ============ */
+  /* ============ Responsive (menú móvil: overlay a pantalla completa) ============ */
   @media (max-width: 900px) {
+    /* La barra del menú deja de ser visible: solo sirve de contenedor */
     .topmenu {
-      justify-content: flex-end;
-      padding-inline: var(--margen-lateral);
+      height: 0;
+      background: transparent;
+      border: none;
+      position: static;
     }
 
     /* En móvil no hay marcador ni reserva de negrita */
@@ -189,17 +207,28 @@ const base = import.meta.env.BASE_URL;
       display: none;
     }
 
+    /* Los enlaces "solo móvil" (Inicio, savills.es) aparecen */
+    .topmenu__only-mobile {
+      display: block;
+    }
+
+    /* --- Botón burger / X, fijo (sticky) en una caja amarilla --- */
     .topmenu__toggle {
       display: inline-flex;
       flex-direction: column;
+      align-items: center;
       justify-content: center;
-      gap: 5px;
-      width: 40px;
-      height: 32px;
-      background: none;
+      gap: 6px;
+      position: fixed;
+      top: var(--altura-topbar);
+      right: 0;
+      width: 60px;
+      height: 60px;
+      background: var(--color-amarillo);
       border: none;
       cursor: pointer;
       padding: 0;
+      z-index: 120;
     }
     .topmenu__toggle-bar,
     .topmenu__toggle-bar::before,
@@ -209,53 +238,80 @@ const base = import.meta.env.BASE_URL;
       width: 26px;
       height: 2px;
       background: var(--color-negro);
-      transition: transform 0.2s ease, opacity 0.2s ease;
+      transition: transform 0.25s ease, opacity 0.2s ease;
     }
     .topmenu__toggle-bar {
       position: relative;
     }
     .topmenu__toggle-bar::before {
       position: absolute;
-      top: -7px;
+      top: -8px;
     }
     .topmenu__toggle-bar::after {
       position: absolute;
-      top: 7px;
+      top: 8px;
     }
+    /* burger -> X al abrir */
     .topmenu[data-open="true"] .topmenu__toggle-bar {
       background: transparent;
     }
     .topmenu[data-open="true"] .topmenu__toggle-bar::before {
-      transform: translateY(7px) rotate(45deg);
+      transform: translateY(8px) rotate(45deg);
     }
     .topmenu[data-open="true"] .topmenu__toggle-bar::after {
-      transform: translateY(-7px) rotate(-45deg);
+      transform: translateY(-8px) rotate(-45deg);
     }
 
+    /* --- Overlay amarillo a pantalla completa --- */
     .topmenu__list {
-      position: absolute;
-      top: 100%;
+      position: fixed;
+      top: var(--altura-topbar);
       left: 0;
       right: 0;
+      bottom: 0;
       flex-direction: column;
-      align-items: stretch;
+      align-items: flex-start;
       gap: 0;
       height: auto;
-      background: var(--color-blanco);
-      border-bottom: 1px solid var(--color-linea);
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.25s ease;
+      background: var(--color-amarillo);
+      padding: clamp(1.5rem, 7vw, 3rem) var(--margen-lateral)
+        clamp(2rem, 8vw, 3.5rem);
+      overflow-y: auto;
+      z-index: 110;
+      /* animación de apertura */
+      opacity: 0;
+      transform: translateY(-14px);
+      visibility: hidden;
+      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
     }
     .topmenu[data-open="true"] .topmenu__list {
-      max-height: 80vh;
+      opacity: 1;
+      transform: translateY(0);
+      visibility: visible;
     }
+
     .topmenu__link {
-      display: block;
+      display: inline-block;
       height: auto;
-      padding: 0.9rem var(--margen-lateral);
-      border-top: 1px solid var(--color-linea);
-      font-size: 0.9rem;
+      padding: 0.5rem 0;
+      font-size: clamp(1.5rem, 6vw, 2rem);
+      color: var(--color-negro);
+    }
+    /* En el overlay, "Ediciones anteriores" no va en negrita por defecto */
+    .topmenu__link--strong .topmenu__link-text {
+      font-weight: 400;
+    }
+
+    /* savills.es: empujado al fondo y en rojo */
+    .topmenu__savills {
+      margin-top: auto;
+      padding-top: 2rem;
+    }
+    .topmenu__savills .topmenu__link {
+      color: #8a2531;
+    }
+    .topmenu__savills .topmenu__link-text {
+      font-weight: 700;
     }
   }
 </style>
@@ -264,19 +320,30 @@ const base = import.meta.env.BASE_URL;
   const menu = document.querySelector<HTMLElement>(".topmenu");
   const toggle = menu?.querySelector<HTMLButtonElement>(".topmenu__toggle");
 
+  const setOpen = (open: boolean) => {
+    menu?.setAttribute("data-open", String(open));
+    toggle?.setAttribute("aria-expanded", String(open));
+    toggle?.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    // Bloquea el scroll del fondo mientras el overlay está abierto
+    document.body.style.overflow = open ? "hidden" : "";
+  };
+
   toggle?.addEventListener("click", () => {
     const open = menu?.getAttribute("data-open") === "true";
-    menu?.setAttribute("data-open", String(!open));
-    toggle.setAttribute("aria-expanded", String(!open));
+    setOpen(!open);
   });
 
   // Cierra el menú al pulsar un enlace (en móvil)
   menu?.querySelectorAll(".topmenu__link").forEach((link) =>
-    link.addEventListener("click", () => {
-      menu?.setAttribute("data-open", "false");
-      toggle?.setAttribute("aria-expanded", "false");
-    })
+    link.addEventListener("click", () => setOpen(false))
   );
+
+  // Cierra con la tecla Escape
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && menu?.getAttribute("data-open") === "true") {
+      setOpen(false);
+    }
+  });
 
   // Marcador amarillo deslizante (solo con puntero, escritorio)
   const marker = menu?.querySelector<HTMLElement>(".topmenu__marker");
