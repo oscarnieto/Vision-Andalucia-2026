@@ -87,13 +87,15 @@ const { size = "small", image, title, description, href = "#" } = Astro.props;
   }
 
   @media (max-width: 720px) {
-    /* En móvil todas las tarjetas ocupan el ancho completo */
+    /* En móvil todas las tarjetas ocupan el ancho completo... */
     .card--wide,
     .card--small {
       grid-column: span 1;
     }
-    .card--wide .card__media {
-      aspect-ratio: 16 / 9;
+    /* ...y comparten la misma proporción de imagen para igualar alturas */
+    .card--wide .card__media,
+    .card--small .card__media {
+      aspect-ratio: 360 / 360;
     }
   }
 </style>
