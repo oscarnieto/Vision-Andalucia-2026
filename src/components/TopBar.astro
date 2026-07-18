@@ -7,6 +7,8 @@ interface NavItem {
 interface Props {
   nav: NavItem[];
 }
+import { asset } from "../lib/asset";
+
 const { nav } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
@@ -21,9 +23,13 @@ const submenu = [
   <!-- Franja amarilla con el logo -->
   <div class="topbar__brand">
     <a class="logo" href={base} aria-label="Visión Andalucía — Inicio">
-      <span class="logo__vision">VISIÓN</span>
-      <span class="logo__sep" aria-hidden="true">|</span>
-      <span class="logo__andalucia">ANDALUCÍA</span>
+      <img
+        class="logo__img"
+        src={asset("img/vision-andalucia-logo-topbar.svg")}
+        alt="Visión Andalucía"
+        width="310"
+        height="26"
+      />
     </a>
   </div>
 
@@ -110,22 +116,12 @@ const submenu = [
   .logo {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: clamp(1rem, 2.4vw, 1.25rem);
-    letter-spacing: 0.12em;
-    color: var(--color-negro);
-    text-transform: uppercase;
-    white-space: nowrap;
   }
-  .logo__vision {
-    font-weight: 400;
-  }
-  .logo__sep {
-    font-weight: 300;
-    opacity: 0.6;
-  }
-  .logo__andalucia {
-    font-weight: 800;
+  .logo__img {
+    height: clamp(18px, 2vw, 24px);
+    width: auto;
+    max-width: 85vw;
+    display: block;
   }
 
   /* --- Menú --- */

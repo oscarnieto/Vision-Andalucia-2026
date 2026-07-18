@@ -12,6 +12,8 @@ interface Props {
   contacto: Contacto;
   disclaimer: string[];
 }
+import { asset } from "../lib/asset";
+
 const { menu, contacto, disclaimer } = Astro.props;
 ---
 
@@ -19,11 +21,20 @@ const { menu, contacto, disclaimer } = Astro.props;
   <div class="contenedor">
     <div class="footer__top">
       <div class="footer__brand">
-        <span class="footer__savills">savills</span>
-        <span class="footer__lockup">
-          <span class="footer__lockup-linea">VISIÓN<b>2026</b></span>
-          <span class="footer__lockup-linea footer__lockup-linea--bold">ANDALUCÍA</span>
-        </span>
+        <img
+          class="footer__savills-img"
+          src={asset("img/savills-logo-footer.svg")}
+          alt="Savills"
+          width="71"
+          height="71"
+        />
+        <img
+          class="footer__lockup-img"
+          src={asset("img/vision-andalucia-logo-footer.svg")}
+          alt="Visión Andalucía 2026"
+          width="235"
+          height="65"
+        />
       </div>
 
       <div class="footer__right">
@@ -72,32 +83,15 @@ const { menu, contacto, disclaimer } = Astro.props;
     align-items: center;
     gap: 1rem;
   }
-  .footer__savills {
-    background: #111;
-    color: var(--color-blanco);
-    font-size: 1.35rem;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    padding: 0.5rem 0.75rem;
-    line-height: 1;
+  .footer__savills-img {
+    height: clamp(46px, 5vw, 58px);
+    width: auto;
+    display: block;
   }
-  .footer__lockup {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.02;
-    text-transform: uppercase;
-  }
-  .footer__lockup-linea {
-    font-family: var(--fuente-titulo);
-    font-size: clamp(1.5rem, 3vw, 2.1rem);
-    letter-spacing: 0.02em;
-    font-weight: 500;
-  }
-  .footer__lockup-linea b {
-    font-weight: 700;
-  }
-  .footer__lockup-linea--bold {
-    font-weight: 700;
+  .footer__lockup-img {
+    height: clamp(42px, 4.6vw, 54px);
+    width: auto;
+    display: block;
   }
 
   /* --- Contacto --- */
