@@ -1,15 +1,46 @@
 {
   "nav": [
-    { "label": "Residencial", "href": "#residencial" },
-    { "label": "Living", "href": "#living" },
-    { "label": "Retail", "href": "#retail" },
-    { "label": "Oficinas", "href": "#oficinas" },
-    { "label": "Hoteles", "href": "#hoteles" },
-    { "label": "Logístico", "href": "#logistico" },
-    { "label": "Alternativos", "href": "#alternativos" },
-    { "label": "Agribusiness", "href": "#agribusiness" },
-    { "label": "Inversión", "href": "#inversion" },
-    { "label": "Ediciones anteriores", "href": "#ediciones-anteriores", "strong": true }
+    {
+      "label": "Residencial",
+      "href": "#residencial"
+    },
+    {
+      "label": "Living",
+      "href": "#living"
+    },
+    {
+      "label": "Retail",
+      "href": "#retail"
+    },
+    {
+      "label": "Oficinas",
+      "href": "#oficinas"
+    },
+    {
+      "label": "Hoteles",
+      "href": "#hoteles"
+    },
+    {
+      "label": "Logístico",
+      "href": "#logistico"
+    },
+    {
+      "label": "Alternativos",
+      "href": "#alternativos"
+    },
+    {
+      "label": "Agribusiness",
+      "href": "#agribusiness"
+    },
+    {
+      "label": "Inversión",
+      "href": "#inversion"
+    },
+    {
+      "label": "Ediciones anteriores",
+      "href": "#ediciones-anteriores",
+      "strong": true
+    }
   ],
   "hero": {
     "image": "",
@@ -28,70 +59,70 @@
   "noticias": [
     {
       "size": "wide",
-      "image": "",
+      "image": "img/noticias/card-noticia1.jpg",
       "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966 typesetting industry.",
       "href": "#"
     },
     {
       "size": "small",
-      "image": "",
+      "image": "img/noticias/card-noticia2.jpg",
       "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "small",
-      "image": "",
+      "image": "img/noticias/card-noticia3.jpg",
       "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "small",
-      "image": "",
+      "image": "img/noticias/card-noticia4.jpg",
       "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "small",
-      "image": "",
+      "image": "img/noticias/card-noticia5.jpg",
       "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "small",
-      "image": "",
+      "image": "img/noticias/card-noticia6.jpg",
       "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "small",
-      "image": "",
+      "image": "img/noticias/card-noticia7.jpg",
       "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "small",
-      "image": "",
+      "image": "img/noticias/card-noticia8.jpg",
       "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "small",
-      "image": "",
+      "image": "img/noticias/card-noticia9.jpg",
       "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "wide",
-      "image": "",
+      "image": "img/noticias/card-noticia10.jpg",
       "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966 typesetting industry. Lorestry. Lorem Ipsum has been the industry's standard dummy text ever since 1966 typesetting industry. Lorem Ipsum has been the",
       "href": "#"
@@ -99,8 +130,14 @@
   ],
   "footer": {
     "menu": [
-      { "label": "¿Qué es visión?", "href": "#" },
-      { "label": "Savills.es", "href": "https://www.savills.es" }
+      {
+        "label": "¿Qué es visión?",
+        "href": "#"
+      },
+      {
+        "label": "Savills.es",
+        "href": "https://www.savills.es"
+      }
     ],
     "contacto": {
       "titulo": "¿En qué podemos ayudarte?",
