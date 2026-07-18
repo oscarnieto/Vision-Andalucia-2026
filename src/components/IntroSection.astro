@@ -22,7 +22,7 @@ const { lead, body, video } = Astro.props;
         <figure class="video" class:list={[{ "video--placeholder": !video.image }]}>
           {video.image && <img class="video__img" src={video.image} alt={video.alt ?? ""} />}
           <button class="video__play" type="button" aria-label="Reproducir vídeo">
-            <svg viewBox="0 0 48 54" width="42" height="47" aria-hidden="true">
+            <svg viewBox="0 0 48 54" width="32" height="35" aria-hidden="true">
               <path d="M0 0v54l48-27L0 0z" fill="#ffffff" />
             </svg>
           </button>
@@ -52,7 +52,6 @@ const { lead, body, video } = Astro.props;
     position: relative;
     margin-top: clamp(2rem, 5vw, 3.75rem);
     aspect-ratio: 1140 / 536;
-    border-radius: 8px;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -72,8 +71,8 @@ const { lead, body, video } = Astro.props;
     position: relative;
     display: grid;
     place-items: center;
-    width: 84px;
-    height: 84px;
+    width: 63px;
+    height: 63px;
     border: none;
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.35);
