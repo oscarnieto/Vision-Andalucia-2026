@@ -10,7 +10,7 @@ interface Contacto {
 interface Props {
   menu: MenuItem[];
   contacto: Contacto;
-  disclaimer: string;
+  disclaimer: string[];
 }
 const { menu, contacto, disclaimer } = Astro.props;
 ---
@@ -19,80 +19,139 @@ const { menu, contacto, disclaimer } = Astro.props;
   <div class="contenedor">
     <div class="footer__top">
       <div class="footer__brand">
-        <span class="footer__logo">savills</span>
+        <span class="footer__savills">savills</span>
+        <span class="footer__lockup">
+          <span class="footer__lockup-linea">VISIÓN<b>2026</b></span>
+          <span class="footer__lockup-linea footer__lockup-linea--bold">ANDALUCÍA</span>
+        </span>
       </div>
 
-      <div class="footer__contacto">
-        <p class="footer__contacto-titulo">{contacto.titulo}</p>
-        {contacto.lineas.map((l) => <p class="footer__contacto-linea">{l}</p>)}
-      </div>
+      <div class="footer__right">
+        <div class="footer__contacto">
+          <p class="footer__contacto-titulo">{contacto.titulo}</p>
+          {contacto.lineas.map((l) => <p class="footer__contacto-linea">{l}</p>)}
+        </div>
 
-      <nav class="footer__menu" aria-label="Enlaces del pie">
-        {menu.map((m) => <a href={m.href} class="footer__link">{m.label}</a>)}
-      </nav>
+        <nav class="footer__menu" aria-label="Enlaces del pie">
+          {menu.map((m) => <a href={m.href} class="footer__link">{m.label}</a>)}
+        </nav>
+      </div>
     </div>
 
-    <p class="footer__disclaimer">{disclaimer}</p>
+    <div class="footer__disclaimer">
+      {disclaimer.map((p) => <p>{p}</p>)}
+    </div>
   </div>
 </footer>
 
 <style>
   .footer {
-    background: var(--color-oscuro);
-    color: var(--color-blanco);
-    padding-block: clamp(2rem, 5vw, 3.5rem);
+    background: var(--color-amarillo);
+    color: var(--color-negro);
+    padding-block: clamp(2.5rem, 5vw, 3.75rem);
   }
 
   .footer__top {
     display: flex;
-    flex-wrap: wrap;
-    gap: 2rem 3rem;
+    flex-wrap: nowrap;
+    gap: 2rem clamp(1.5rem, 3vw, 3rem);
     align-items: flex-start;
     justify-content: space-between;
-    padding-bottom: 2rem;
+    padding-bottom: clamp(2rem, 5vw, 3.5rem);
   }
 
-  .footer__logo {
-    font-size: 1.75rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+  .footer__right {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(1.5rem, 3vw, 3rem);
   }
 
-  .footer__contacto-titulo {
-    font-weight: 600;
-    margin-bottom: 0.35rem;
+  /* --- Marca: logo savills + lockup Visión 2026 Andalucía --- */
+  .footer__brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
-  .footer__contacto-linea {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.5;
+  .footer__savills {
+    background: #111;
+    color: var(--color-blanco);
+    font-size: 1.35rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 0.5rem 0.75rem;
+    line-height: 1;
   }
-
-  .footer__menu {
+  .footer__lockup {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
-    text-align: right;
+    line-height: 1.02;
+    text-transform: uppercase;
+  }
+  .footer__lockup-linea {
+    font-family: var(--fuente-titulo);
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    letter-spacing: 0.02em;
+    font-weight: 500;
+  }
+  .footer__lockup-linea b {
+    font-weight: 700;
+  }
+  .footer__lockup-linea--bold {
+    font-weight: 700;
+  }
+
+  /* --- Contacto --- */
+  .footer__contacto-titulo {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .footer__contacto-linea {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  /* --- Menú --- */
+  .footer__menu {
+    display: flex;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
   }
   .footer__link {
-    font-size: 0.95rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    white-space: nowrap;
     transition: opacity 0.15s ease;
   }
   .footer__link:hover {
-    opacity: 0.65;
+    opacity: 0.6;
   }
 
+  /* --- Disclaimer --- */
   .footer__disclaimer {
-    font-size: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 90%;
+  }
+  .footer__disclaimer p {
+    font-size: 0.78rem;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.5);
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    padding-top: 1.5rem;
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 900px) {
+    .footer__top {
+      flex-wrap: wrap;
+    }
+    .footer__right {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
     .footer__menu {
-      text-align: left;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .footer__disclaimer {
+      max-width: 100%;
     }
   }
 </style>

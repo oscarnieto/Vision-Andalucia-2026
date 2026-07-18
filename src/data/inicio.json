@@ -29,57 +29,71 @@
     {
       "size": "wide",
       "image": "",
-      "title": "What is Lorem Ipsum?",
+      "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966 typesetting industry.",
       "href": "#"
     },
     {
       "size": "small",
       "image": "",
-      "title": "What is Lorem Ipsum?",
+      "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "small",
       "image": "",
-      "title": "What is Lorem Ipsum?",
+      "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "small",
       "image": "",
-      "title": "What is Lorem Ipsum?",
+      "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "small",
       "image": "",
-      "title": "What is Lorem Ipsum?",
+      "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "small",
       "image": "",
-      "title": "What is Lorem Ipsum?",
+      "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "small",
       "image": "",
-      "title": "What is Lorem Ipsum?",
+      "title": "What is Loreis Lorem Ipsum?",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
+      "href": "#"
+    },
+    {
+      "size": "small",
+      "image": "",
+      "title": "What is Loreis Lorem Ipsum?",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
+      "href": "#"
+    },
+    {
+      "size": "small",
+      "image": "",
+      "title": "What is Loreis Lorem Ipsum?",
       "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966",
       "href": "#"
     },
     {
       "size": "wide",
       "image": "",
-      "title": "What is Lorem Ipsum?",
-      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966 typesetting industry.",
+      "title": "What is Loreis Lorem Ipsum?",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966 typesetting industry. Lorestry. Lorem Ipsum has been the industry's standard dummy text ever since 1966 typesetting industry. Lorem Ipsum has been the",
       "href": "#"
     }
   ],
@@ -96,6 +110,9 @@
         "(+34) 952 06 27 82"
       ]
     },
-    "disclaimer": "Desde hace 170 años, Savills ayuda a las personas a prosperar a través de lugares y espacios, bien sea a través de una empresa internacional en expansión, un inversor que desea optimizar su cartera de forma sostenible o una familia que busca un nuevo hogar. Cotizada en la Bolsa de Londres, contamos con más de 42.000 profesionales en más de 70 países que colaboran ofreciendo una cobertura y experiencia única en el mundo inmobiliario, en el sector terciario y en residencial prime. Este documento tiene un fin meramente informativo. Savills no se hace responsable de cualquier pérdida o perjuicio, directo o indirecto, derivado de su uso. Quedan reservados todos los derechos: se prohíbe su reproducción total o parcial sin previa autorización escrita de Savills Research. © Savills Commercial Ltd."
+    "disclaimer": [
+      "Desde hace 170 años, Savills ayuda a las personas a prosperar a través de lugares y espacios, bien sea a través de una empresa internacional en expansión, un inversor que desea optimizar su cartera de forma sostenible o una familia que busca un nuevo hogar. Cotizada en la Bolsa de Londres, contamos con más de 42.000 profesionales en más de 70 países que colaboran ofreciendo una cobertura y experiencia única en el mundo inmobiliario, en el sector terciario y en residencial prime.",
+      "Este documento tiene un fin meramente informativo. Savills no se hace responsable de cualquier pérdida o perjuicio, directo o indirecto, derivado de su uso. Quedan reservados todos los derechos: se prohíbe su reproducción total o parcial sin previa autorización escrita de Savills Research. © Savills Commercial Ltd."
+    ]
   }
 }
