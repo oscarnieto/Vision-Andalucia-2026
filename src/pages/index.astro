@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TopBar from "../components/TopBar.astro";
+import Hero from "../components/Hero.astro";
+import IntroSection from "../components/IntroSection.astro";
+import NewsGrid from "../components/NewsGrid.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import data from "../data/inicio.json";
+---
+
+<BaseLayout title="Visión Andalucía 2026">
+  <TopBar nav={data.nav} />
+  <Hero image={data.hero.image} alt={data.hero.alt} />
+  <main>
+    <IntroSection
+      lead={data.intro.lead}
+      body={data.intro.body}
+      video={data.intro.video}
+    />
+    <NewsGrid titulo={data.noticiasTitulo} noticias={data.noticias} />
+  </main>
+  <SiteFooter
+    menu={data.footer.menu}
+    contacto={data.footer.contacto}
+    disclaimer={data.footer.disclaimer}
+  />
+</BaseLayout>

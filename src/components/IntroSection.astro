@@ -1,0 +1,90 @@
+---
+interface Video {
+  image?: string;
+  url?: string;
+  alt?: string;
+}
+interface Props {
+  lead: string;
+  body: string;
+  video?: Video;
+}
+const { lead, body, video } = Astro.props;
+---
+
+<section class="intro">
+  <div class="contenedor">
+    <p class="intro__lead">{lead}</p>
+    <p class="intro__body">{body}</p>
+
+    {
+      video && (
+        <figure class="video" class:list={[{ "video--placeholder": !video.image }]}>
+          {video.image && <img class="video__img" src={video.image} alt={video.alt ?? ""} />}
+          <button class="video__play" type="button" aria-label="Reproducir vídeo">
+            <svg viewBox="0 0 48 54" width="42" height="47" aria-hidden="true">
+              <path d="M0 0v54l48-27L0 0z" fill="#ffffff" />
+            </svg>
+          </button>
+        </figure>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .intro {
+    padding-block: clamp(2.5rem, 8vw, 5.5rem);
+  }
+  .intro__lead {
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+  }
+  .intro__body {
+    font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+    line-height: 1.7;
+    color: #333;
+  }
+
+  .video {
+    position: relative;
+    margin-top: clamp(2rem, 5vw, 3.75rem);
+    aspect-ratio: 1140 / 536;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .video--placeholder {
+    background: var(--color-gris-placeholder);
+  }
+  .video__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .video__play {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .video__play:hover {
+    background: rgba(0, 0, 0, 0.55);
+    transform: scale(1.05);
+  }
+  .video__play svg {
+    margin-left: 4px;
+  }
+</style>

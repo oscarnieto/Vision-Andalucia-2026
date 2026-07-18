@@ -1,0 +1,98 @@
+---
+interface MenuItem {
+  label: string;
+  href: string;
+}
+interface Contacto {
+  titulo: string;
+  lineas: string[];
+}
+interface Props {
+  menu: MenuItem[];
+  contacto: Contacto;
+  disclaimer: string;
+}
+const { menu, contacto, disclaimer } = Astro.props;
+---
+
+<footer class="footer">
+  <div class="contenedor">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <span class="footer__logo">savills</span>
+      </div>
+
+      <div class="footer__contacto">
+        <p class="footer__contacto-titulo">{contacto.titulo}</p>
+        {contacto.lineas.map((l) => <p class="footer__contacto-linea">{l}</p>)}
+      </div>
+
+      <nav class="footer__menu" aria-label="Enlaces del pie">
+        {menu.map((m) => <a href={m.href} class="footer__link">{m.label}</a>)}
+      </nav>
+    </div>
+
+    <p class="footer__disclaimer">{disclaimer}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-oscuro);
+    color: var(--color-blanco);
+    padding-block: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .footer__top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 3rem;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-bottom: 2rem;
+  }
+
+  .footer__logo {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .footer__contacto-titulo {
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+  }
+  .footer__contacto-linea {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+  }
+
+  .footer__menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    text-align: right;
+  }
+  .footer__link {
+    font-size: 0.95rem;
+    transition: opacity 0.15s ease;
+  }
+  .footer__link:hover {
+    opacity: 0.65;
+  }
+
+  .footer__disclaimer {
+    font-size: 0.7rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.5);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: 1.5rem;
+  }
+
+  @media (max-width: 720px) {
+    .footer__menu {
+      text-align: left;
+    }
+  }
+</style>

@@ -1,0 +1,68 @@
+/* ============================================================
+   Tokens de diseño — Visión Andalucía 2026
+   Extraídos del Figma. Cambia aquí y afecta a todo el sitio.
+   ============================================================ */
+:root {
+  --color-amarillo: #feeb14;
+  --color-oscuro: #25273a;
+  --color-negro: #000000;
+  --color-texto: #1c1c1c;
+  --color-gris-placeholder: #5b5555;
+  --color-linea: #e5e5e5;
+  --color-blanco: #ffffff;
+
+  --fuente: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --ancho-contenido: 1140px;
+  --margen-lateral: clamp(1.25rem, 5vw, 150px);
+
+  --altura-topbar: 60px;
+  --altura-menu: 45px;
+  --altura-cabecera: calc(var(--altura-topbar) + var(--altura-menu));
+}
+
+/* ---------- Reset ligero ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Compensa la cabecera fija al saltar a anclas */
+  scroll-padding-top: var(--altura-cabecera);
+}
+
+body {
+  font-family: var(--fuente);
+  color: var(--color-texto);
+  background: var(--color-blanco);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------- Utilidades ---------- */
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho-contenido);
+  margin-inline: auto;
+  padding-inline: var(--margen-lateral);
+}
+
+/* Marcador de posición para imágenes aún sin definir */
+.placeholder {
+  background: var(--color-gris-placeholder);
+}
