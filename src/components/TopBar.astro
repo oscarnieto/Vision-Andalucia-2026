@@ -126,8 +126,9 @@ const base = import.meta.env.BASE_URL;
     display: flex;
   }
 
-  /* "Inicio" y "savills.es" solo se muestran en el menú móvil */
-  .topmenu__only-mobile {
+  /* "Inicio" y "savills.es" solo se muestran en el menú móvil.
+     Se usa especificidad alta para ganar a `.topmenu__list li`. */
+  .topmenu__list li.topmenu__only-mobile {
     display: none;
   }
 
@@ -208,7 +209,7 @@ const base = import.meta.env.BASE_URL;
     }
 
     /* Los enlaces "solo móvil" (Inicio, savills.es) aparecen */
-    .topmenu__only-mobile {
+    .topmenu__list li.topmenu__only-mobile {
       display: block;
     }
 
@@ -281,7 +282,7 @@ const base = import.meta.env.BASE_URL;
       /* animación: se despliega de arriba hacia abajo (efecto cortina) */
       clip-path: inset(0 0 100% 0);
       visibility: hidden;
-      transition: clip-path 0.4s ease, visibility 0.4s;
+      transition: clip-path 0.6s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.6s;
     }
     .topmenu[data-open="true"] .topmenu__list {
       clip-path: inset(0 0 0 0);
