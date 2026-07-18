@@ -1,0 +1,65 @@
+---
+import NewsCard from "./NewsCard.astro";
+
+interface Noticia {
+  size?: "small" | "wide";
+  image?: string;
+  title: string;
+  description: string;
+  href?: string;
+}
+interface Props {
+  titulo: string;
+  noticias: Noticia[];
+}
+const { titulo, noticias } = Astro.props;
+---
+
+<section class="noticias">
+  <div class="contenedor">
+    <header class="noticias__head">
+      <h2 class="noticias__titulo">{titulo}</h2>
+      <span class="noticias__linea" aria-hidden="true"></span>
+    </header>
+
+    <div class="noticias__grid">
+      {noticias.map((n) => <NewsCard {...n} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .noticias {
+    padding-bottom: clamp(3rem, 8vw, 6rem);
+  }
+
+  .noticias__head {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: clamp(1.5rem, 4vw, 2.75rem);
+  }
+  .noticias__titulo {
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .noticias__linea {
+    flex: 1;
+    height: 1px;
+    background: var(--color-oscuro);
+  }
+
+  .noticias__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.25rem, 2.6vw, 1.875rem);
+  }
+
+  @media (max-width: 720px) {
+    .noticias__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

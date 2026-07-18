@@ -1,0 +1,231 @@
+---
+interface NavItem {
+  label: string;
+  href: string;
+  strong?: boolean;
+}
+interface Props {
+  nav: NavItem[];
+}
+const { nav } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<header class="topbar">
+  <!-- Franja amarilla con el logo -->
+  <div class="topbar__brand">
+    <a class="logo" href={base} aria-label="Visión Andalucía — Inicio">
+      <span class="logo__vision">VISIÓN</span>
+      <span class="logo__sep" aria-hidden="true">|</span>
+      <span class="logo__andalucia">ANDALUCÍA</span>
+    </a>
+  </div>
+
+  <!-- Menú de navegación -->
+  <nav class="topmenu" aria-label="Navegación principal">
+    <button
+      class="topmenu__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="menu-principal"
+    >
+      <span class="topmenu__toggle-bar"></span>
+      <span class="visually-hidden">Abrir menú</span>
+    </button>
+
+    <ul class="topmenu__list" id="menu-principal">
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={["topmenu__link", { "topmenu__link--strong": item.strong }]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+  }
+
+  /* --- Franja amarilla + logo --- */
+  .topbar__brand {
+    height: var(--altura-topbar);
+    background: var(--color-amarillo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: clamp(1rem, 2.4vw, 1.25rem);
+    letter-spacing: 0.12em;
+    color: var(--color-negro);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .logo__vision {
+    font-weight: 400;
+  }
+  .logo__sep {
+    font-weight: 300;
+    opacity: 0.6;
+  }
+  .logo__andalucia {
+    font-weight: 800;
+  }
+
+  /* --- Menú --- */
+  .topmenu {
+    height: var(--altura-menu);
+    background: var(--color-blanco);
+    border-top: 1px solid var(--color-linea);
+    border-bottom: 1px solid var(--color-linea);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .topmenu__list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.2vw, 2rem);
+  }
+
+  .topmenu__link {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-negro);
+    white-space: nowrap;
+    transition: opacity 0.15s ease;
+  }
+  .topmenu__link:hover {
+    opacity: 0.55;
+  }
+  .topmenu__link--strong {
+    font-weight: 600;
+  }
+
+  /* --- Botón hamburguesa (oculto en escritorio) --- */
+  .topmenu__toggle {
+    display: none;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* ============ Responsive ============ */
+  @media (max-width: 900px) {
+    .topmenu {
+      justify-content: flex-end;
+      padding-inline: var(--margen-lateral);
+    }
+
+    .topmenu__toggle {
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 40px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+    .topmenu__toggle-bar,
+    .topmenu__toggle-bar::before,
+    .topmenu__toggle-bar::after {
+      content: "";
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: var(--color-negro);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .topmenu__toggle-bar {
+      position: relative;
+    }
+    .topmenu__toggle-bar::before {
+      position: absolute;
+      top: -7px;
+    }
+    .topmenu__toggle-bar::after {
+      position: absolute;
+      top: 7px;
+    }
+    .topmenu[data-open="true"] .topmenu__toggle-bar {
+      background: transparent;
+    }
+    .topmenu[data-open="true"] .topmenu__toggle-bar::before {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .topmenu[data-open="true"] .topmenu__toggle-bar::after {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .topmenu__list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      background: var(--color-blanco);
+      border-bottom: 1px solid var(--color-linea);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease;
+    }
+    .topmenu[data-open="true"] .topmenu__list {
+      max-height: 80vh;
+    }
+    .topmenu__link {
+      display: block;
+      padding: 0.9rem var(--margen-lateral);
+      border-top: 1px solid var(--color-linea);
+      font-size: 0.9rem;
+    }
+  }
+</style>
+
+<script>
+  const menu = document.querySelector<HTMLElement>(".topmenu");
+  const toggle = menu?.querySelector<HTMLButtonElement>(".topmenu__toggle");
+
+  toggle?.addEventListener("click", () => {
+    const open = menu?.getAttribute("data-open") === "true";
+    menu?.setAttribute("data-open", String(!open));
+    toggle.setAttribute("aria-expanded", String(!open));
+  });
+
+  // Cierra el menú al pulsar un enlace (en móvil)
+  menu?.querySelectorAll(".topmenu__link").forEach((link) =>
+    link.addEventListener("click", () => {
+      menu?.setAttribute("data-open", "false");
+      toggle?.setAttribute("aria-expanded", "false");
+    })
+  );
+</script>
