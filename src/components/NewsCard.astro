@@ -17,7 +17,7 @@ const { size = "small", image, title, description, href = "#" } = Astro.props;
   <div class="card__media">
     {image && <img class="card__img" src={image} alt={title} loading="lazy" />}
   </div>
-  <h3 class="card__title">{title}</h3>
+  <h3 class="card__title"><span class="card__title-text">{title}</span></h3>
   <p class="card__desc">{description}</p>
 </a>
 
@@ -26,13 +26,6 @@ const { size = "small", image, title, description, href = "#" } = Astro.props;
     display: flex;
     flex-direction: column;
     color: var(--color-texto);
-    transition: transform 0.2s ease;
-  }
-  .card:hover {
-    transform: translateY(-4px);
-  }
-  .card:hover .card__title {
-    text-decoration: underline;
   }
 
   /* Ocupa 1 o 2 columnas del grid */
@@ -45,7 +38,6 @@ const { size = "small", image, title, description, href = "#" } = Astro.props;
 
   .card__media {
     aspect-ratio: 360 / 360;
-    border-radius: 8px;
     overflow: hidden;
     background: transparent;
   }
@@ -59,13 +51,34 @@ const { size = "small", image, title, description, href = "#" } = Astro.props;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  /* Hover: la imagen se amplía suavemente */
+  .card:hover .card__img {
+    transform: scale(1.06);
   }
 
   .card__title {
-    font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+    font-family: var(--fuente-titulo);
+    font-size: clamp(1.25rem, 2vw, 1.65rem);
     font-weight: 700;
-    line-height: 1.25;
+    line-height: 1.2;
     margin-top: 1.25rem;
+  }
+  /* Subrayado amarillo animado de izquierda a derecha (abraza el texto) */
+  .card__title-text {
+    display: inline;
+    background-image: linear-gradient(var(--color-amarillo), var(--color-amarillo));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 0.28em;
+    transition: background-size 0.4s ease;
+    padding-bottom: 0.05em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .card:hover .card__title-text {
+    background-size: 100% 0.28em;
   }
   .card__desc {
     font-size: 0.9rem;

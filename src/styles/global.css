@@ -3,7 +3,7 @@
    Extraídos del Figma. Cambia aquí y afecta a todo el sitio.
    ============================================================ */
 :root {
-  --color-amarillo: #feeb14;
+  --color-amarillo: #fdea14;
   --color-oscuro: #25273a;
   --color-negro: #000000;
   --color-texto: #1c1c1c;
@@ -12,6 +12,7 @@
   --color-blanco: #ffffff;
 
   --fuente: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fuente-titulo: "Playfair Display", Georgia, "Times New Roman", serif;
 
   --ancho-contenido: 1140px;
   --margen-lateral: clamp(1.25rem, 5vw, 150px);
