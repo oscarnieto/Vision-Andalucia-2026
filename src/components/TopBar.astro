@@ -9,6 +9,12 @@ interface Props {
 }
 const { nav } = Astro.props;
 const base = import.meta.env.BASE_URL;
+
+// Submenú común a todas las secciones (excepto "Ediciones anteriores")
+const submenu = [
+  { label: "Málaga", href: "#" },
+  { label: "Sevilla", href: "#" },
+];
 ---
 
 <header class="topbar">
@@ -41,7 +47,7 @@ const base = import.meta.env.BASE_URL;
       </li>
       {
         nav.map((item) => (
-          <li>
+          <li class:list={["topmenu__item", { "topmenu__item--has-sub": !item.strong }]}>
             <a
               href={item.href}
               data-label={item.label}
@@ -49,6 +55,17 @@ const base = import.meta.env.BASE_URL;
             >
               <span class="topmenu__link-text">{item.label}</span>
             </a>
+            {!item.strong && (
+              <ul class="submenu" aria-label={`Ediciones de ${item.label}`}>
+                {submenu.map((s) => (
+                  <li>
+                    <a class="submenu__link" href={s.href}>
+                      {s.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))
       }
@@ -58,6 +75,15 @@ const base = import.meta.env.BASE_URL;
         </a>
       </li>
     </ul>
+
+    <!-- Panel de submenú (solo móvil): se abre al tocar una sección -->
+    <div class="topmenu__submobile">
+      <p class="topmenu__submobile-title"></p>
+      <a class="topmenu__submobile-link" href="#">Málaga</a>
+      <a class="topmenu__submobile-link" href="#">Sevilla</a>
+      <button class="topmenu__back" type="button">volver</button>
+      <a class="topmenu__submobile-savills" href="https://www.savills.es">savills.es</a>
+    </div>
 
     <!-- Marcador amarillo que se desliza entre enlaces (solo escritorio) -->
     <span class="topmenu__marker" aria-hidden="true"></span>
@@ -176,6 +202,49 @@ const base = import.meta.env.BASE_URL;
     transition: transform 0.3s ease, width 0.3s ease, opacity 0.2s ease;
   }
 
+  /* --- Submenú desplegable (escritorio) --- */
+  .topmenu__item {
+    position: relative;
+  }
+  .submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 150px;
+    list-style: none;
+    background: var(--color-blanco);
+    border: 1px solid var(--color-linea);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 4px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 60;
+  }
+  .topmenu__item--has-sub:hover .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .submenu__link {
+    display: block;
+    padding: 9px 18px;
+    font-size: 0.8rem;
+    color: var(--color-negro);
+    white-space: nowrap;
+    transition: background 0.15s ease;
+  }
+  .submenu__link:hover {
+    background: var(--color-amarillo);
+    font-weight: 700;
+  }
+
+  /* Panel de submenú móvil: oculto en escritorio */
+  .topmenu__submobile {
+    display: none;
+  }
+
   /* --- Botón hamburguesa (oculto en escritorio) --- */
   .topmenu__toggle {
     display: none;
@@ -200,11 +269,14 @@ const base = import.meta.env.BASE_URL;
       position: static;
     }
 
-    /* En móvil no hay marcador ni reserva de negrita */
+    /* En móvil no hay marcador, reserva de negrita ni submenús de hover */
     .topmenu__marker {
       display: none;
     }
     .topmenu__link::before {
+      display: none;
+    }
+    .submenu {
       display: none;
     }
 
@@ -314,6 +386,72 @@ const base = import.meta.env.BASE_URL;
     .topmenu__savills .topmenu__link-text {
       font-weight: 700;
     }
+
+    /* --- Segundo nivel (submenú de sección) --- */
+    /* Al abrir un submenú, se oculta el nivel 1 */
+    .topmenu[data-sub] .topmenu__list {
+      opacity: 0;
+      visibility: hidden;
+      clip-path: none;
+      transition: opacity 0.25s ease, visibility 0.25s;
+    }
+
+    .topmenu__submobile {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      position: fixed;
+      top: var(--altura-topbar);
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--color-amarillo);
+      padding: clamp(0.75rem, 2.4vh, 2rem) var(--margen-lateral);
+      z-index: 111;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(20px);
+      transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    }
+    .topmenu[data-sub] .topmenu__submobile {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0);
+    }
+
+    .topmenu__submobile-title {
+      font-size: clamp(1.1rem, 4.4vh, 2.1rem);
+      font-weight: 700;
+      line-height: 1.1;
+      padding-block: clamp(0.1rem, 0.8vh, 0.5rem);
+      margin-bottom: clamp(0.3rem, 1.5vh, 0.9rem);
+    }
+    .topmenu__submobile-link,
+    .topmenu__back {
+      font-size: clamp(1rem, 3.4vh, 1.9rem);
+      line-height: 1.1;
+      padding: clamp(0.1rem, 0.8vh, 0.5rem) 0;
+      color: var(--color-negro);
+    }
+    .topmenu__submobile-link:hover,
+    .topmenu__back:hover {
+      font-weight: 700;
+    }
+    .topmenu__back {
+      margin-top: clamp(1rem, 3.5vh, 2.25rem);
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .topmenu__submobile-savills {
+      margin-top: auto;
+      padding-top: clamp(0.75rem, 2vh, 1.75rem);
+      font-size: clamp(1rem, 3.4vh, 1.9rem);
+      font-weight: 700;
+      color: #8a2531;
+    }
   }
 </style>
 
@@ -321,10 +459,16 @@ const base = import.meta.env.BASE_URL;
   const menu = document.querySelector<HTMLElement>(".topmenu");
   const toggle = menu?.querySelector<HTMLButtonElement>(".topmenu__toggle");
 
+  const subTitle = menu?.querySelector<HTMLElement>(".topmenu__submobile-title");
+  const backBtn = menu?.querySelector<HTMLButtonElement>(".topmenu__back");
+  const isMobile = () => window.matchMedia("(max-width: 900px)").matches;
+
   const setOpen = (open: boolean) => {
     menu?.setAttribute("data-open", String(open));
     toggle?.setAttribute("aria-expanded", String(open));
     toggle?.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+    // Al cerrar, vuelve siempre al primer nivel
+    if (!open) menu?.removeAttribute("data-sub");
     // Bloquea el scroll del fondo mientras el overlay está abierto
     document.body.style.overflow = open ? "hidden" : "";
   };
@@ -334,14 +478,37 @@ const base = import.meta.env.BASE_URL;
     setOpen(!open);
   });
 
-  // Cierra el menú al pulsar un enlace (en móvil)
-  menu?.querySelectorAll(".topmenu__link").forEach((link) =>
+  // Comportamiento de los enlaces del menú
+  menu?.querySelectorAll<HTMLElement>(".topmenu__link").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const li = link.closest(".topmenu__item");
+      const hasSub = li?.classList.contains("topmenu__item--has-sub");
+      if (isMobile() && hasSub) {
+        // En móvil, tocar una sección abre su submenú (no navega)
+        e.preventDefault();
+        if (subTitle) subTitle.textContent = link.textContent?.trim() ?? "";
+        menu?.setAttribute("data-sub", "true");
+      } else {
+        // Inicio, Ediciones anteriores, savills.es o escritorio: navega y cierra
+        setOpen(false);
+      }
+    });
+  });
+
+  // "volver" regresa al primer nivel
+  backBtn?.addEventListener("click", () => menu?.removeAttribute("data-sub"));
+
+  // Los enlaces de ciudad cierran el menú
+  menu?.querySelectorAll(".topmenu__submobile-link").forEach((link) =>
     link.addEventListener("click", () => setOpen(false))
   );
 
-  // Cierra con la tecla Escape
+  // Escape: si hay submenú abierto vuelve al nivel 1; si no, cierra el menú
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && menu?.getAttribute("data-open") === "true") {
+    if (e.key !== "Escape") return;
+    if (menu?.hasAttribute("data-sub")) {
+      menu.removeAttribute("data-sub");
+    } else if (menu?.getAttribute("data-open") === "true") {
       setOpen(false);
     }
   });
