@@ -39,14 +39,18 @@ const base = import.meta.env.BASE_URL;
           <li>
             <a
               href={item.href}
+              data-label={item.label}
               class:list={["topmenu__link", { "topmenu__link--strong": item.strong }]}
             >
-              {item.label}
+              <span class="topmenu__link-text">{item.label}</span>
             </a>
           </li>
         ))
       }
     </ul>
+
+    <!-- Marcador amarillo que se desliza entre enlaces (solo escritorio) -->
+    <span class="topmenu__marker" aria-hidden="true"></span>
   </nav>
 </header>
 
@@ -103,22 +107,57 @@ const base = import.meta.env.BASE_URL;
   .topmenu__list {
     list-style: none;
     display: flex;
-    align-items: center;
-    gap: clamp(1rem, 2.2vw, 2rem);
+    align-items: stretch;
+    gap: 0;
+    height: 100%;
   }
 
+  .topmenu__list li {
+    display: flex;
+  }
+
+  /* Cada enlace reserva el ancho de su versión en negrita (::before oculto),
+     así al pasar a bold en hover el resto del menú no se desplaza. */
   .topmenu__link {
+    position: relative;
+    z-index: 1;
+    display: inline-grid;
+    place-items: center;
+    height: 100%;
+    padding: 0 clamp(0.9rem, 1.6vw, 1.6rem);
     font-size: 0.75rem;
-    font-weight: 400;
     color: var(--color-negro);
     white-space: nowrap;
-    transition: opacity 0.15s ease;
   }
-  .topmenu__link:hover {
-    opacity: 0.55;
+  .topmenu__link::before {
+    grid-area: 1 / 1;
+    content: attr(data-label);
+    font-weight: 700;
+    visibility: hidden;
   }
-  .topmenu__link--strong {
-    font-weight: 600;
+  .topmenu__link-text {
+    grid-area: 1 / 1;
+    font-weight: 400;
+    transition: font-weight 0.1s ease;
+  }
+  .topmenu__link:hover .topmenu__link-text,
+  .topmenu__link--strong .topmenu__link-text {
+    font-weight: 700;
+  }
+
+  /* Marcador amarillo deslizante */
+  .topmenu__marker {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    background: var(--color-amarillo);
+    opacity: 0;
+    z-index: 0;
+    pointer-events: none;
+    transform: translateX(0);
+    transition: transform 0.3s ease, width 0.3s ease, opacity 0.2s ease;
   }
 
   /* --- Botón hamburguesa (oculto en escritorio) --- */
@@ -140,6 +179,14 @@ const base = import.meta.env.BASE_URL;
     .topmenu {
       justify-content: flex-end;
       padding-inline: var(--margen-lateral);
+    }
+
+    /* En móvil no hay marcador ni reserva de negrita */
+    .topmenu__marker {
+      display: none;
+    }
+    .topmenu__link::before {
+      display: none;
     }
 
     .topmenu__toggle {
@@ -193,6 +240,7 @@ const base = import.meta.env.BASE_URL;
       flex-direction: column;
       align-items: stretch;
       gap: 0;
+      height: auto;
       background: var(--color-blanco);
       border-bottom: 1px solid var(--color-linea);
       max-height: 0;
@@ -204,6 +252,7 @@ const base = import.meta.env.BASE_URL;
     }
     .topmenu__link {
       display: block;
+      height: auto;
       padding: 0.9rem var(--margen-lateral);
       border-top: 1px solid var(--color-linea);
       font-size: 0.9rem;
@@ -228,4 +277,36 @@ const base = import.meta.env.BASE_URL;
       toggle?.setAttribute("aria-expanded", "false");
     })
   );
+
+  // Marcador amarillo deslizante (solo con puntero, escritorio)
+  const marker = menu?.querySelector<HTMLElement>(".topmenu__marker");
+  const links = menu?.querySelectorAll<HTMLElement>(".topmenu__link");
+  let markerVisible = false;
+
+  const moveMarker = (link: HTMLElement) => {
+    if (!marker || !menu) return;
+    const lr = link.getBoundingClientRect();
+    const mr = menu.getBoundingClientRect();
+    if (!markerVisible) marker.style.transition = "none";
+    marker.style.width = `${lr.width}px`;
+    marker.style.transform = `translateX(${lr.left - mr.left}px)`;
+    if (!markerVisible) {
+      // fuerza reflow para que la primera aparición no se deslice desde 0
+      void marker.offsetWidth;
+      marker.style.transition = "";
+      marker.style.opacity = "1";
+      markerVisible = true;
+    }
+  };
+
+  const canHover = window.matchMedia("(hover: hover) and (min-width: 901px)");
+  if (canHover.matches) {
+    links?.forEach((link) =>
+      link.addEventListener("mouseenter", () => moveMarker(link))
+    );
+    menu?.addEventListener("mouseleave", () => {
+      if (marker) marker.style.opacity = "0";
+      markerVisible = false;
+    });
+  }
 </script>
