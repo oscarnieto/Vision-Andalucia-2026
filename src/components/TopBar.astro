@@ -524,11 +524,9 @@ const submenu = [
     if (!marker || !menu) return;
     const lr = link.getBoundingClientRect();
     const mr = menu.getBoundingClientRect();
-    // Si la sección tiene submenú, el marcador iguala el ancho de la caja blanca
-    const sub = link.closest(".topmenu__item")?.querySelector<HTMLElement>(".submenu");
-    const width = sub ? Math.max(lr.width, sub.getBoundingClientRect().width) : lr.width;
+    // El marcador amarillo ocupa solo el ancho de cada enlace
     if (!markerVisible) marker.style.transition = "none";
-    marker.style.width = `${width}px`;
+    marker.style.width = `${lr.width}px`;
     marker.style.transform = `translateX(${lr.left - mr.left}px)`;
     if (!markerVisible) {
       // fuerza reflow para que la primera aparición no se deslice desde 0
