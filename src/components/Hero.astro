@@ -1,13 +1,16 @@
 ---
+import { asset } from "../lib/asset";
+
 interface Props {
   image?: string;
   alt?: string;
 }
 const { image, alt = "" } = Astro.props;
+const src = asset(image ?? "");
 ---
 
-<section class="hero" class:list={[{ "hero--placeholder": !image }]}>
-  {image && <img class="hero__img" src={image} alt={alt} />}
+<section class="hero" class:list={[{ "hero--placeholder": !src }]}>
+  {src && <img class="hero__img" src={src} alt={alt} />}
   <slot />
 </section>
 

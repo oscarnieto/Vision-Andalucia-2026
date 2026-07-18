@@ -1,4 +1,6 @@
 ---
+import { asset } from "../lib/asset";
+
 interface Props {
   size?: "small" | "wide";
   image?: string;
@@ -7,15 +9,16 @@ interface Props {
   href?: string;
 }
 const { size = "small", image, title, description, href = "#" } = Astro.props;
+const src = asset(image ?? "");
 ---
 
 <a
   class="card"
-  class:list={[`card--${size}`, { "card--placeholder": !image }]}
+  class:list={[`card--${size}`, { "card--placeholder": !src }]}
   href={href}
 >
   <div class="card__media">
-    {image && <img class="card__img" src={image} alt={title} loading="lazy" />}
+    {src && <img class="card__img" src={src} alt={title} loading="lazy" />}
   </div>
   <h3 class="card__title"><span class="card__title-text">{title}</span></h3>
   <p class="card__desc">{description}</p>
