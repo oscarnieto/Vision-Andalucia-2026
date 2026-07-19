@@ -349,10 +349,13 @@ const submenu = [
       /* El menú entra completo sin scroll: los tamaños escalan con la altura */
       overflow: hidden;
       z-index: 110;
-      /* animación: se despliega de arriba hacia abajo (efecto cortina) */
+      /* animación de apertura: se despliega de arriba hacia abajo (cortina) */
       clip-path: inset(0 0 100% 0);
       visibility: hidden;
-      transition: clip-path 0.6s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.6s;
+      opacity: 1;
+      transform: translateX(0);
+      transition: clip-path 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.6s, opacity 0.3s ease, transform 0.3s ease;
     }
     .topmenu[data-open="true"] .topmenu__list {
       clip-path: inset(0 0 0 0);
@@ -385,13 +388,13 @@ const submenu = [
       font-weight: 700;
     }
 
-    /* --- Segundo nivel (submenú de sección) --- */
-    /* Al abrir un submenú, se oculta el nivel 1 */
+    /* --- Segundo nivel (submenú de sección): transición drill-down --- */
+    /* Al abrir un submenú, el nivel 1 se desliza a la izquierda y se desvanece
+       (sin tocar el clip-path, para que no dé saltos) */
     .topmenu[data-sub] .topmenu__list {
       opacity: 0;
-      visibility: hidden;
-      clip-path: none;
-      transition: opacity 0.25s ease, visibility 0.25s;
+      transform: translateX(-28px);
+      pointer-events: none;
     }
 
     .topmenu__submobile {
@@ -406,9 +409,10 @@ const submenu = [
       background: var(--color-amarillo);
       padding: clamp(0.75rem, 2.4vh, 2rem) var(--margen-lateral);
       z-index: 111;
+      /* Entra desde la derecha */
       opacity: 0;
       visibility: hidden;
-      transform: translateX(20px);
+      transform: translateX(28px);
       transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
     }
     .topmenu[data-sub] .topmenu__submobile {
