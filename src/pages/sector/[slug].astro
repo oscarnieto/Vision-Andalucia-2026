@@ -1,0 +1,65 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopBar from "../../components/TopBar.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import SectorHero from "../../components/sector/SectorHero.astro";
+import TextBlock from "../../components/sector/TextBlock.astro";
+import YouTubeBlock from "../../components/sector/YouTubeBlock.astro";
+import ChartTabs from "../../components/sector/ChartTabs.astro";
+import ChartBlock from "../../components/sector/ChartBlock.astro";
+import MapBlock from "../../components/sector/MapBlock.astro";
+import inicio from "../../data/inicio.json";
+
+// Cada archivo en src/data/sectores/*.json genera una página /sector/<slug>.
+const sectorFiles = import.meta.glob("../../data/sectores/*.json", { eager: true });
+const mapaFiles = import.meta.glob("../../data/mapas/*.json", { eager: true });
+
+export function getStaticPaths() {
+  const files = import.meta.glob("../../data/sectores/*.json", { eager: true });
+  return Object.values(files).map((m: any) => {
+    const s = m.default ?? m;
+    return { params: { slug: s.slug }, props: { sector: s } };
+  });
+}
+
+const { sector } = Astro.props;
+
+function mapaData(nombre: string) {
+  const entry = Object.entries(mapaFiles).find(([p]) => p.endsWith(`/${nombre}.json`));
+  if (!entry) return null;
+  const m = entry[1] as any;
+  return m.default ?? m;
+}
+---
+
+<BaseLayout title={`${sector.titulo} — Visión Andalucía 2026`}>
+  <TopBar nav={inicio.nav} />
+  <SectorHero
+    badge={sector.hero.badge}
+    titulo={sector.hero.titulo}
+    autor={sector.hero.autor}
+    rol={sector.hero.rol}
+    image={sector.hero.image}
+  />
+  <main>
+    {
+      sector.bloques.map((b: any) => {
+        if (b.tipo === "texto")
+          return <TextBlock titulo={b.titulo} parrafos={b.parrafos} lead={b.lead} />;
+        if (b.tipo === "video")
+          return <YouTubeBlock youtube={b.youtube} poster={b.poster} titulo={b.titulo} />;
+        if (b.tipo === "chart-tabs") return <ChartTabs graficas={b.graficas} />;
+        if (b.tipo === "chart")
+          return <ChartBlock titulo={b.titulo} embed={b.embed} id={b.id} caption={b.caption} />;
+        if (b.tipo === "mapa")
+          return <MapBlock titulo={b.titulo} data={mapaData(b.mapa)} />;
+        return null;
+      })
+    }
+  </main>
+  <SiteFooter
+    menu={inicio.footer.menu}
+    contacto={inicio.footer.contacto}
+    disclaimer={inicio.footer.disclaimer}
+  />
+</BaseLayout>

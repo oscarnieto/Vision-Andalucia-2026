@@ -1,0 +1,45 @@
+---
+import Infogram from "./Infogram.astro";
+
+interface Props {
+  titulo?: string;
+  embed?: string;
+  id?: string;
+  caption?: string;
+}
+const { titulo, embed, id, caption } = Astro.props;
+---
+
+<section class="chart-bloque">
+  <div class="contenedor">
+    {titulo && <h2 class="chart-bloque__titulo">{titulo}</h2>}
+    <div class="chart-bloque__chart">
+      <Infogram embed={embed} id={id} titulo={titulo} />
+    </div>
+    {caption && <p class="chart-bloque__caption">{caption}</p>}
+  </div>
+</section>
+
+<style>
+  .chart-bloque {
+    padding-block: clamp(1.5rem, 4vw, 3rem);
+  }
+  .chart-bloque__titulo {
+    font-family: var(--fuente-titulo);
+    font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+  }
+  /* En fondo claro, el marcador de posición se ve mejor en gris */
+  .chart-bloque__chart :global(.infogram--placeholder) {
+    background: #f2f2f0;
+    border-color: #cfcfca;
+    color: #8a8a86;
+  }
+  .chart-bloque__caption {
+    margin-top: 1.25rem;
+    font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+    line-height: 1.75;
+    color: #333;
+  }
+</style>

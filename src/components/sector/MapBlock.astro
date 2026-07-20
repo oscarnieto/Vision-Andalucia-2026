@@ -1,0 +1,162 @@
+---
+// Bloque de mapa: incrusta el web component <savills-map> con Leaflet auto-alojado.
+// `data` es el JSON exportado por la app de mapas (config, points, areas).
+interface Props {
+  titulo?: string;
+  data: unknown;
+}
+const { titulo, data } = Astro.props;
+const json = JSON.stringify(data);
+---
+
+<section class="mapa">
+  <div class="contenedor">
+    {titulo && <h2 class="mapa__titulo">{titulo}</h2>}
+    <savills-map>
+      <script type="application/json" set:html={json} />
+    </savills-map>
+  </div>
+</section>
+
+<style>
+  .mapa {
+    padding-block: clamp(1.5rem, 4vw, 3rem);
+  }
+  .mapa__titulo {
+    font-family: var(--fuente-titulo);
+    font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+  }
+  savills-map {
+    display: block;
+    width: 100%;
+    border-radius: 0;
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  // Definición del web component <savills-map>, con Leaflet servido en local
+  // (public/vendor/leaflet) para no depender de cdnjs. Los tiles siguen viniendo
+  // del proveedor configurado en el JSON (CARTO por defecto).
+  const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+  const L_CSS = `${BASE}/vendor/leaflet/leaflet.css`;
+  const L_JS = `${BASE}/vendor/leaflet/leaflet.js`;
+
+  function loadLeaflet(): Promise<any> {
+    const w = window as any;
+    if (w.__savillsLeaflet) return w.__savillsLeaflet;
+    w.__savillsLeaflet = new Promise((res, rej) => {
+      if (w.L) return res(w.L);
+      const s = document.createElement("script");
+      s.src = L_JS;
+      s.onload = () => res(w.L);
+      s.onerror = rej;
+      document.head.appendChild(s);
+    });
+    return w.__savillsLeaflet;
+  }
+  function esc(s: any) {
+    return String(s).replace(/[&<>"]/g, (m: string) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[m] as string
+    );
+  }
+  function tableHTML(t: any) {
+    if (!t || !t.columns || !t.columns.length) return "";
+    let h = '<table class="pv-table"><thead><tr>';
+    t.columns.forEach((c: any) => (h += "<th>" + esc(c) + "</th>"));
+    h += "</tr></thead><tbody>";
+    t.rows.forEach((r: any) => {
+      h += "<tr>";
+      r.forEach((c: any) => (h += "<td>" + esc(c) + "</td>"));
+      h += "</tr>";
+    });
+    return h + "</tbody></table>";
+  }
+  function popupHTML(p: any) {
+    let h = "";
+    if (p.titulo) h += "<b>" + esc(p.titulo) + "</b>";
+    if (p.descripcion) h += (h ? "<br>" : "") + esc(p.descripcion);
+    if (p.tabla) h += tableHTML(p.tabla);
+    return h;
+  }
+
+  if (!customElements.get("savills-map")) {
+    class SavillsMap extends HTMLElement {
+      _i = false;
+      connectedCallback() {
+        if (this._i) return;
+        this._i = true;
+        const el = this.querySelector('script[type="application/json"]');
+        let d: any;
+        try {
+          d = JSON.parse(el!.textContent!);
+        } catch (e) {
+          this.textContent = "Datos del mapa no válidos";
+          return;
+        }
+        const c = d.config || {};
+        const root = this.attachShadow({ mode: "open" });
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = L_CSS;
+        root.appendChild(link);
+        const st = document.createElement("style");
+        st.textContent =
+          ":host{display:block;width:100%}.m{width:100%;height:" +
+          (c.height || "70vh") +
+          ";min-height:240px}" +
+          ".leaflet-container{background:#FBFBF9;font:14px Montserrat,system-ui,sans-serif}" +
+          ".leaflet-popup-content{font:13px Montserrat,system-ui,sans-serif;margin:10px 12px;max-height:320px;overflow:auto}" +
+          ".leaflet-popup-content b{font-weight:600}" +
+          ".pv-table{border-collapse:collapse;margin-top:8px;width:100%;font-size:12px}" +
+          ".pv-table th,.pv-table td{border:1px solid #E6E5DE;padding:4px 7px;text-align:left}" +
+          ".pv-table th{background:#F7F7F4;font-weight:600}";
+        root.appendChild(st);
+        const box = document.createElement("div");
+        box.className = "m";
+        root.appendChild(box);
+        loadLeaflet().then((L: any) => this.render(L, box, d, c));
+      }
+      render(L: any, box: HTMLElement, d: any, c: any) {
+        const map = L.map(box, { scrollWheelZoom: false });
+        map.setView(c.center || [40.4, -3.7], c.zoom || 6);
+        const t = c.tiles || {};
+        L.tileLayer(t.url, { attribution: t.attr, maxZoom: 19, subdomains: "abcd" }).addTo(map);
+        const bounds: any[] = [];
+        (d.areas || []).forEach((a: any) => {
+          const col = a.color || c.area;
+          let lyr: any;
+          if (a.tipo === "circulo")
+            lyr = L.circle([a.lat, a.lng], { radius: a.radio, color: col, weight: 1.5, fillColor: col, fillOpacity: 0.14 });
+          else lyr = L.polygon(a.rings, { color: col, weight: 1.5, fillColor: col, fillOpacity: 0.14 });
+          if (a.titulo) lyr.bindPopup("<b>" + esc(a.titulo) + "</b>" + (a.descripcion ? "<br>" + esc(a.descripcion) : ""));
+          lyr.addTo(map);
+          const b = lyr.getBounds && lyr.getBounds();
+          if (b && b.isValid()) bounds.push(b);
+        });
+        (d.points || []).forEach((p: any) => {
+          const col = p.color || c.dot;
+          const m = L.circleMarker([p.lat, p.lng], { radius: 6, color: "#fff", weight: 2, fillColor: col, fillOpacity: 1 });
+          const h = popupHTML(p);
+          if (h) m.bindPopup(h, { maxWidth: 360, minWidth: 180 });
+          m.addTo(map);
+          bounds.push(L.latLng(p.lat, p.lng));
+        });
+        if (c.fit === "auto" && bounds.length) {
+          const all = L.latLngBounds([]);
+          bounds.forEach((b) => all.extend(b));
+          if (all.isValid()) map.fitBounds(all, { padding: [30, 30] });
+          else map.setView(c.center, c.zoom);
+        } else map.setView(c.center, c.zoom);
+        const ro = new ResizeObserver(() => map.invalidateSize());
+        ro.observe(box);
+        setTimeout(() => map.invalidateSize(), 80);
+        map.on("focus", () => map.scrollWheelZoom.enable());
+        map.getContainer().addEventListener("mouseout", () => map.scrollWheelZoom.disable());
+      }
+    }
+    customElements.define("savills-map", SavillsMap);
+  }
+</script>

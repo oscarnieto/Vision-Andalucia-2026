@@ -1,0 +1,43 @@
+---
+// Incrusta una gráfica de Infogram. Admite:
+//  - `embed`: el <iframe> completo que da Infogram (se inserta tal cual), o
+//  - `id`: el data-id del gráfico (usa el script de embed de Infogram).
+// Si no se aporta ninguno, muestra un marcador de posición (útil en pruebas).
+interface Props {
+  embed?: string;
+  id?: string;
+  titulo?: string;
+}
+const { embed, id, titulo } = Astro.props;
+---
+
+{
+  embed ? (
+    <div class="infogram" set:html={embed} />
+  ) : id ? (
+    <div class="infogram infogram-embed" data-id={id} data-type="interactive" />
+  ) : (
+    <div class="infogram infogram--placeholder">
+      <span>Gráfica Infogram{titulo ? ` — ${titulo}` : ""}</span>
+    </div>
+  )
+}
+
+<style>
+  .infogram {
+    width: 100%;
+  }
+  .infogram :global(iframe) {
+    width: 100% !important;
+    border: 0;
+  }
+  .infogram--placeholder {
+    aspect-ratio: 16 / 7;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px dashed rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+  }
+</style>

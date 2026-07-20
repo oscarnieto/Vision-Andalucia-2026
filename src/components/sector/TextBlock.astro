@@ -1,0 +1,45 @@
+---
+interface Props {
+  titulo?: string;
+  parrafos: string[];
+  lead?: boolean;
+}
+const { titulo, parrafos, lead = false } = Astro.props;
+---
+
+<section class="bloque-texto">
+  <div class="contenedor">
+    {titulo && <h2 class="bloque-texto__titulo">{titulo}</h2>}
+    {
+      parrafos.map((p) => (
+        <p class:list={["bloque-texto__p", { "bloque-texto__p--lead": lead }]}>{p}</p>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .bloque-texto {
+    padding-block: clamp(1rem, 2.5vw, 1.75rem);
+  }
+  .bloque-texto__titulo {
+    font-family: var(--fuente-titulo);
+    font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+  .bloque-texto__p {
+    font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+    line-height: 1.75;
+    color: #333;
+  }
+  .bloque-texto__p + .bloque-texto__p {
+    margin-top: 1.25rem;
+  }
+  .bloque-texto__p--lead {
+    font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--color-texto);
+  }
+</style>

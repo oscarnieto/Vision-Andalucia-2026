@@ -1,0 +1,107 @@
+---
+import { asset } from "../../lib/asset";
+
+interface Props {
+  youtube: string;
+  poster?: string;
+  titulo?: string;
+}
+const { youtube, poster, titulo = "Vídeo" } = Astro.props;
+
+// Extrae el ID del vídeo de cualquier formato de URL de YouTube
+function youtubeId(url: string): string {
+  const m = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/
+  );
+  return m ? m[1] : url;
+}
+const id = youtubeId(youtube);
+// Miniatura: la del propio YouTube si no se aporta un póster
+const posterSrc = poster ? asset(poster) : `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
+---
+
+<section class="video-bloque">
+  <div class="contenedor">
+    <div
+      class="yt"
+      data-id={id}
+      role="button"
+      tabindex="0"
+      aria-label={`Reproducir vídeo: ${titulo}`}
+    >
+      <img class="yt__poster" src={posterSrc} alt={titulo} loading="lazy" />
+      <button class="yt__play" type="button" aria-hidden="true">
+        <svg viewBox="0 0 48 54" width="42" height="47"><path d="M0 0v54l48-27L0 0z" fill="#fff" /></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .video-bloque {
+    padding-block: clamp(1.5rem, 4vw, 3rem);
+  }
+  .yt {
+    position: relative;
+    aspect-ratio: 1140 / 536;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--color-gris-placeholder);
+  }
+  .yt__poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .yt__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .yt:hover .yt__play {
+    background: rgba(0, 0, 0, 0.6);
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  .yt__play svg {
+    margin-left: 4px;
+  }
+  .yt iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".yt").forEach((el) => {
+    const load = () => {
+      const id = el.dataset.id;
+      if (!id || el.querySelector("iframe")) return;
+      const iframe = document.createElement("iframe");
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+      iframe.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+      iframe.allowFullscreen = true;
+      el.appendChild(iframe);
+    };
+    el.addEventListener("click", load);
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        load();
+      }
+    });
+  });
+</script>
