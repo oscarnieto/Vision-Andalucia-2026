@@ -103,4 +103,15 @@ const src = asset(image ?? "");
     font-size: 0.85rem;
     opacity: 0.9;
   }
+
+  /* En móvil: hero a pantalla completa y texto alineado abajo */
+  @media (max-width: 900px) {
+    .shero {
+      height: 100svh;
+      align-items: flex-end;
+    }
+    .shero__inner {
+      padding-bottom: clamp(2.5rem, 8vh, 5rem);
+    }
+  }
 </style>

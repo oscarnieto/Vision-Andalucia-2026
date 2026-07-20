@@ -33,6 +33,12 @@ const json = JSON.stringify(data);
     width: 100%;
     border-radius: 0;
     overflow: hidden;
+    /* Crea un contexto de apilamiento propio: así los z-index altos de
+       Leaflet (controles = 1000) quedan contenidos y no se pintan por
+       encima del topbar al hacer scroll. */
+    position: relative;
+    z-index: 0;
+    isolation: isolate;
   }
 </style>
 
