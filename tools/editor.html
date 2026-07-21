@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Editor de páginas · Visión Andalucía 2026</title>
+<style>
+  :root{
+    --amarillo:#fdea14; --oscuro:#25273a; --linea:#e5e5e5; --gris:#f2f2f0;
+    --serif:Georgia,"Times New Roman",serif;
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:#1c1c1c;background:#ececea}
+  header{background:var(--oscuro);color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:10}
+  header h1{font-size:1rem;margin:0;font-weight:600}
+  header .sp{flex:1}
+  button{font:inherit;cursor:pointer;border:0;border-radius:4px;padding:.5rem .9rem}
+  .btn-amarillo{background:var(--amarillo);font-weight:600}
+  .btn-oscuro{background:#3a3c49;color:#fff}
+  .btn-ghost{background:transparent;border:1px solid #cfcfca}
+  .wrap{display:grid;grid-template-columns:minmax(360px,460px) 1fr;gap:0;height:calc(100vh - 56px)}
+  .form{overflow:auto;padding:1.2rem;background:#fff;border-right:1px solid var(--linea)}
+  .preview{overflow:auto;background:#fff}
+  h2.sec{font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:#888;margin:1.5rem 0 .6rem}
+  label{display:block;font-size:.78rem;font-weight:600;margin:.6rem 0 .2rem;color:#444}
+  input,textarea,select{width:100%;font:inherit;font-size:.9rem;padding:.5rem;border:1px solid #cfcfca;border-radius:4px;background:#fff}
+  textarea{min-height:70px;resize:vertical}
+  .campo small{display:block;color:#999;font-size:.7rem;margin-top:.15rem}
+  .bloque{border:1px solid var(--linea);border-radius:6px;margin:.7rem 0;background:#fafafa}
+  .bloque__cab{display:flex;align-items:center;gap:.5rem;padding:.5rem .7rem;background:var(--gris);border-bottom:1px solid var(--linea);border-radius:6px 6px 0 0}
+  .bloque__cab b{font-size:.8rem;text-transform:uppercase;letter-spacing:.03em}
+  .bloque__cab .sp{flex:1}
+  .bloque__cab button{padding:.2rem .45rem;background:#fff;border:1px solid #cfcfca;font-size:.8rem}
+  .bloque__cuerpo{padding:.7rem}
+  .add{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+  .add button{background:#fff;border:1px dashed #b9b9b3;font-size:.8rem;padding:.4rem .6rem}
+  .grafica-fila{display:grid;grid-template-columns:1fr 1fr auto;gap:.4rem;align-items:start;margin-bottom:.4rem}
+  .grafica-fila button{padding:.35rem .5rem}
+  /* ---- vista previa (aprox. al diseño real) ---- */
+  .pv{color:#1c1c1c}
+  .pv-hero{position:relative;min-height:360px;display:flex;align-items:flex-end;background:#5b5555;color:#fff;padding:2rem}
+  .pv-hero .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.6),rgba(0,0,0,0) 75%)}
+  .pv-hero .in{position:relative;max-width:650px}
+  .pv-badge{display:inline-block;background:var(--amarillo);color:#000;font-weight:600;text-transform:uppercase;font-size:.75rem;padding:.35rem .8rem;margin-bottom:1rem}
+  .pv-h1{font-family:var(--serif);font-size:2.2rem;line-height:1.06;margin:0 0 1rem}
+  .pv-autor b{display:block;text-transform:uppercase;font-size:.9rem}
+  .pv-autor span{font-size:.8rem;opacity:.9}
+  .cont{max-width:900px;margin:0 auto;padding:0 1.5rem}
+  .pv-texto p{line-height:1.75;margin:.6rem 0}
+  .pv-lead p{font-size:1.25rem;font-weight:600;line-height:1.5}
+  .pv-titular{font-family:var(--serif);font-size:1.7rem;font-weight:400;margin:1.5rem 0 .5rem}
+  .pv-quote{border-left:4px solid var(--amarillo);padding-left:1.2rem;margin:1.5rem 0}
+  .pv-quote p{font-family:var(--serif);font-size:1.8rem;line-height:1.25;margin:0}
+  .pv-quote cite{display:block;margin-top:.6rem;font-style:normal;font-weight:700;text-transform:uppercase;font-size:.85rem}
+  .pv-img{margin:1.5rem 0}
+  .pv-img .ph{aspect-ratio:1140/536;background:#5b5555;display:grid;place-items:center;color:#fff}
+  .pv-img img{width:100%;display:block}
+  .pv-cap{color:#777;font-size:.85rem;margin-top:.5rem}
+  .pv-video{aspect-ratio:1140/536;background:#5b5555;display:grid;place-items:center;margin:1.5rem 0}
+  .pv-play{width:70px;height:70px;border-radius:50%;background:rgba(0,0,0,.4);display:grid;place-items:center}
+  .pv-play::after{content:"";border-left:20px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent;margin-left:5px}
+  .pv-tabs{background:#383a48;color:#fff;padding:2rem 0;margin:1.5rem 0}
+  .pv-tabs .chart{background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.35);aspect-ratio:16/7;display:grid;place-items:center;color:rgba(255,255,255,.7)}
+  .pv-tabs .btns{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem}
+  .pv-tabs .btns span{border:1px solid rgba(255,255,255,.5);padding:.7rem;font-size:.75rem;text-align:center}
+  .pv-tabs .btns span.act{background:var(--amarillo);color:#000;font-weight:600}
+  .pv-iframe .box{background:#f2f2f0;border:1px dashed #cfcfca;height:320px;display:grid;place-items:center;color:#8a8a86}
+  .pv-map .box{aspect-ratio:1140/540;background:#f2f2f0;border:1px dashed #cfcfca;display:grid;place-items:center;color:#8a8a86}
+  .vacio{color:#aaa;text-align:center;padding:3rem}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr;height:auto}.preview{border-top:2px solid var(--linea)}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Editor de páginas · Visión Andalucía 2026</h1>
+  <span class="sp"></span>
+  <button class="btn-ghost" id="cargar">Cargar…</button>
+  <input type="file" id="file" accept=".json" hidden />
+  <button class="btn-amarillo" id="descargar">Descargar página</button>
+</header>
+
+<div class="wrap">
+  <div class="form" id="form"></div>
+  <div class="preview"><div class="pv" id="pv"></div></div>
+</div>
+
+<script>
+// ---------- estado ----------
+const estado = {
+  slug:"", titulo:"", autor:"", rol:"", badge:"", image:"",
+  bloques:[]
+};
+
+const TIPOS = {
+  texto:      {label:"Texto",      nuevo:()=>({tipo:"texto",parrafos:[""],lead:false})},
+  titular:    {label:"Titular",    nuevo:()=>({tipo:"texto",titulo:""})},
+  quote:      {label:"Cita",       nuevo:()=>({tipo:"quote",texto:"",autor:""})},
+  imagen:     {label:"Imagen",     nuevo:()=>({tipo:"imagen",titulo:"",imagen:"",pie:""})},
+  video:      {label:"Vídeo",      nuevo:()=>({tipo:"video",youtube:""})},
+  chart:      {label:"Gráfica",    nuevo:()=>({tipo:"chart",titulo:"",id:"",caption:""})},
+  "chart-tabs":{label:"Gráficas (pestañas)", nuevo:()=>({tipo:"chart-tabs",graficas:[{titulo:"",id:""}]})},
+  mapa:       {label:"Mapa",       nuevo:()=>({tipo:"mapa",titulo:"",data:null})},
+  iframe:     {label:"Iframe",     nuevo:()=>({tipo:"iframe",titulo:"",url:"",alto:600})},
+};
+
+const esc = s => (s==null?"":String(s)).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const slugify = s => (s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+// extrae el id de Infogram de un iframe/url pegado, o devuelve el id tal cual
+const infoId = s => { if(!s)return""; let m=s.match(/e\.infogram\.com\/([a-z0-9-]+)/i)||s.match(/([\w-]{6,})/); return m?m[1]:s.trim(); };
+
+// ---------- render del formulario ----------
+function campo(label, val, oninput, help, tag="input", attrs=""){
+  const id="f"+Math.random().toString(36).slice(2,8);
+  const el = tag==="textarea"
+    ? `<textarea id="${id}" ${attrs}>${esc(val)}</textarea>`
+    : `<input id="${id}" value="${esc(val)}" ${attrs} />`;
+  setTimeout(()=>{const n=document.getElementById(id); if(n)n.addEventListener("input",e=>oninput(e.target.value));},0);
+  return `<div class="campo"><label>${label}</label>${el}${help?`<small>${help}</small>`:""}</div>`;
+}
+
+function render(){
+  const f=document.getElementById("form");
+  let h = `<h2 class="sec">Datos de la página</h2>`;
+  h += campo("Nombre de la página (URL)", estado.slug, v=>{estado.slug=v;pintar()}, "Se usará /sector/&lt;nombre&gt;. Minúsculas y guiones.");
+  h += campo("Título (hero)", estado.titulo, v=>{estado.titulo=v;pintar()}, "", "textarea");
+  h += campo("Persona", estado.autor, v=>{estado.autor=v;pintar()});
+  h += campo("Cargo", estado.rol, v=>{estado.rol=v;pintar()});
+  h += campo("Badge", estado.badge, v=>{estado.badge=v;pintar()}, "Etiqueta amarilla (opcional).");
+  h += campo("Imagen de fondo", estado.image, v=>{estado.image=v;pintar()}, "Nombre de archivo (súbelo a public/img/hero/). Ej: hero-residencial.jpg");
+
+  h += `<h2 class="sec">Bloques</h2><div id="bloques"></div>`;
+  h += `<div class="add">`+Object.entries(TIPOS).map(([k,t])=>`<button data-add="${k}">+ ${t.label}</button>`).join("")+`</div>`;
+  f.innerHTML=h;
+
+  const cont=document.getElementById("bloques");
+  cont.innerHTML = estado.bloques.map((b,i)=>bloqueForm(b,i)).join("") || `<p style="color:#aaa;font-size:.85rem">Aún no hay bloques. Añade uno abajo.</p>`;
+
+  f.querySelectorAll("[data-add]").forEach(btn=>btn.onclick=()=>{estado.bloques.push(TIPOS[btn.dataset.add].nuevo());render();pintar()});
+  // acciones de cada bloque
+  cont.querySelectorAll("[data-act]").forEach(btn=>{
+    const i=+btn.dataset.i;
+    btn.onclick=()=>{
+      const a=btn.dataset.act;
+      if(a==="del")estado.bloques.splice(i,1);
+      if(a==="up"&&i>0)[estado.bloques[i-1],estado.bloques[i]]=[estado.bloques[i],estado.bloques[i-1]];
+      if(a==="down"&&i<estado.bloques.length-1)[estado.bloques[i+1],estado.bloques[i]]=[estado.bloques[i],estado.bloques[i+1]];
+      render();pintar();
+    };
+  });
+  // enlazar inputs de cada bloque
+  cont.querySelectorAll("[data-bind]").forEach(inp=>{
+    const [i,path]=inp.dataset.bind.split("::");
+    inp.addEventListener("input",()=>{ setPath(estado.bloques[+i],path,inp.value); pintar(); });
+  });
+  cont.querySelectorAll("[data-graf]").forEach(btn=>{
+    const i=+btn.dataset.graf;
+    if(btn.dataset.gadd!=null) btn.onclick=()=>{estado.bloques[i].graficas.push({titulo:"",id:""});render();pintar()};
+    if(btn.dataset.gdel!=null) btn.onclick=()=>{estado.bloques[i].graficas.splice(+btn.dataset.gdel,1);render();pintar()};
+  });
+  cont.querySelectorAll("[data-lead]").forEach(chk=>{
+    chk.onchange=()=>{estado.bloques[+chk.dataset.lead].lead=chk.checked;pintar()};
+  });
+  cont.querySelectorAll("[data-parr]").forEach(t=>{
+    t.addEventListener("input",()=>{estado.bloques[+t.dataset.parr].parrafos=t.value.split(/\n\n+/).map(s=>s.trim()).filter(Boolean);pintar()});
+  });
+  cont.querySelectorAll("[data-mapa]").forEach(t=>{
+    t.addEventListener("input",()=>{ estado.bloques[+t.dataset.mapa].data = extraerMapa(t.value); pintar(); });
+  });
+}
+
+function setPath(o,path,val){ o[path]=val; }
+
+function bloqueForm(b,i){
+  const cab = t=>`<div class="bloque__cab"><b>${t}</b><span class="sp"></span>
+    <button data-act="up" data-i="${i}" title="Subir">▲</button>
+    <button data-act="down" data-i="${i}" title="Bajar">▼</button>
+    <button data-act="del" data-i="${i}" title="Eliminar">✕</button></div>`;
+  const inp=(label,path,val,ta,help)=>`<div class="campo"><label>${label}</label>`+
+    (ta?`<textarea data-bind="${i}::${path}">${esc(val)}</textarea>`:`<input data-bind="${i}::${path}" value="${esc(val)}"/>`)+
+    (help?`<small>${help}</small>`:"")+`</div>`;
+
+  if(b.tipo==="texto"&&!("parrafos" in b)) // titular
+    return `<div class="bloque">${cab("Titular")}<div class="bloque__cuerpo">${inp("Titular","titulo",b.titulo||"")}</div></div>`;
+  if(b.tipo==="texto")
+    return `<div class="bloque">${cab("Texto")}<div class="bloque__cuerpo">
+      <label>Párrafos <small>(separa párrafos con una línea en blanco)</small></label>
+      <textarea data-parr="${i}">${esc((b.parrafos||[]).join("\n\n"))}</textarea>
+      <label style="margin-top:.5rem"><input type="checkbox" data-lead="${i}" ${b.lead?"checked":""} style="width:auto"> Entradilla destacada</label>
+    </div></div>`;
+  if(b.tipo==="quote")
+    return `<div class="bloque">${cab("Cita")}<div class="bloque__cuerpo">${inp("Texto de la cita","texto",b.texto||"",true)}${inp("Autor (opcional)","autor",b.autor||"")}</div></div>`;
+  if(b.tipo==="imagen")
+    return `<div class="bloque">${cab("Imagen")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("Archivo de imagen","imagen",b.imagen||"","","Súbelo a public/img/. Ej: puerto-malaga.jpg")}${inp("Pie de foto (opcional)","pie",b.pie||"")}</div></div>`;
+  if(b.tipo==="video")
+    return `<div class="bloque">${cab("Vídeo")}<div class="bloque__cuerpo">${inp("Enlace de YouTube","youtube",b.youtube||"","","Ej: https://youtu.be/…")}</div></div>`;
+  if(b.tipo==="chart")
+    return `<div class="bloque">${cab("Gráfica")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("Infogram (id o iframe pegado)","id",b.id||"","","Pega el embed de Infogram o su id.")}${inp("Pie de texto (opcional)","caption",b.caption||"",true)}</div></div>`;
+  if(b.tipo==="chart-tabs")
+    return `<div class="bloque">${cab("Gráficas (pestañas)")}<div class="bloque__cuerpo">`+
+      b.graficas.map((g,gi)=>`<div class="grafica-fila">
+        <input data-bind="${i}::__g${gi}t" value="${esc(g.titulo)}" placeholder="Título de la pestaña"/>
+        <input data-bind="${i}::__g${gi}i" value="${esc(g.id)}" placeholder="Infogram (id o iframe)"/>
+        <button data-graf="${i}" data-gdel="${gi}">✕</button></div>`).join("")+
+      `<button data-graf="${i}" data-gadd>+ pestaña</button></div></div>`;
+  if(b.tipo==="mapa")
+    return `<div class="bloque">${cab("Mapa")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}
+      <label>Mapa exportado <small>(pega aquí el contenido del HTML que exporta tu app)</small></label>
+      <textarea data-mapa="${i}" placeholder="&lt;savills-map&gt;…">${b.data?JSON.stringify(b.data):""}</textarea>
+      ${b.data?'<small style="color:#2a7">✓ mapa cargado</small>':''}</div></div>`;
+  if(b.tipo==="iframe")
+    return `<div class="bloque">${cab("Iframe")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("URL","url",b.url||"")}${inp("Alto en píxeles","alto",b.alto||600)}</div></div>`;
+  return "";
+}
+
+// bind especial para las pestañas de gráficas
+document.addEventListener("input",e=>{
+  const b=e.target.dataset.bind; if(!b)return;
+  const [i,path]=b.split("::");
+  const m=path.match(/^__g(\d+)([ti])$/);
+  if(m){ const g=estado.bloques[+i].graficas[+m[1]]; if(m[2]==="t")g.titulo=e.target.value; else g.id=e.target.value; pintar(); }
+});
+
+// extrae el JSON de un mapa exportado (HTML con <script type="application/json">) o JSON directo
+function extraerMapa(txt){
+  if(!txt||!txt.trim())return null;
+  let m=txt.match(/<script[^>]*application\/json[^>]*>([\s\S]*?)<\/script>/i);
+  const raw=m?m[1]:txt;
+  try{return JSON.parse(raw.trim());}catch{return null;}
+}
+
+// ---------- vista previa ----------
+function pintar(){
+  const pv=document.getElementById("pv");
+  let h=`<div class="pv-hero">${estado.image?"":""}<div class="ov"></div><div class="in">
+    ${estado.badge?`<span class="pv-badge">${esc(estado.badge)}</span>`:""}
+    <h1 class="pv-h1">${esc(estado.titulo||"Título del sector")}</h1>
+    ${(estado.autor||estado.rol)?`<div class="pv-autor"><b>${esc(estado.autor)}</b><span>${esc(estado.rol)}</span></div>`:""}
+  </div></div>`;
+  h+=`<div class="cont">`;
+  if(!estado.bloques.length)h+=`<p class="vacio">Añade bloques para ver la página.</p>`;
+  for(const b of estado.bloques)h+=pvBloque(b);
+  h+=`</div>`;
+  pv.innerHTML=h;
+}
+function pvBloque(b){
+  if(b.tipo==="texto"&&!("parrafos" in b)) return `<h2 class="pv-titular">${esc(b.titulo)||"Titular"}</h2>`;
+  if(b.tipo==="texto") return `<div class="pv-texto ${b.lead?"pv-lead":""}">${(b.parrafos||[]).map(p=>`<p>${esc(p)}</p>`).join("")||"<p style='color:#bbb'>(texto)</p>"}</div>`;
+  if(b.tipo==="quote") return `<blockquote class="pv-quote"><p>${esc(b.texto)||"(cita)"}</p>${b.autor?`<cite>${esc(b.autor)}</cite>`:""}</blockquote>`;
+  if(b.tipo==="imagen") return `<figure class="pv-img">${b.titulo?`<h2 class="pv-titular">${esc(b.titulo)}</h2>`:""}<div class="ph">${b.imagen?esc(b.imagen):"imagen"}</div>${b.pie?`<figcaption class="pv-cap">${esc(b.pie)}</figcaption>`:""}</figure>`;
+  if(b.tipo==="video") return `<div class="pv-video"><div class="pv-play"></div></div>`;
+  if(b.tipo==="chart") return `${b.titulo?`<h2 class="pv-titular">${esc(b.titulo)}</h2>`:""}<div class="pv-img"><div class="ph" style="aspect-ratio:16/7">${b.id?"Gráfica Infogram":"(gráfica)"}</div></div>${b.caption?`<p class="pv-cap">${esc(b.caption)}</p>`:""}`;
+  if(b.tipo==="chart-tabs") return `<div class="pv-tabs"><div class="cont"><div class="chart">Gráfica Infogram</div><div class="btns">${(b.graficas||[]).map((g,i)=>`<span class="${i===0?"act":""}">${esc(g.titulo)||"Pestaña"}</span>`).join("")}</div></div></div>`;
+  if(b.tipo==="mapa") return `${b.titulo?`<h2 class="pv-titular">${esc(b.titulo)}</h2>`:""}<div class="pv-map"><div class="box">${b.data?"Mapa ✓":"(pega el mapa exportado)"}</div></div>`;
+  if(b.tipo==="iframe") return `${b.titulo?`<h2 class="pv-titular">${esc(b.titulo)}</h2>`:""}<div class="pv-iframe"><div class="box">${b.url?esc(b.url):"(iframe)"}</div></div>`;
+  return "";
+}
+
+// ---------- exportar / importar ----------
+function construir(){
+  const slug=slugify(estado.slug||estado.titulo);
+  const bloques=estado.bloques.map(b=>{
+    if(b.tipo==="texto"&&!("parrafos" in b)) return {tipo:"texto",titulo:b.titulo};
+    if(b.tipo==="texto"){const o={tipo:"texto",parrafos:(b.parrafos||[]).filter(Boolean)}; if(b.lead)o.lead=true; return o;}
+    if(b.tipo==="quote"){const o={tipo:"quote",texto:b.texto}; if(b.autor)o.autor=b.autor; return o;}
+    if(b.tipo==="imagen"){const o={tipo:"imagen",imagen:rutaImg(b.imagen)}; if(b.titulo)o.titulo=b.titulo; if(b.pie)o.pie=b.pie; return o;}
+    if(b.tipo==="video") return {tipo:"video",youtube:b.youtube};
+    if(b.tipo==="chart"){const o={tipo:"chart",id:infoId(b.id)}; if(b.titulo)o.titulo=b.titulo; if(b.caption)o.caption=b.caption; return o;}
+    if(b.tipo==="chart-tabs") return {tipo:"chart-tabs",graficas:(b.graficas||[]).filter(g=>g.titulo||g.id).map(g=>({titulo:g.titulo,id:infoId(g.id)}))};
+    if(b.tipo==="mapa"){const o={tipo:"mapa",data:b.data||null}; if(b.titulo)o.titulo=b.titulo; return o;}
+    if(b.tipo==="iframe"){const o={tipo:"iframe",url:b.url}; if(b.titulo)o.titulo=b.titulo; if(b.alto)o.alto=parseInt(b.alto,10)||undefined; return o;}
+  }).filter(Boolean);
+  return {slug,titulo:estado.titulo||slug,hero:{badge:estado.badge||"",titulo:estado.titulo||"",autor:estado.autor||"",rol:estado.rol||"",image:heroImg(estado.image)},bloques};
+}
+const rutaImg=n=>{n=(n||"").trim();if(!n)return"";return (/^https?:|\//.test(n))?n:`img/noticias/${n}`;};
+const heroImg=n=>{n=(n||"").trim();if(!n)return"";return (/^https?:|\//.test(n))?n:`img/hero/${n}`;};
+
+document.getElementById("descargar").onclick=()=>{
+  const data=construir();
+  if(!data.slug){alert("Pon un nombre de página (URL).");return;}
+  const blob=new Blob([JSON.stringify(data,null,2)+"\n"],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=data.slug+".json";a.click();
+};
+document.getElementById("cargar").onclick=()=>document.getElementById("file").click();
+document.getElementById("file").onchange=e=>{
+  const fr=new FileReader();
+  fr.onload=()=>{try{
+    const d=JSON.parse(fr.result);
+    estado.slug=d.slug||""; estado.titulo=d.hero?.titulo||d.titulo||""; estado.autor=d.hero?.autor||""; estado.rol=d.hero?.rol||""; estado.badge=d.hero?.badge||"";
+    estado.image=(d.hero?.image||"").replace(/^img\/hero\//,"");
+    estado.bloques=(d.bloques||[]).map(b=>{
+      if(b.tipo==="imagen")return {...b,imagen:(b.imagen||"").replace(/^img\/noticias\//,"")};
+      return {...b};
+    });
+    render();pintar();
+  }catch{alert("No se pudo leer el archivo.");}};
+  fr.readAsText(e.target.files[0]);
+};
+
+render();pintar();
+</script>
+</body>
+</html>
