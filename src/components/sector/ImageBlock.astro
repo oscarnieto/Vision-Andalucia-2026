@@ -1,0 +1,50 @@
+---
+import { asset } from "../../lib/asset";
+
+interface Props {
+  titulo?: string;
+  imagen: string;
+  pie?: string;
+}
+const { titulo, imagen, pie } = Astro.props;
+const src = asset(imagen ?? "");
+---
+
+<section class="img-bloque">
+  <div class="contenedor">
+    {titulo && <h2 class="img-bloque__titulo">{titulo}</h2>}
+    <figure class="img-bloque__fig" class:list={[{ "img-bloque__fig--ph": !src }]}>
+      {src && <img class="img-bloque__img" src={src} alt={pie ?? titulo ?? ""} loading="lazy" />}
+      {pie && <figcaption class="img-bloque__pie">{pie}</figcaption>}
+    </figure>
+  </div>
+</section>
+
+<style>
+  .img-bloque {
+    padding-block: clamp(1.5rem, 4vw, 3rem);
+  }
+  .img-bloque__titulo {
+    font-family: var(--fuente-titulo);
+    font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+  }
+  .img-bloque__fig {
+    margin: 0;
+  }
+  .img-bloque__fig--ph {
+    aspect-ratio: 1140 / 536;
+    background: var(--color-gris-placeholder);
+  }
+  .img-bloque__img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .img-bloque__pie {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: #777;
+  }
+</style>

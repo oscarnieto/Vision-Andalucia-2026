@@ -1,0 +1,45 @@
+---
+interface Props {
+  titulo?: string;
+  url: string;
+  alto?: number | string;
+}
+const { titulo, url, alto } = Astro.props;
+const altura = alto ? `${alto}px` : "600px";
+---
+
+<section class="iframe-bloque">
+  <div class="contenedor">
+    {titulo && <h2 class="iframe-bloque__titulo">{titulo}</h2>}
+    <div class="iframe-bloque__wrap" style={`--alto:${altura}`}>
+      <iframe
+        src={url}
+        title={titulo ?? "Contenido incrustado"}
+        loading="lazy"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+<style>
+  .iframe-bloque {
+    padding-block: clamp(1.5rem, 4vw, 3rem);
+  }
+  .iframe-bloque__titulo {
+    font-family: var(--fuente-titulo);
+    font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+  }
+  .iframe-bloque__wrap {
+    width: 100%;
+    height: var(--alto);
+  }
+  .iframe-bloque__wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+</style>

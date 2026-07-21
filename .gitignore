@@ -9,6 +9,12 @@ dist/
 .env
 .env.production
 
+# contenido generado por el conversor (la fuente es el Word en content/sectores)
+src/data/sectores/*.json
+
+# archivos temporales de Word
+~$*.docx
+
 # sistema
 .DS_Store
 *.log

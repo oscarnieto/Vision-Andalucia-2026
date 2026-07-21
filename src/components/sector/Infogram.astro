@@ -41,3 +41,16 @@ const { embed, id, titulo } = Astro.props;
     font-size: 0.9rem;
   }
 </style>
+
+<script>
+  // Carga el loader de Infogram una sola vez, solo si hay gráficas reales
+  // (bloques con clase .infogram-embed y un data-id) en la página.
+  const w = window as any;
+  if (!w.__infogramLoaded && document.querySelector(".infogram-embed")) {
+    w.__infogramLoaded = true;
+    const s = document.createElement("script");
+    s.src = "https://e.infogram.com/js/dist/embed-loader-min.js";
+    s.async = true;
+    document.body.appendChild(s);
+  }
+</script>

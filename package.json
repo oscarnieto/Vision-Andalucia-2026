@@ -4,11 +4,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "generar": "node scripts/generar-sectores.mjs",
+    "predev": "npm run generar",
     "dev": "astro dev",
+    "prebuild": "npm run generar",
     "build": "astro build",
     "preview": "astro preview"
   },
   "dependencies": {
     "astro": "^5.2.5"
+  },
+  "devDependencies": {
+    "mammoth": "^1.12.0",
+    "node-html-parser": "^9.0.0"
   }
 }

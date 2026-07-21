@@ -8,6 +8,9 @@ import YouTubeBlock from "../../components/sector/YouTubeBlock.astro";
 import ChartTabs from "../../components/sector/ChartTabs.astro";
 import ChartBlock from "../../components/sector/ChartBlock.astro";
 import MapBlock from "../../components/sector/MapBlock.astro";
+import QuoteBlock from "../../components/sector/QuoteBlock.astro";
+import ImageBlock from "../../components/sector/ImageBlock.astro";
+import IframeBlock from "../../components/sector/IframeBlock.astro";
 import inicio from "../../data/inicio.json";
 
 // Cada archivo en src/data/sectores/*.json genera una página /sector/<slug>.
@@ -45,14 +48,20 @@ function mapaData(nombre: string) {
     {
       sector.bloques.map((b: any) => {
         if (b.tipo === "texto")
-          return <TextBlock titulo={b.titulo} parrafos={b.parrafos} lead={b.lead} />;
+          return <TextBlock titulo={b.titulo} parrafos={b.parrafos ?? []} lead={b.lead} />;
+        if (b.tipo === "quote")
+          return <QuoteBlock texto={b.texto} autor={b.autor} />;
+        if (b.tipo === "imagen")
+          return <ImageBlock titulo={b.titulo} imagen={b.imagen} pie={b.pie} />;
         if (b.tipo === "video")
           return <YouTubeBlock youtube={b.youtube} poster={b.poster} titulo={b.titulo} />;
         if (b.tipo === "chart-tabs") return <ChartTabs graficas={b.graficas} />;
         if (b.tipo === "chart")
           return <ChartBlock titulo={b.titulo} embed={b.embed} id={b.id} caption={b.caption} />;
+        if (b.tipo === "iframe")
+          return <IframeBlock titulo={b.titulo} url={b.url} alto={b.alto} />;
         if (b.tipo === "mapa")
-          return <MapBlock titulo={b.titulo} data={mapaData(b.mapa)} />;
+          return <MapBlock titulo={b.titulo} data={b.data ?? mapaData(b.mapa)} />;
         return null;
       })
     }

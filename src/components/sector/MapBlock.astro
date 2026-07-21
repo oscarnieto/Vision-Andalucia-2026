@@ -6,15 +6,21 @@ interface Props {
   data: unknown;
 }
 const { titulo, data } = Astro.props;
-const json = JSON.stringify(data);
+const json = data ? JSON.stringify(data) : "";
 ---
 
 <section class="mapa">
   <div class="contenedor">
     {titulo && <h2 class="mapa__titulo">{titulo}</h2>}
-    <savills-map>
-      <script type="application/json" set:html={json} />
-    </savills-map>
+    {
+      json ? (
+        <savills-map>
+          <script type="application/json" set:html={json} />
+        </savills-map>
+      ) : (
+        <div class="mapa--placeholder">Mapa (pendiente de exportar el archivo)</div>
+      )
+    }
   </div>
 </section>
 
@@ -27,6 +33,15 @@ const json = JSON.stringify(data);
     font-size: clamp(1.3rem, 2.4vw, 1.9rem);
     font-weight: 400;
     margin-bottom: 1.25rem;
+  }
+  .mapa--placeholder {
+    aspect-ratio: 1140 / 540;
+    display: grid;
+    place-items: center;
+    background: #f2f2f0;
+    border: 1px dashed #cfcfca;
+    color: #8a8a86;
+    font-size: 0.9rem;
   }
   savills-map {
     display: block;
