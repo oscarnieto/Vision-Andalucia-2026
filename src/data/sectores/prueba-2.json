@@ -1,0 +1,221 @@
+{
+  "slug": "prueba-2",
+  "titulo": "“Los ejes comerciales en Málaga necesitan iniciativas públicas que faciliten su expansión natural. El creciente interés de las marcas por estar en la ciudad favorecerá el tejido comercial local”",
+  "hero": {
+    "badge": "25 Aniversario",
+    "titulo": "“Los ejes comerciales en Málaga necesitan iniciativas públicas que faciliten su expansión natural. El creciente interés de las marcas por estar en la ciudad favorecerá el tejido comercial local”",
+    "autor": "Juan Pedro Hernández,",
+    "rol": "Director Retail High Street, Savills Andalucía",
+    "image": "img/hero/hero-prueba.jpg"
+  },
+  "bloques": [
+    {
+      "tipo": "texto",
+      "titulo": "El crecimiento de rentas en ejes secundarios (+39 %) y centro (+14 %) revela la expansión natural del retail en la ciudad"
+    },
+    {
+      "tipo": "texto",
+      "parrafos": [
+        "El elevado nivel de ocupación en el eje prime evidencia el éxito del centro histórico como polo de atracción para operadores nacionales e internacionales. Sin embargo, esta consolidación también pone de manifiesto una necesidad urgente: revisar cómo ampliar y reforzar la experiencia urbana, generando nuevas oportunidades para el segmento retail que incluyan también a los comerciantes locales.",
+        "La evolución del perfil del consumidor —más exigente, cosmopolita y orientado a la experiencia— ha convertido Málaga en un escaparate privilegiado. Nuevas marcas como Carolina Herrera, Purificación García, Castañer o Dan John han desembarcado en la ciudad entre 2024 y 2025, atraídos por su dinamismo y proyección.\nEn este contexto, el reto del retail malagueño sigue siendo el mismo: atraer al segmento medio-alto y lujo, consolidar la oferta de moda y al mismo tiempo mantener un mix local auténtico y diferenciador."
+      ]
+    },
+    {
+      "tipo": "video",
+      "youtube": "https://www.youtube.com/watch?v=TngynDlyWIo"
+    },
+    {
+      "tipo": "texto",
+      "titulo": "Iniciativas de peatonalización y rehabilitación estética integrarían nuevas zonas al circuito de compras, mejorando la experiencia y ampliando las oportunidades para los operadores"
+    },
+    {
+      "tipo": "texto",
+      "parrafos": [
+        "El crecimiento detectado en zonas no tradicionales indica una expansión natural del perímetro comercial, donde calles como Martínez, Puerta del Mar o zona Granada ganan protagonismo.\nIniciativas como la peatonalización de Calle Martínez o la rehabilitación estética de San Juan, Mesón de Vélez o Antonio Baena integrarían nuevas zonas al circuito de compras para mejorar la experiencia urbana, generar nuevas oportunidades dirigidas a operadores nacionales e internacionales, al tiempo que se revitalizaría el tejido comercial local."
+      ]
+    },
+    {
+      "tipo": "chart-tabs",
+      "graficas": [
+        {
+          "titulo": "Comparativa interanual de rentas medias por zonas",
+          "id": "19ba0024-552e-4f1f-ad56-f9c04f118a02"
+        },
+        {
+          "titulo": "Comparativa de rentas por zonas",
+          "id": "2e319f1a-256d-4da5-9f3c-45359a03fd0b"
+        },
+        {
+          "titulo": "Nuevos operadores 24-25",
+          "id": "a3598db8-37ea-48c9-93c3-72a16915ae30"
+        }
+      ]
+    },
+    {
+      "tipo": "mapa",
+      "data": {
+        "config": {
+          "basemap": "positron",
+          "fit": "auto",
+          "center": [
+            40.4,
+            -3.7
+          ],
+          "zoom": 6,
+          "dot": "#161615",
+          "area": "#F2C500",
+          "height": "70vh",
+          "tiles": {
+            "url": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+            "attr": "© OpenStreetMap © CARTO"
+          }
+        },
+        "points": [
+          {
+            "lat": 40.4168,
+            "lng": -3.7038,
+            "titulo": "Madrid",
+            "descripcion": "Sede central",
+            "color": null,
+            "tabla": {
+              "columns": [
+                "Indicador",
+                "2024",
+                "2025"
+              ],
+              "rows": [
+                [
+                  "Precio €/m²",
+                  "4.500",
+                  "4.800"
+                ],
+                [
+                  "Rentabilidad",
+                  "3,3%",
+                  "3,5%"
+                ],
+                [
+                  "Absorción",
+                  "12.000 m²",
+                  "14.500 m²"
+                ]
+              ]
+            }
+          },
+          {
+            "lat": 36.7213,
+            "lng": -4.4213,
+            "titulo": "Málaga",
+            "descripcion": "Oficina Costa del Sol",
+            "color": null
+          },
+          {
+            "lat": 41.3874,
+            "lng": 2.1686,
+            "titulo": "Barcelona",
+            "descripcion": "",
+            "color": null
+          }
+        ],
+        "areas": [
+          {
+            "tipo": "poligono",
+            "rings": [
+              [
+                [
+                  37.274,
+                  -4.407
+                ],
+                [
+                  37.015,
+                  -4.273
+                ],
+                [
+                  36.855,
+                  -3.827
+                ],
+                [
+                  36.738,
+                  -3.777
+                ],
+                [
+                  36.717,
+                  -4.419
+                ],
+                [
+                  36.507,
+                  -4.638
+                ],
+                [
+                  36.5,
+                  -4.935
+                ],
+                [
+                  36.414,
+                  -5.177
+                ],
+                [
+                  36.31,
+                  -5.248
+                ],
+                [
+                  36.533,
+                  -5.43
+                ],
+                [
+                  36.512,
+                  -5.608
+                ],
+                [
+                  36.673,
+                  -5.324
+                ],
+                [
+                  36.87,
+                  -5.302
+                ],
+                [
+                  36.839,
+                  -5.133
+                ],
+                [
+                  36.905,
+                  -5.087
+                ],
+                [
+                  37.006,
+                  -5.142
+                ],
+                [
+                  37.115,
+                  -4.908
+                ],
+                [
+                  37.176,
+                  -4.94
+                ],
+                [
+                  37.274,
+                  -4.407
+                ]
+              ]
+            ],
+            "titulo": "Provincia de Málaga",
+            "descripcion": "Mercado objetivo",
+            "color": null
+          },
+          {
+            "tipo": "circulo",
+            "lat": 40.4168,
+            "lng": -3.7038,
+            "radio": 10000,
+            "titulo": "Radio 10 km",
+            "descripcion": "Madrid centro",
+            "color": null
+          }
+        ]
+      },
+      "titulo": "Mapa de zonificación y rentas"
+    }
+  ]
+}
