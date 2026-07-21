@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>mapa-mercado</title>
+<style>body{margin:0;font-family:Inter,system-ui,sans-serif}</style>
+</head><body>
+<script>
+(function(){
+  if(customElements.get('savills-map')) return;
+  var L_CSS='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';
+  var L_JS='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+  function loadLeaflet(){
+    if(window.__savillsLeaflet) return window.__savillsLeaflet;
+    window.__savillsLeaflet=new Promise(function(res,rej){
+      if(window.L) return res(window.L);
+      var s=document.createElement('script');s.src=L_JS;s.onload=function(){res(window.L)};s.onerror=rej;
+      document.head.appendChild(s);
+    });
+    return window.__savillsLeaflet;
+  }
+  function esc(s){return String(s).replace(/[&<>"]/g,function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]})}
+  function tableHTML(t){if(!t||!t.columns||!t.columns.length)return'';var h='<table class="pv-table"><thead><tr>';t.columns.forEach(function(c){h+='<th>'+esc(c)+'</th>'});h+='</tr></thead><tbody>';t.rows.forEach(function(r){h+='<tr>';r.forEach(function(c){h+='<td>'+esc(c)+'</td>'});h+='</tr>'});return h+'</tbody></table>'}
+  function popupHTML(p){var h='';if(p.titulo)h+='<b>'+esc(p.titulo)+'</b>';if(p.descripcion)h+=(h?'<br>':'')+esc(p.descripcion);if(p.tabla)h+=tableHTML(p.tabla);return h}
+  class SavillsMap extends HTMLElement{
+    connectedCallback(){
+      if(this._i)return;this._i=true;
+      var el=this.querySelector('script[type="application/json"]');
+      var d;try{d=JSON.parse(el.textContent)}catch(e){this.textContent='Datos del mapa no válidos';return}
+      var c=d.config||{};
+      var root=this.attachShadow({mode:'open'});
+      var link=document.createElement('link');link.rel='stylesheet';link.href=L_CSS;root.appendChild(link);
+      var st=document.createElement('style');
+      st.textContent=':host{display:block;width:100%}.m{width:100%;height:'+(c.height||'70vh')+';min-height:240px}'+
+        '.leaflet-container{background:#FBFBF9;font:14px Inter,system-ui,sans-serif}'+
+        '.leaflet-popup-content{font:13px Inter,system-ui,sans-serif;margin:10px 12px;max-height:320px;overflow:auto}'+
+        '.leaflet-popup-content b{font-weight:600}'+
+        '.pv-table{border-collapse:collapse;margin-top:8px;width:100%;font-size:12px}'+
+        '.pv-table th,.pv-table td{border:1px solid #E6E5DE;padding:4px 7px;text-align:left}'+
+        '.pv-table th{background:#F7F7F4;font-weight:600}';
+      root.appendChild(st);
+      var box=document.createElement('div');box.className='m';root.appendChild(box);
+      var self=this;
+      loadLeaflet().then(function(L){ self.render(L,box,d,c); });
+    }
+    render(L,box,d,c){
+      var map=L.map(box,{scrollWheelZoom:false});
+      map.setView(c.center||[40.4,-3.7],c.zoom||6);
+      var t=c.tiles||{};
+      L.tileLayer(t.url,{attribution:t.attr,maxZoom:19,subdomains:'abcd'}).addTo(map);
+      var bounds=[];
+      (d.areas||[]).forEach(function(a){
+        var col=a.color||c.area,lyr;
+        if(a.tipo==='circulo') lyr=L.circle([a.lat,a.lng],{radius:a.radio,color:col,weight:1.5,fillColor:col,fillOpacity:.14});
+        else lyr=L.polygon(a.rings,{color:col,weight:1.5,fillColor:col,fillOpacity:.14});
+        if(a.titulo) lyr.bindPopup('<b>'+esc(a.titulo)+'</b>'+(a.descripcion?'<br>'+esc(a.descripcion):''));
+        lyr.addTo(map);var b=lyr.getBounds&&lyr.getBounds();if(b&&b.isValid())bounds.push(b);
+      });
+      (d.points||[]).forEach(function(p){
+        var col=p.color||c.dot;
+        var m=L.circleMarker([p.lat,p.lng],{radius:6,color:'#fff',weight:2,fillColor:col,fillOpacity:1});
+        var h=popupHTML(p);
+        if(h)m.bindPopup(h,{maxWidth:360,minWidth:180});m.addTo(map);bounds.push(L.latLng(p.lat,p.lng));
+      });
+      if(c.fit==='auto'&&bounds.length){var all=L.latLngBounds([]);bounds.forEach(function(b){all.extend(b)});if(all.isValid())map.fitBounds(all,{padding:[30,30]});else map.setView(c.center,c.zoom);}
+      else map.setView(c.center,c.zoom);
+      var ro=new ResizeObserver(function(){map.invalidateSize()});ro.observe(box);
+      setTimeout(function(){map.invalidateSize()},80);
+      map.on('focus',function(){map.scrollWheelZoom.enable()});
+      map.getContainer().addEventListener('mouseout',function(){map.scrollWheelZoom.disable()});
+    }
+  }
+  customElements.define('savills-map',SavillsMap);
+})();
+</script>
+<savills-map>
+  <script type="application/json">{"config":{"basemap":"positron_nolabels","fit":"manual","center":[36.7202,-4.421],"zoom":17,"dot":"#FEEB14","area":"#F2C500","height":"70vh","tiles":{"url":"https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png","attr":"© OpenStreetMap © CARTO"}},"points":[{"lat":40.4168,"lng":-3.7038,"titulo":"Madrid","descripcion":"Sede central","color":null,"tabla":{"columns":["Indicador","2024","2025"],"rows":[["Precio €/m²","4.500","4.800"],["Rentabilidad","3,3%","3,5%"],["Absorción","12.000 m²","14.500 m²"]]}},{"lat":36.7213,"lng":-4.4213,"titulo":"Málaga","descripcion":"Oficina Costa del Sol","color":null},{"lat":41.3874,"lng":2.1686,"titulo":"Barcelona","descripcion":"","color":null}],"areas":[{"tipo":"poligono","rings":[[[37.274,-4.407],[37.015,-4.273],[36.855,-3.827],[36.738,-3.777],[36.717,-4.419],[36.507,-4.638],[36.5,-4.935],[36.414,-5.177],[36.31,-5.248],[36.533,-5.43],[36.512,-5.608],[36.673,-5.324],[36.87,-5.302],[36.839,-5.133],[36.905,-5.087],[37.006,-5.142],[37.115,-4.908],[37.176,-4.94],[37.274,-4.407]]],"titulo":"Provincia de Málaga","descripcion":"Mercado objetivo","color":null},{"tipo":"circulo","lat":40.4168,"lng":-3.7038,"radio":10000,"titulo":"Radio 10 km","descripcion":"Madrid centro","color":null}]}</script>
+</savills-map>
+</body></html>
