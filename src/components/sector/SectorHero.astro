@@ -66,6 +66,12 @@ const src = asset(image ?? "");
     position: relative;
     width: 100%;
   }
+  /* En escritorio, el texto se sitúa un poco por debajo del centro */
+  @media (min-width: 901px) {
+    .shero__inner {
+      transform: translateY(10vh);
+    }
+  }
   .shero__text {
     max-width: 650px;
     color: #fff;
