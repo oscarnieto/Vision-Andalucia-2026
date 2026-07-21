@@ -16,8 +16,10 @@ function youtubeId(url: string): string {
   return m ? m[1] : url;
 }
 const id = youtubeId(youtube);
-// Miniatura: la del propio YouTube si no se aporta un póster
+// Miniatura: la del propio YouTube (máxima calidad) si no se aporta un póster.
+// Si maxresdefault no existe para el vídeo, se cae a hqdefault (siempre disponible).
 const posterSrc = poster ? asset(poster) : `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
+const fallbackSrc = poster ? "" : `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 ---
 
 <section class="video-bloque">
@@ -29,7 +31,13 @@ const posterSrc = poster ? asset(poster) : `https://i.ytimg.com/vi/${id}/maxresd
       tabindex="0"
       aria-label={`Reproducir vídeo: ${titulo}`}
     >
-      <img class="yt__poster" src={posterSrc} alt={titulo} loading="lazy" />
+      <img
+        class="yt__poster"
+        src={posterSrc}
+        data-fallback={fallbackSrc}
+        alt={titulo}
+        loading="lazy"
+      />
       <button class="yt__play" type="button" aria-hidden="true">
         <svg viewBox="0 0 48 54" width="42" height="47"><path d="M0 0v54l48-27L0 0z" fill="#fff" /></svg>
       </button>
@@ -85,6 +93,17 @@ const posterSrc = poster ? asset(poster) : `https://i.ytimg.com/vi/${id}/maxresd
 </style>
 
 <script>
+  // Si la miniatura de máxima calidad no existe, usa hqdefault
+  document.querySelectorAll<HTMLImageElement>(".yt__poster").forEach((img) => {
+    img.addEventListener("error", () => {
+      const fb = img.dataset.fallback;
+      if (fb && img.src !== fb) {
+        img.src = fb;
+        img.dataset.fallback = "";
+      }
+    });
+  });
+
   document.querySelectorAll<HTMLElement>(".yt").forEach((el) => {
     const load = () => {
       const id = el.dataset.id;

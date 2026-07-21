@@ -6,26 +6,25 @@
 <title>Editor de páginas · Visión Andalucía 2026</title>
 <style>
   :root{
-    --amarillo:#fdea14; --oscuro:#25273a; --linea:#e5e5e5; --gris:#f2f2f0;
+    --amarillo:#feeb14; --oscuro:#25273a; --linea:#e5e5e5; --gris:#f2f2f0;
     --serif:Georgia,"Times New Roman",serif;
     font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
   }
   *{box-sizing:border-box}
   body{margin:0;color:#1c1c1c;background:#ececea}
-  header{background:var(--oscuro);color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:10}
+  header{background:var(--oscuro);color:#fff;padding:.7rem 1.2rem;display:flex;align-items:center;gap:.7rem;position:sticky;top:0;z-index:10}
   header h1{font-size:1rem;margin:0;font-weight:600}
   header .sp{flex:1}
   button{font:inherit;cursor:pointer;border:0;border-radius:4px;padding:.5rem .9rem}
   .btn-amarillo{background:var(--amarillo);font-weight:600}
-  .btn-oscuro{background:#3a3c49;color:#fff}
-  .btn-ghost{background:transparent;border:1px solid #cfcfca}
-  .wrap{display:grid;grid-template-columns:minmax(360px,460px) 1fr;gap:0;height:calc(100vh - 56px)}
+  .btn-ghost{background:transparent;border:1px solid #ffffff55;color:#fff}
+  .wrap{display:grid;grid-template-columns:minmax(380px,480px) 1fr;gap:0;height:calc(100vh - 54px)}
   .form{overflow:auto;padding:1.2rem;background:#fff;border-right:1px solid var(--linea)}
   .preview{overflow:auto;background:#fff}
   h2.sec{font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:#888;margin:1.5rem 0 .6rem}
   label{display:block;font-size:.78rem;font-weight:600;margin:.6rem 0 .2rem;color:#444}
   input,textarea,select{width:100%;font:inherit;font-size:.9rem;padding:.5rem;border:1px solid #cfcfca;border-radius:4px;background:#fff}
-  textarea{min-height:70px;resize:vertical}
+  textarea{min-height:60px;resize:vertical}
   .campo small{display:block;color:#999;font-size:.7rem;margin-top:.15rem}
   .bloque{border:1px solid var(--linea);border-radius:6px;margin:.7rem 0;background:#fafafa}
   .bloque__cab{display:flex;align-items:center;gap:.5rem;padding:.5rem .7rem;background:var(--gris);border-bottom:1px solid var(--linea);border-radius:6px 6px 0 0}
@@ -37,9 +36,28 @@
   .add button{background:#fff;border:1px dashed #b9b9b3;font-size:.8rem;padding:.4rem .6rem}
   .grafica-fila{display:grid;grid-template-columns:1fr 1fr auto;gap:.4rem;align-items:start;margin-bottom:.4rem}
   .grafica-fila button{padding:.35rem .5rem}
-  /* ---- vista previa (aprox. al diseño real) ---- */
+  .rte-wrap{margin-top:.15rem}
+  .rtb{display:flex;gap:2px;margin-bottom:2px;flex-wrap:wrap}
+  .rtb button{padding:.15rem .5rem;background:#fff;border:1px solid #cfcfca;font-size:.85rem;line-height:1.1;border-radius:3px}
+  .rte{min-height:64px;border:1px solid #cfcfca;border-radius:4px;padding:.5rem;font-size:.9rem;background:#fff;line-height:1.6}
+  .rte:focus{outline:2px solid var(--amarillo);outline-offset:-1px}
+  .rte p{margin:.35rem 0}
+  .rte mark{background:var(--amarillo);color:inherit}
+  .rte:empty::before{content:attr(data-ph);color:#bbb}
+  /* dashboard */
+  .dash{max-width:1000px;margin:0 auto;padding:2rem 1.5rem}
+  .dash h2{font-weight:600}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-top:1.2rem}
+  .card{border:1px solid var(--linea);border-radius:8px;padding:1rem;background:#fff}
+  .card h3{margin:.1rem 0 .3rem;font-size:1.05rem}
+  .card .url{color:#888;font-size:.8rem;margin-bottom:.8rem}
+  .card .acc{display:flex;gap:.4rem;flex-wrap:wrap}
+  .card .acc button{font-size:.8rem;padding:.35rem .6rem;border:1px solid #cfcfca;background:#fff}
+  .card--new{border:2px dashed #c7c7c1;display:grid;place-items:center;min-height:120px;color:#666;cursor:pointer;background:#fafafa}
+  .card--new b{font-size:2rem;display:block;text-align:center;line-height:1}
+  /* vista previa */
   .pv{color:#1c1c1c}
-  .pv-hero{position:relative;min-height:360px;display:flex;align-items:flex-end;background:#5b5555;color:#fff;padding:2rem}
+  .pv-hero{position:relative;min-height:360px;display:flex;align-items:flex-end;background:#5b5555;color:#fff;padding:2rem;background-size:cover;background-position:center}
   .pv-hero .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.6),rgba(0,0,0,0) 75%)}
   .pv-hero .in{position:relative;max-width:650px}
   .pv-badge{display:inline-block;background:var(--amarillo);color:#000;font-weight:600;text-transform:uppercase;font-size:.75rem;padding:.35rem .8rem;margin-bottom:1rem}
@@ -48,8 +66,10 @@
   .pv-autor span{font-size:.8rem;opacity:.9}
   .cont{max-width:900px;margin:0 auto;padding:0 1.5rem}
   .pv-texto p{line-height:1.75;margin:.6rem 0}
+  .pv-texto mark,.pv-quote mark{background:var(--amarillo);color:inherit}
   .pv-lead p{font-size:1.25rem;font-weight:600;line-height:1.5}
   .pv-titular{font-family:var(--serif);font-size:1.7rem;font-weight:400;margin:1.5rem 0 .5rem}
+  .pv-subtitular{font-family:var(--serif);font-size:1.15rem;font-weight:400;margin:1.2rem 0 .4rem}
   .pv-quote{border-left:4px solid var(--amarillo);padding-left:1.2rem;margin:1.5rem 0}
   .pv-quote p{font-family:var(--serif);font-size:1.8rem;line-height:1.25;margin:0}
   .pv-quote cite{display:block;margin-top:.6rem;font-style:normal;font-weight:700;text-transform:uppercase;font-size:.85rem}
@@ -57,8 +77,8 @@
   .pv-img .ph{aspect-ratio:1140/536;background:#5b5555;display:grid;place-items:center;color:#fff}
   .pv-img img{width:100%;display:block}
   .pv-cap{color:#777;font-size:.85rem;margin-top:.5rem}
-  .pv-video{aspect-ratio:1140/536;background:#5b5555;display:grid;place-items:center;margin:1.5rem 0}
-  .pv-play{width:70px;height:70px;border-radius:50%;background:rgba(0,0,0,.4);display:grid;place-items:center}
+  .pv-video{aspect-ratio:1140/536;background:#5b5555;display:grid;place-items:center;margin:1.5rem 0;background-size:cover;background-position:center}
+  .pv-play{width:70px;height:70px;border-radius:50%;background:rgba(0,0,0,.5);display:grid;place-items:center}
   .pv-play::after{content:"";border-left:20px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent;margin-left:5px}
   .pv-tabs{background:#383a48;color:#fff;padding:2rem 0;margin:1.5rem 0}
   .pv-tabs .chart{background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.35);aspect-ratio:16/7;display:grid;place-items:center;color:rgba(255,255,255,.7)}
@@ -72,31 +92,26 @@
 </style>
 </head>
 <body>
-<header>
-  <h1>Editor de páginas · Visión Andalucía 2026</h1>
-  <span class="sp"></span>
-  <button class="btn-ghost" id="cargar">Cargar…</button>
-  <input type="file" id="file" accept=".json" hidden />
-  <button class="btn-amarillo" id="descargar">Descargar página</button>
-</header>
-
-<div class="wrap">
-  <div class="form" id="form"></div>
-  <div class="preview"><div class="pv" id="pv"></div></div>
-</div>
+<header id="cab"></header>
+<div id="app"></div>
 
 <script>
-// ---------- estado ----------
-const estado = {
-  slug:"", titulo:"", autor:"", rol:"", badge:"", image:"",
-  bloques:[]
-};
+document.execCommand("styleWithCSS", false, false); // formato con etiquetas (<b>,<i>,<u>)
+
+const STORE="va2026_paginas";
+const cargarPaginas=()=>{try{return JSON.parse(localStorage.getItem(STORE)||"{}")}catch{return{}}};
+const guardarPaginas=o=>localStorage.setItem(STORE,JSON.stringify(o));
+
+let vista="dashboard";
+let estado=nuevaPagina();
+function nuevaPagina(){return{slug:"",titulo:"",autor:"",rol:"",badge:"",image:"",bloques:[]}}
 
 const TIPOS = {
   texto:      {label:"Texto",      nuevo:()=>({tipo:"texto",parrafos:[""],lead:false})},
   titular:    {label:"Titular",    nuevo:()=>({tipo:"texto",titulo:""})},
+  "titular-texto":{label:"Titular + Texto", nuevo:()=>({tipo:"texto",titulo:"",parrafos:[""]})},
   quote:      {label:"Cita",       nuevo:()=>({tipo:"quote",texto:"",autor:""})},
-  imagen:     {label:"Imagen",     nuevo:()=>({tipo:"imagen",titulo:"",imagen:"",pie:""})},
+  imagen:     {label:"Titular imagen", nuevo:()=>({tipo:"imagen",titulo:"",imagen:"",pie:""})},
   video:      {label:"Vídeo",      nuevo:()=>({tipo:"video",youtube:""})},
   chart:      {label:"Gráfica",    nuevo:()=>({tipo:"chart",titulo:"",id:"",caption:""})},
   "chart-tabs":{label:"Gráficas (pestañas)", nuevo:()=>({tipo:"chart-tabs",graficas:[{titulo:"",id:""}]})},
@@ -106,29 +121,113 @@ const TIPOS = {
 
 const esc = s => (s==null?"":String(s)).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
 const slugify = s => (s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
-// extrae el id de Infogram de un iframe/url pegado, o devuelve el id tal cual
 const infoId = s => { if(!s)return""; let m=s.match(/e\.infogram\.com\/([a-z0-9-]+)/i)||s.match(/([\w-]{6,})/); return m?m[1]:s.trim(); };
+const ytId = u => { const m=(u||"").match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/); return m?m[1]:""; };
 
-// ---------- render del formulario ----------
-function campo(label, val, oninput, help, tag="input", attrs=""){
+// limpia HTML enriquecido (solo formato inline seguro)
+function sanit(html){
+  const d=document.createElement("div"); d.innerHTML=html||"";
+  d.querySelectorAll("script,style").forEach(n=>n.remove());
+  [...d.querySelectorAll("*")].forEach(n=>{
+    if(!/^(B|STRONG|I|EM|U|A|BR|MARK)$/.test(n.tagName)){ n.replaceWith(...n.childNodes); return; }
+    [...n.attributes].forEach(a=>{
+      const ok = n.tagName==="A" && a.name==="href" && !/^javascript:/i.test(a.value);
+      if(!ok) n.removeAttribute(a.name);
+    });
+    if(n.tagName==="A"){ n.setAttribute("target","_blank"); n.setAttribute("rel","noopener"); }
+  });
+  return d.innerHTML.trim();
+}
+const sanitInline = html => sanit(html).replace(/<\/?(div|p)[^>]*>/gi,"").trim();
+function leerParrafos(el){
+  const out=[];
+  el.childNodes.forEach(n=>{
+    if(n.nodeType===3){ const t=n.textContent.trim(); if(t) out.push(esc(n.textContent)); }
+    else if(n.nodeType===1){
+      if(/^(DIV|P)$/.test(n.tagName)){ const h=sanit(n.innerHTML); if(h && h!=="<br>") out.push(h); }
+      else { const h=sanit(n.outerHTML); if(h) out.push(h); }
+    }
+  });
+  if(!out.length){ const h=sanit(el.innerHTML); if(h) out.push(h); }
+  return out;
+}
+
+// ============ CABECERA ============
+function pintarCab(){
+  const c=document.getElementById("cab");
+  if(vista==="dashboard"){
+    c.innerHTML=`<h1>Editor de páginas · Visión Andalucía 2026</h1><span class="sp"></span>
+      <button class="btn-amarillo" id="nueva">+ Nueva página</button>`;
+    document.getElementById("nueva").onclick=()=>{estado=nuevaPagina();vista="editor";pintarTodo()};
+  }else{
+    c.innerHTML=`<button class="btn-ghost" id="volver">← Panel</button>
+      <h1>${esc(estado.titulo||"Nueva página")}</h1><span class="sp"></span>
+      <button class="btn-ghost" id="cargar">Cargar…</button>
+      <input type="file" id="file" accept=".json" hidden />
+      <button class="btn-ghost" id="guardar">Guardar en panel</button>
+      <button class="btn-amarillo" id="descargar">Descargar</button>`;
+    document.getElementById("volver").onclick=()=>{vista="dashboard";pintarTodo()};
+    document.getElementById("guardar").onclick=guardarActual;
+    document.getElementById("descargar").onclick=descargar;
+    document.getElementById("cargar").onclick=()=>document.getElementById("file").click();
+    document.getElementById("file").onchange=importarArchivo;
+  }
+}
+
+// ============ DASHBOARD ============
+function pintarDashboard(){
+  const paginas=cargarPaginas();
+  const keys=Object.keys(paginas).sort((a,b)=>(paginas[b]._ts||0)-(paginas[a]._ts||0));
+  let h=`<div class="dash"><h2>Tus páginas</h2>
+    <p style="color:#888;font-size:.9rem">Guardadas en este navegador. Descarga cada página para publicarla en el repositorio.</p>
+    <div class="cards">
+    <div class="card--new" id="crear"><div><b>+</b>Nueva página</div></div>`;
+  for(const k of keys){
+    const p=paginas[k];
+    h+=`<div class="card"><h3>${esc(p.titulo||k)}</h3><div class="url">/sector/${esc(k)}</div>
+      <div class="acc">
+        <button data-ed="${esc(k)}">Editar</button>
+        <button data-dl="${esc(k)}">Descargar</button>
+        <button data-del="${esc(k)}">Borrar</button>
+      </div></div>`;
+  }
+  h+=`</div></div>`;
+  const app=document.getElementById("app"); app.innerHTML=h;
+  app.querySelector("#crear").onclick=()=>{estado=nuevaPagina();vista="editor";pintarTodo()};
+  app.querySelectorAll("[data-ed]").forEach(b=>b.onclick=()=>{estado=aEstado(cargarPaginas()[b.dataset.ed]);vista="editor";pintarTodo()});
+  app.querySelectorAll("[data-dl]").forEach(b=>b.onclick=()=>descargarJSON(cargarPaginas()[b.dataset.dl]));
+  app.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{ if(confirm("¿Borrar esta página del panel?")){const o=cargarPaginas();delete o[b.dataset.del];guardarPaginas(o);pintarDashboard();}});
+}
+
+// ============ EDITOR (formulario + preview) ============
+function campo(label, val, oninput, help, tag="input"){
   const id="f"+Math.random().toString(36).slice(2,8);
-  const el = tag==="textarea"
-    ? `<textarea id="${id}" ${attrs}>${esc(val)}</textarea>`
-    : `<input id="${id}" value="${esc(val)}" ${attrs} />`;
+  const el = tag==="textarea" ? `<textarea id="${id}">${esc(val)}</textarea>` : `<input id="${id}" value="${esc(val)}" />`;
   setTimeout(()=>{const n=document.getElementById(id); if(n)n.addEventListener("input",e=>oninput(e.target.value));},0);
   return `<div class="campo"><label>${label}</label>${el}${help?`<small>${help}</small>`:""}</div>`;
 }
+function barra(){return `<div class="rtb">
+  <button type="button" data-cmd="bold" title="Negrita"><b>B</b></button>
+  <button type="button" data-cmd="italic" title="Cursiva"><i>I</i></button>
+  <button type="button" data-cmd="underline" title="Subrayado"><u>U</u></button>
+  <button type="button" data-cmd="mark" title="Resaltar">🖊</button>
+  <button type="button" data-cmd="link" title="Enlace">🔗</button>
+  <button type="button" data-cmd="removeFormat" title="Quitar formato">✕</button></div>`;}
 
+function pintarEditor(){
+  const app=document.getElementById("app");
+  app.innerHTML=`<div class="wrap"><div class="form" id="form"></div><div class="preview"><div class="pv" id="pv"></div></div></div>`;
+  render(); pintar();
+}
 function render(){
   const f=document.getElementById("form");
   let h = `<h2 class="sec">Datos de la página</h2>`;
   h += campo("Nombre de la página (URL)", estado.slug, v=>{estado.slug=v;pintar()}, "Se usará /sector/&lt;nombre&gt;. Minúsculas y guiones.");
-  h += campo("Título (hero)", estado.titulo, v=>{estado.titulo=v;pintar()}, "", "textarea");
+  h += campo("Título (hero)", estado.titulo, v=>{estado.titulo=v;pintar();refCab()}, "", "textarea");
   h += campo("Persona", estado.autor, v=>{estado.autor=v;pintar()});
   h += campo("Cargo", estado.rol, v=>{estado.rol=v;pintar()});
   h += campo("Badge", estado.badge, v=>{estado.badge=v;pintar()}, "Etiqueta amarilla (opcional).");
   h += campo("Imagen de fondo", estado.image, v=>{estado.image=v;pintar()}, "Nombre de archivo (súbelo a public/img/hero/). Ej: hero-residencial.jpg");
-
   h += `<h2 class="sec">Bloques</h2><div id="bloques"></div>`;
   h += `<div class="add">`+Object.entries(TIPOS).map(([k,t])=>`<button data-add="${k}">+ ${t.label}</button>`).join("")+`</div>`;
   f.innerHTML=h;
@@ -137,118 +236,99 @@ function render(){
   cont.innerHTML = estado.bloques.map((b,i)=>bloqueForm(b,i)).join("") || `<p style="color:#aaa;font-size:.85rem">Aún no hay bloques. Añade uno abajo.</p>`;
 
   f.querySelectorAll("[data-add]").forEach(btn=>btn.onclick=()=>{estado.bloques.push(TIPOS[btn.dataset.add].nuevo());render();pintar()});
-  // acciones de cada bloque
-  cont.querySelectorAll("[data-act]").forEach(btn=>{
-    const i=+btn.dataset.i;
-    btn.onclick=()=>{
-      const a=btn.dataset.act;
+  cont.querySelectorAll("[data-act]").forEach(btn=>{const i=+btn.dataset.i;
+    btn.onclick=()=>{const a=btn.dataset.act;
       if(a==="del")estado.bloques.splice(i,1);
       if(a==="up"&&i>0)[estado.bloques[i-1],estado.bloques[i]]=[estado.bloques[i],estado.bloques[i-1]];
       if(a==="down"&&i<estado.bloques.length-1)[estado.bloques[i+1],estado.bloques[i]]=[estado.bloques[i],estado.bloques[i+1]];
-      render();pintar();
-    };
-  });
-  // enlazar inputs de cada bloque
-  cont.querySelectorAll("[data-bind]").forEach(inp=>{
-    const [i,path]=inp.dataset.bind.split("::");
-    inp.addEventListener("input",()=>{ setPath(estado.bloques[+i],path,inp.value); pintar(); });
-  });
-  cont.querySelectorAll("[data-graf]").forEach(btn=>{
-    const i=+btn.dataset.graf;
+      render();pintar();};});
+  cont.querySelectorAll("[data-bind]").forEach(inp=>{const [i,path]=inp.dataset.bind.split("::");
+    inp.addEventListener("input",()=>{setBind(+i,path,inp.value);pintar();});});
+  cont.querySelectorAll(".rte").forEach(ed=>{const [i,field]=ed.dataset.rte.split("::");
+    ed.addEventListener("input",()=>{
+      if(field==="parrafos") estado.bloques[+i].parrafos=leerParrafos(ed);
+      else estado.bloques[+i][field]=sanitInline(ed.innerHTML);
+      pintar();});});
+  cont.querySelectorAll(".rtb button").forEach(btn=>{
+    btn.addEventListener("mousedown",e=>e.preventDefault());
+    btn.addEventListener("click",()=>{
+      const cmd=btn.dataset.cmd, rte=btn.closest(".rte-wrap").querySelector(".rte"); rte.focus();
+      if(cmd==="mark") resaltar(rte);
+      else if(cmd==="link"){const u=prompt("Enlace (URL):","https://"); if(u)document.execCommand("createLink",false,u);}
+      else document.execCommand(cmd,false,null);
+      rte.dispatchEvent(new Event("input"));});});
+  cont.querySelectorAll("[data-graf]").forEach(btn=>{const i=+btn.dataset.graf;
     if(btn.dataset.gadd!=null) btn.onclick=()=>{estado.bloques[i].graficas.push({titulo:"",id:""});render();pintar()};
-    if(btn.dataset.gdel!=null) btn.onclick=()=>{estado.bloques[i].graficas.splice(+btn.dataset.gdel,1);render();pintar()};
-  });
-  cont.querySelectorAll("[data-lead]").forEach(chk=>{
-    chk.onchange=()=>{estado.bloques[+chk.dataset.lead].lead=chk.checked;pintar()};
-  });
-  cont.querySelectorAll("[data-parr]").forEach(t=>{
-    t.addEventListener("input",()=>{estado.bloques[+t.dataset.parr].parrafos=t.value.split(/\n\n+/).map(s=>s.trim()).filter(Boolean);pintar()});
-  });
-  cont.querySelectorAll("[data-mapa]").forEach(t=>{
-    t.addEventListener("input",()=>{ estado.bloques[+t.dataset.mapa].data = extraerMapa(t.value); pintar(); });
-  });
+    if(btn.dataset.gdel!=null) btn.onclick=()=>{estado.bloques[i].graficas.splice(+btn.dataset.gdel,1);render();pintar()};});
+  cont.querySelectorAll("[data-lead]").forEach(chk=>chk.onchange=()=>{estado.bloques[+chk.dataset.lead].lead=chk.checked;pintar()});
+  cont.querySelectorAll("[data-mapa]").forEach(t=>t.addEventListener("input",()=>{estado.bloques[+t.dataset.mapa].data=extraerMapa(t.value);pintar();}));
+}
+function refCab(){ const h=document.querySelector("#cab h1"); if(h)h.textContent=estado.titulo||"Nueva página"; }
+
+// resaltar: envuelve la selección en <mark> (o la quita si ya lo está)
+function resaltar(rte){
+  const sel=window.getSelection(); if(!sel.rangeCount||sel.isCollapsed)return;
+  let n=sel.anchorNode; while(n&&n!==rte){ if(n.nodeType===1&&n.tagName==="MARK"){ n.replaceWith(...n.childNodes); return; } n=n.parentNode; }
+  const r=sel.getRangeAt(0), d=document.createElement("div"); d.appendChild(r.cloneContents());
+  document.execCommand("insertHTML",false,"<mark>"+d.innerHTML+"</mark>");
 }
 
-function setPath(o,path,val){ o[path]=val; }
-
+function setBind(i,path,val){
+  const b=estado.bloques[i];
+  const m=path.match(/^__g(\d+)([ti])$/);
+  if(m){const g=b.graficas[+m[1]]; if(m[2]==="t")g.titulo=val; else g.id=val; return;}
+  b[path]=val;
+}
 function bloqueForm(b,i){
-  const cab = t=>`<div class="bloque__cab"><b>${t}</b><span class="sp"></span>
-    <button data-act="up" data-i="${i}" title="Subir">▲</button>
-    <button data-act="down" data-i="${i}" title="Bajar">▼</button>
-    <button data-act="del" data-i="${i}" title="Eliminar">✕</button></div>`;
+  const cab=t=>`<div class="bloque__cab"><b>${t}</b><span class="sp"></span>
+    <button data-act="up" data-i="${i}">▲</button><button data-act="down" data-i="${i}">▼</button><button data-act="del" data-i="${i}">✕</button></div>`;
   const inp=(label,path,val,ta,help)=>`<div class="campo"><label>${label}</label>`+
     (ta?`<textarea data-bind="${i}::${path}">${esc(val)}</textarea>`:`<input data-bind="${i}::${path}" value="${esc(val)}"/>`)+
     (help?`<small>${help}</small>`:"")+`</div>`;
+  const rteP=(label,field,html)=>`<div class="campo"><label>${label}</label><div class="rte-wrap">${barra()}
+    <div class="rte" data-rte="${i}::${field}" data-ph="Escribe aquí…" contenteditable="true">${html}</div></div></div>`;
+  const parr=rteP("Texto","parrafos",(b.parrafos||[]).map(p=>`<p>${p}</p>`).join(""));
 
-  if(b.tipo==="texto"&&!("parrafos" in b)) // titular
-    return `<div class="bloque">${cab("Titular")}<div class="bloque__cuerpo">${inp("Titular","titulo",b.titulo||"")}</div></div>`;
-  if(b.tipo==="texto")
-    return `<div class="bloque">${cab("Texto")}<div class="bloque__cuerpo">
-      <label>Párrafos <small>(separa párrafos con una línea en blanco)</small></label>
-      <textarea data-parr="${i}">${esc((b.parrafos||[]).join("\n\n"))}</textarea>
-      <label style="margin-top:.5rem"><input type="checkbox" data-lead="${i}" ${b.lead?"checked":""} style="width:auto"> Entradilla destacada</label>
-    </div></div>`;
-  if(b.tipo==="quote")
-    return `<div class="bloque">${cab("Cita")}<div class="bloque__cuerpo">${inp("Texto de la cita","texto",b.texto||"",true)}${inp("Autor (opcional)","autor",b.autor||"")}</div></div>`;
-  if(b.tipo==="imagen")
-    return `<div class="bloque">${cab("Imagen")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("Archivo de imagen","imagen",b.imagen||"","","Súbelo a public/img/. Ej: puerto-malaga.jpg")}${inp("Pie de foto (opcional)","pie",b.pie||"")}</div></div>`;
-  if(b.tipo==="video")
-    return `<div class="bloque">${cab("Vídeo")}<div class="bloque__cuerpo">${inp("Enlace de YouTube","youtube",b.youtube||"","","Ej: https://youtu.be/…")}</div></div>`;
-  if(b.tipo==="chart")
-    return `<div class="bloque">${cab("Gráfica")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("Infogram (id o iframe pegado)","id",b.id||"","","Pega el embed de Infogram o su id.")}${inp("Pie de texto (opcional)","caption",b.caption||"",true)}</div></div>`;
-  if(b.tipo==="chart-tabs")
-    return `<div class="bloque">${cab("Gráficas (pestañas)")}<div class="bloque__cuerpo">`+
-      b.graficas.map((g,gi)=>`<div class="grafica-fila">
-        <input data-bind="${i}::__g${gi}t" value="${esc(g.titulo)}" placeholder="Título de la pestaña"/>
-        <input data-bind="${i}::__g${gi}i" value="${esc(g.id)}" placeholder="Infogram (id o iframe)"/>
-        <button data-graf="${i}" data-gdel="${gi}">✕</button></div>`).join("")+
-      `<button data-graf="${i}" data-gadd>+ pestaña</button></div></div>`;
-  if(b.tipo==="mapa")
-    return `<div class="bloque">${cab("Mapa")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}
-      <label>Mapa exportado <small>(pega aquí el contenido del HTML que exporta tu app)</small></label>
-      <textarea data-mapa="${i}" placeholder="&lt;savills-map&gt;…">${b.data?JSON.stringify(b.data):""}</textarea>
-      ${b.data?'<small style="color:#2a7">✓ mapa cargado</small>':''}</div></div>`;
-  if(b.tipo==="iframe")
-    return `<div class="bloque">${cab("Iframe")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("URL","url",b.url||"")}${inp("Alto en píxeles","alto",b.alto||600)}</div></div>`;
+  const hasTit="titulo" in b, hasPar="parrafos" in b;
+  if(b.tipo==="texto"&&hasTit&&!hasPar) return `<div class="bloque">${cab("Titular")}<div class="bloque__cuerpo">${inp("Titular","titulo",b.titulo||"")}</div></div>`;
+  if(b.tipo==="texto"&&hasTit&&hasPar)   return `<div class="bloque">${cab("Titular + Texto")}<div class="bloque__cuerpo">${inp("Titular","titulo",b.titulo||"")}${parr}</div></div>`;
+  if(b.tipo==="texto")                   return `<div class="bloque">${cab("Texto")}<div class="bloque__cuerpo">${parr}
+    <label style="margin-top:.5rem"><input type="checkbox" data-lead="${i}" ${b.lead?"checked":""} style="width:auto"> Entradilla destacada</label></div></div>`;
+  if(b.tipo==="quote")   return `<div class="bloque">${cab("Cita")}<div class="bloque__cuerpo">${rteP("Texto de la cita","texto",b.texto||"")}${inp("Autor (opcional)","autor",b.autor||"")}</div></div>`;
+  if(b.tipo==="imagen")  return `<div class="bloque">${cab("Titular imagen")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("Archivo de imagen","imagen",b.imagen||"","","Súbelo a public/img/. Ej: puerto-malaga.jpg")}${inp("Pie de foto (opcional)","pie",b.pie||"")}</div></div>`;
+  if(b.tipo==="video")   return `<div class="bloque">${cab("Vídeo")}<div class="bloque__cuerpo">${inp("Enlace de YouTube","youtube",b.youtube||"","","La portada se coge automáticamente de YouTube.")}</div></div>`;
+  if(b.tipo==="chart")   return `<div class="bloque">${cab("Gráfica")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("Infogram (id o iframe pegado)","id",b.id||"","","Pega el embed de Infogram o su id.")}${inp("Pie de texto (opcional)","caption",b.caption||"",true)}</div></div>`;
+  if(b.tipo==="chart-tabs") return `<div class="bloque">${cab("Gráficas (pestañas)")}<div class="bloque__cuerpo">`+
+    b.graficas.map((g,gi)=>`<div class="grafica-fila"><input data-bind="${i}::__g${gi}t" value="${esc(g.titulo)}" placeholder="Título de la pestaña"/><input data-bind="${i}::__g${gi}i" value="${esc(g.id)}" placeholder="Infogram (id o iframe)"/><button data-graf="${i}" data-gdel="${gi}">✕</button></div>`).join("")+
+    `<button data-graf="${i}" data-gadd>+ pestaña</button></div></div>`;
+  if(b.tipo==="mapa")    return `<div class="bloque">${cab("Mapa")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}
+    <label>Mapa exportado <small>(pega el contenido del HTML que exporta tu app)</small></label>
+    <textarea data-mapa="${i}" placeholder="&lt;savills-map&gt;…">${b.data?esc(JSON.stringify(b.data)):""}</textarea>
+    ${b.data?'<small style="color:#2a7">✓ mapa cargado</small>':''}</div></div>`;
+  if(b.tipo==="iframe")  return `<div class="bloque">${cab("Iframe")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("URL","url",b.url||"")}${inp("Alto en píxeles","alto",b.alto||600)}</div></div>`;
   return "";
 }
+function extraerMapa(txt){ if(!txt||!txt.trim())return null; const m=txt.match(/<script[^>]*application\/json[^>]*>([\s\S]*?)<\/script>/i); try{return JSON.parse((m?m[1]:txt).trim());}catch{return null;} }
 
-// bind especial para las pestañas de gráficas
-document.addEventListener("input",e=>{
-  const b=e.target.dataset.bind; if(!b)return;
-  const [i,path]=b.split("::");
-  const m=path.match(/^__g(\d+)([ti])$/);
-  if(m){ const g=estado.bloques[+i].graficas[+m[1]]; if(m[2]==="t")g.titulo=e.target.value; else g.id=e.target.value; pintar(); }
-});
-
-// extrae el JSON de un mapa exportado (HTML con <script type="application/json">) o JSON directo
-function extraerMapa(txt){
-  if(!txt||!txt.trim())return null;
-  let m=txt.match(/<script[^>]*application\/json[^>]*>([\s\S]*?)<\/script>/i);
-  const raw=m?m[1]:txt;
-  try{return JSON.parse(raw.trim());}catch{return null;}
-}
-
-// ---------- vista previa ----------
 function pintar(){
-  const pv=document.getElementById("pv");
-  let h=`<div class="pv-hero">${estado.image?"":""}<div class="ov"></div><div class="in">
+  const pv=document.getElementById("pv"); if(!pv)return;
+  const heroBg=estado.image?`style="background-image:url(../public/img/hero/${esc(estado.image)})"`:"";
+  let h=`<div class="pv-hero" ${heroBg}><div class="ov"></div><div class="in">
     ${estado.badge?`<span class="pv-badge">${esc(estado.badge)}</span>`:""}
     <h1 class="pv-h1">${esc(estado.titulo||"Título del sector")}</h1>
     ${(estado.autor||estado.rol)?`<div class="pv-autor"><b>${esc(estado.autor)}</b><span>${esc(estado.rol)}</span></div>`:""}
-  </div></div>`;
-  h+=`<div class="cont">`;
-  if(!estado.bloques.length)h+=`<p class="vacio">Añade bloques para ver la página.</p>`;
-  for(const b of estado.bloques)h+=pvBloque(b);
-  h+=`</div>`;
-  pv.innerHTML=h;
+  </div></div><div class="cont">`;
+  h += estado.bloques.length ? estado.bloques.map(pvBloque).join("") : `<p class="vacio">Añade bloques para ver la página.</p>`;
+  h += `</div>`; pv.innerHTML=h;
 }
 function pvBloque(b){
-  if(b.tipo==="texto"&&!("parrafos" in b)) return `<h2 class="pv-titular">${esc(b.titulo)||"Titular"}</h2>`;
-  if(b.tipo==="texto") return `<div class="pv-texto ${b.lead?"pv-lead":""}">${(b.parrafos||[]).map(p=>`<p>${esc(p)}</p>`).join("")||"<p style='color:#bbb'>(texto)</p>"}</div>`;
-  if(b.tipo==="quote") return `<blockquote class="pv-quote"><p>${esc(b.texto)||"(cita)"}</p>${b.autor?`<cite>${esc(b.autor)}</cite>`:""}</blockquote>`;
-  if(b.tipo==="imagen") return `<figure class="pv-img">${b.titulo?`<h2 class="pv-titular">${esc(b.titulo)}</h2>`:""}<div class="ph">${b.imagen?esc(b.imagen):"imagen"}</div>${b.pie?`<figcaption class="pv-cap">${esc(b.pie)}</figcaption>`:""}</figure>`;
-  if(b.tipo==="video") return `<div class="pv-video"><div class="pv-play"></div></div>`;
+  const hasTit="titulo" in b, hasPar="parrafos" in b;
+  if(b.tipo==="texto"&&hasTit&&!hasPar) return `<h2 class="pv-titular">${esc(b.titulo)||"Titular"}</h2>`;
+  if(b.tipo==="texto"){ const tit=(hasTit&&b.titulo)?`<h2 class="pv-titular">${esc(b.titulo)}</h2>`:"";
+    return `${tit}<div class="pv-texto ${b.lead?"pv-lead":""}">${(b.parrafos||[]).map(p=>`<p>${p}</p>`).join("")||"<p style='color:#bbb'>(texto)</p>"}</div>`;}
+  if(b.tipo==="quote") return `<blockquote class="pv-quote"><p>${b.texto||"(cita)"}</p>${b.autor?`<cite>${esc(b.autor)}</cite>`:""}</blockquote>`;
+  if(b.tipo==="imagen") return `<figure class="pv-img">${b.titulo?`<h2 class="pv-subtitular">${esc(b.titulo)}</h2>`:""}<div class="ph">${b.imagen?esc(b.imagen):"imagen"}</div>${b.pie?`<figcaption class="pv-cap">${esc(b.pie)}</figcaption>`:""}</figure>`;
+  if(b.tipo==="video"){ const id=ytId(b.youtube); const bg=id?`style="background-image:url(https://i.ytimg.com/vi/${id}/hqdefault.jpg)"`:""; return `<div class="pv-video" ${bg}><div class="pv-play"></div></div>`; }
   if(b.tipo==="chart") return `${b.titulo?`<h2 class="pv-titular">${esc(b.titulo)}</h2>`:""}<div class="pv-img"><div class="ph" style="aspect-ratio:16/7">${b.id?"Gráfica Infogram":"(gráfica)"}</div></div>${b.caption?`<p class="pv-cap">${esc(b.caption)}</p>`:""}`;
   if(b.tipo==="chart-tabs") return `<div class="pv-tabs"><div class="cont"><div class="chart">Gráfica Infogram</div><div class="btns">${(b.graficas||[]).map((g,i)=>`<span class="${i===0?"act":""}">${esc(g.titulo)||"Pestaña"}</span>`).join("")}</div></div></div>`;
   if(b.tipo==="mapa") return `${b.titulo?`<h2 class="pv-titular">${esc(b.titulo)}</h2>`:""}<div class="pv-map"><div class="box">${b.data?"Mapa ✓":"(pega el mapa exportado)"}</div></div>`;
@@ -256,12 +336,15 @@ function pvBloque(b){
   return "";
 }
 
-// ---------- exportar / importar ----------
+// ============ construir / importar / guardar ============
+const rutaImg=n=>{n=(n||"").trim();if(!n)return"";return (/^https?:|\//.test(n))?n:`img/noticias/${n}`;};
+const heroImg=n=>{n=(n||"").trim();if(!n)return"";return (/^https?:|\//.test(n))?n:`img/hero/${n}`;};
 function construir(){
   const slug=slugify(estado.slug||estado.titulo);
   const bloques=estado.bloques.map(b=>{
-    if(b.tipo==="texto"&&!("parrafos" in b)) return {tipo:"texto",titulo:b.titulo};
-    if(b.tipo==="texto"){const o={tipo:"texto",parrafos:(b.parrafos||[]).filter(Boolean)}; if(b.lead)o.lead=true; return o;}
+    const hasTit="titulo" in b, hasPar="parrafos" in b;
+    if(b.tipo==="texto"&&hasTit&&!hasPar) return {tipo:"texto",titulo:b.titulo};
+    if(b.tipo==="texto"){const o={tipo:"texto",parrafos:(b.parrafos||[]).filter(Boolean)}; if(hasTit&&b.titulo)o.titulo=b.titulo; if(b.lead)o.lead=true; return o;}
     if(b.tipo==="quote"){const o={tipo:"quote",texto:b.texto}; if(b.autor)o.autor=b.autor; return o;}
     if(b.tipo==="imagen"){const o={tipo:"imagen",imagen:rutaImg(b.imagen)}; if(b.titulo)o.titulo=b.titulo; if(b.pie)o.pie=b.pie; return o;}
     if(b.tipo==="video") return {tipo:"video",youtube:b.youtube};
@@ -272,32 +355,34 @@ function construir(){
   }).filter(Boolean);
   return {slug,titulo:estado.titulo||slug,hero:{badge:estado.badge||"",titulo:estado.titulo||"",autor:estado.autor||"",rol:estado.rol||"",image:heroImg(estado.image)},bloques};
 }
-const rutaImg=n=>{n=(n||"").trim();if(!n)return"";return (/^https?:|\//.test(n))?n:`img/noticias/${n}`;};
-const heroImg=n=>{n=(n||"").trim();if(!n)return"";return (/^https?:|\//.test(n))?n:`img/hero/${n}`;};
-
-document.getElementById("descargar").onclick=()=>{
-  const data=construir();
-  if(!data.slug){alert("Pon un nombre de página (URL).");return;}
-  const blob=new Blob([JSON.stringify(data,null,2)+"\n"],{type:"application/json"});
+// pasa una página (formato final) al estado editable
+function aEstado(d){
+  const e=nuevaPagina();
+  e.slug=d.slug||""; e.titulo=d.hero?.titulo||d.titulo||""; e.autor=d.hero?.autor||""; e.rol=d.hero?.rol||""; e.badge=d.hero?.badge||"";
+  e.image=(d.hero?.image||"").replace(/^img\/hero\//,"");
+  e.bloques=(d.bloques||[]).map(b=> b.tipo==="imagen" ? {...b,imagen:(b.imagen||"").replace(/^img\/noticias\//,"")} : {...b});
+  return e;
+}
+function descargarJSON(data){
+  const blob=new Blob([JSON.stringify(sinMeta(data),null,2)+"\n"],{type:"application/json"});
   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=data.slug+".json";a.click();
-};
-document.getElementById("cargar").onclick=()=>document.getElementById("file").click();
-document.getElementById("file").onchange=e=>{
+}
+const sinMeta=d=>{const {_ts,...r}=d;return r;};
+function descargar(){ const d=construir(); if(!d.slug){alert("Pon un nombre de página (URL).");return;} descargarJSON(d); }
+function guardarActual(){
+  const d=construir(); if(!d.slug){alert("Pon un nombre de página (URL) antes de guardar.");return;}
+  const o=cargarPaginas(); o[d.slug]={...d,_ts:Date.now()}; guardarPaginas(o);
+  alert("Guardada en el panel: "+d.slug);
+}
+function importarArchivo(e){
   const fr=new FileReader();
-  fr.onload=()=>{try{
-    const d=JSON.parse(fr.result);
-    estado.slug=d.slug||""; estado.titulo=d.hero?.titulo||d.titulo||""; estado.autor=d.hero?.autor||""; estado.rol=d.hero?.rol||""; estado.badge=d.hero?.badge||"";
-    estado.image=(d.hero?.image||"").replace(/^img\/hero\//,"");
-    estado.bloques=(d.bloques||[]).map(b=>{
-      if(b.tipo==="imagen")return {...b,imagen:(b.imagen||"").replace(/^img\/noticias\//,"")};
-      return {...b};
-    });
-    render();pintar();
-  }catch{alert("No se pudo leer el archivo.");}};
+  fr.onload=()=>{try{estado=aEstado(JSON.parse(fr.result));pintarTodo();}catch{alert("No se pudo leer el archivo.");}};
   fr.readAsText(e.target.files[0]);
-};
+}
 
-render();pintar();
+// ============ arranque ============
+function pintarTodo(){ pintarCab(); if(vista==="dashboard")pintarDashboard(); else pintarEditor(); }
+pintarTodo();
 </script>
 </body>
 </html>

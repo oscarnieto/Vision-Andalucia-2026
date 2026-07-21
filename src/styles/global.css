@@ -55,6 +55,12 @@ a {
   text-decoration: none;
 }
 
+/* Resaltado de texto (botón "resaltar" del editor) */
+mark {
+  background: #feeb14;
+  color: inherit;
+}
+
 /* ---------- Utilidades ---------- */
 .contenedor {
   width: 100%;

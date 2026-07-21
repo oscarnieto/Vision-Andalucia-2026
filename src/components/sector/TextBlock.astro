@@ -12,7 +12,7 @@ const { titulo, parrafos, lead = false } = Astro.props;
     {titulo && <h2 class="bloque-texto__titulo">{titulo}</h2>}
     {
       parrafos.map((p) => (
-        <p class:list={["bloque-texto__p", { "bloque-texto__p--lead": lead }]}>{p}</p>
+        <p class:list={["bloque-texto__p", { "bloque-texto__p--lead": lead }]} set:html={p} />
       ))
     }
   </div>

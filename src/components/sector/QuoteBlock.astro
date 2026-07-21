@@ -9,7 +9,7 @@ const { texto, autor } = Astro.props;
 <section class="quote">
   <div class="contenedor">
     <blockquote class="quote__box">
-      <p class="quote__texto">{texto}</p>
+      <p class="quote__texto" set:html={texto} />
       {autor && <cite class="quote__autor">{autor}</cite>}
     </blockquote>
   </div>
