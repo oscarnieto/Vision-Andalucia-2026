@@ -62,11 +62,16 @@ function tipoDeEtiqueta(label) {
   return null;
 }
 
-// extrae el id de Infogram de un texto tipo "infogram: 1a2b3c" o una URL
+// extrae el id de Infogram desde: "infogram: 1a2b3c", una URL, o el iframe/embed
+// completo que copia y pega Infogram (busca e.infogram.com/<id>).
 function infogramId(s) {
   if (!s) return "";
-  const m = s.match(/infogram:\s*([\w-]+)/i) || s.match(/([\w-]{6,})\/?$/);
-  return m ? m[1].trim() : s.trim();
+  let m = s.match(/e\.infogram\.com\/([a-z0-9-]+)/i); // iframe o url de embed
+  if (m) return m[1];
+  m = s.match(/infogram:\s*([\w-]+)/i);
+  if (m) return m[1];
+  m = s.trim().match(/^([\w-]{6,})$/); // id suelto
+  return m ? m[1] : s.trim();
 }
 
 // lee un mapa exportado (HTML con <script type="application/json">) y devuelve su JSON
@@ -103,9 +108,21 @@ async function parseDoc(html) {
       const celdas = tr.querySelectorAll("td, th");
       if (celdas.length < 2) continue;
       const campo = norm(celdas[0].text);
-      // primer párrafo no vacío de la celda de valor
+      // valor = todos los párrafos de la celda que NO son ayuda (cursiva), unidos
       const ps = celdas[1].querySelectorAll("p");
-      const valor = (ps.length ? ps[0].text : celdas[1].text).trim();
+      let valor;
+      if (ps.length) {
+        valor = ps
+          .filter((pp) => {
+            const em = pp.querySelector("em, i");
+            return !(em && em.text.trim() === pp.text.trim());
+          })
+          .map((pp) => pp.text.trim())
+          .filter(Boolean)
+          .join(" ");
+      } else {
+        valor = celdas[1].text.trim();
+      }
       if (campo.startsWith("nombre")) datos.slug = valor;
       else if (campo.startsWith("titulo") || campo.startsWith("título")) datos.titulo = valor;
       else if (campo.startsWith("persona")) datos.autor = valor;
@@ -169,10 +186,14 @@ async function parseDoc(html) {
       bloques.push({ tipo: "quote", texto: sinComillas(texto), ...(autor ? { autor: autor.trim() } : {}) });
     } else if (b.tipo === "titular-imagen") {
       const o = kv(b.lines);
-      bloques.push({ tipo: "imagen", titulo: limpia(o.titular || o.titulo), imagen: rutaImg(o.imagen) });
+      const imagen = rutaImg(o.imagen);
+      const titulo = limpia(o.titular || o.titulo);
+      if (imagen) bloques.push({ tipo: "imagen", ...(titulo ? { titulo } : {}), imagen });
+      else if (titulo) bloques.push({ tipo: "texto", titulo });
     } else if (b.tipo === "imagen") {
       const o = kv(b.lines);
-      bloques.push({ tipo: "imagen", imagen: rutaImg(o.imagen), ...(o.pie ? { pie: limpia(o.pie) } : {}) });
+      const imagen = rutaImg(o.imagen);
+      if (imagen) bloques.push({ tipo: "imagen", imagen, ...(o.pie ? { pie: limpia(o.pie) } : {}) });
     } else if (b.tipo === "video") {
       const url = b.lines.find((l) => /https?:\/\//.test(l));
       if (url) bloques.push({ tipo: "video", youtube: url.trim() });
