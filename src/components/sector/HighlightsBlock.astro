@@ -1,0 +1,74 @@
+---
+interface Dato {
+  numero: string;
+  texto: string;
+}
+interface Props {
+  datos: Dato[];
+}
+const { datos } = Astro.props;
+---
+
+<section class="highlights">
+  <div class="contenedor">
+    <div class="highlights__grid">
+      {
+        datos.map((d) => (
+          <div class="highlight">
+            <span class="highlight__num">{d.numero}</span>
+            <span class="highlight__txt">{d.texto}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .highlights {
+    padding-block: clamp(1.5rem, 4vw, 3rem);
+  }
+  .highlights__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(0.75rem, 1.6vw, 1.4rem);
+  }
+  .highlight {
+    background: #383a48;
+    border-radius: 10px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(1rem, 2vw, 1.75rem);
+  }
+  .highlight__num {
+    color: var(--color-amarillo);
+    font-weight: 700;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    line-height: 1;
+    margin-bottom: 0.6rem;
+  }
+  .highlight__txt {
+    color: #fff;
+    font-size: clamp(0.78rem, 1vw, 0.9rem);
+    line-height: 1.35;
+  }
+
+  @media (max-width: 780px) {
+    .highlights__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 440px) {
+    .highlights__grid {
+      grid-template-columns: 1fr;
+    }
+    .highlight {
+      aspect-ratio: auto;
+      min-height: 160px;
+    }
+  }
+</style>

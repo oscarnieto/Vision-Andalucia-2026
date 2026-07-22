@@ -11,6 +11,7 @@ import MapBlock from "../../components/sector/MapBlock.astro";
 import QuoteBlock from "../../components/sector/QuoteBlock.astro";
 import ImageBlock from "../../components/sector/ImageBlock.astro";
 import IframeBlock from "../../components/sector/IframeBlock.astro";
+import HighlightsBlock from "../../components/sector/HighlightsBlock.astro";
 import inicio from "../../data/inicio.json";
 
 // Cada archivo en src/data/sectores/*.json genera una página /sector/<slug>.
@@ -55,6 +56,7 @@ function mapaData(nombre: string) {
           return <ImageBlock titulo={b.titulo} imagen={b.imagen} pie={b.pie} />;
         if (b.tipo === "video")
           return <YouTubeBlock youtube={b.youtube} poster={b.poster} titulo={b.titulo} />;
+        if (b.tipo === "highlights") return <HighlightsBlock datos={b.datos} />;
         if (b.tipo === "chart-tabs") return <ChartTabs graficas={b.graficas} />;
         if (b.tipo === "chart")
           return <ChartBlock titulo={b.titulo} embed={b.embed} id={b.id} caption={b.caption} />;

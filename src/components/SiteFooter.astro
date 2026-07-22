@@ -37,16 +37,12 @@ const { menu, contacto, disclaimer } = Astro.props;
         />
       </div>
 
-      <div class="footer__right">
-        <div class="footer__contacto">
-          <p class="footer__contacto-titulo">{contacto.titulo}</p>
-          {contacto.lineas.map((l) => <p class="footer__contacto-linea">{l}</p>)}
-        </div>
-
-        <nav class="footer__menu" aria-label="Enlaces del pie">
-          {menu.map((m) => <a href={m.href} class="footer__link">{m.label}</a>)}
-        </nav>
+      <div class="footer__contacto">
+        <p class="footer__contacto-titulo">{contacto.titulo}</p>
+        {contacto.lineas.map((l) => <p class="footer__contacto-linea">{l}</p>)}
       </div>
+
+      {menu.map((m) => <a href={m.href} class="footer__link">{m.label}</a>)}
     </div>
 
     <div class="footer__disclaimer">
@@ -69,12 +65,6 @@ const { menu, contacto, disclaimer } = Astro.props;
     align-items: flex-start;
     justify-content: space-between;
     padding-bottom: clamp(2rem, 5vw, 3.5rem);
-  }
-
-  .footer__right {
-    display: flex;
-    align-items: flex-start;
-    gap: clamp(1.5rem, 3vw, 3rem);
   }
 
   /* --- Marca: logo savills + lockup Visión 2026 Andalucía --- */
@@ -135,14 +125,10 @@ const { menu, contacto, disclaimer } = Astro.props;
   @media (max-width: 900px) {
     .footer__top {
       flex-wrap: wrap;
+      gap: 1.5rem 2rem;
     }
-    .footer__right {
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-    .footer__menu {
-      flex-direction: column;
-      gap: 0.6rem;
+    .footer__brand {
+      flex-basis: 100%;
     }
     .footer__disclaimer {
       max-width: 100%;

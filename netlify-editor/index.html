@@ -77,6 +77,11 @@
   .pv-tabs .btns{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem}
   .pv-tabs .btns span{border:1px solid rgba(255,255,255,.5);padding:.7rem;font-size:.75rem;text-align:center}
   .pv-tabs .btns span.act{background:var(--amarillo);color:#000;font-weight:600}
+  .pv-highlights{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:1.5rem 0}
+  .pv-hl{background:#383a48;border-radius:10px;aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1rem}
+  .pv-hl-num{color:var(--amarillo);font-weight:700;font-size:1.9rem;line-height:1;margin-bottom:.5rem}
+  .pv-hl-txt{color:#fff;font-size:.72rem;line-height:1.3}
+  @media(max-width:620px){.pv-highlights{grid-template-columns:repeat(2,1fr)}}
   .pv-iframe .box{background:#f2f2f0;border:1px dashed #cfcfca;height:320px;display:grid;place-items:center;color:#8a8a86}
   .pv-map .box{aspect-ratio:1140/540;background:#f2f2f0;border:1px dashed #cfcfca;display:grid;place-items:center;color:#8a8a86}
   .vacio{color:#aaa;text-align:center;padding:3rem}
@@ -112,6 +117,7 @@ const TIPOS={
   video:{label:"Vídeo",nuevo:()=>({tipo:"video",youtube:""})},
   chart:{label:"Gráfica",nuevo:()=>({tipo:"chart",titulo:"",id:"",caption:""})},
   "chart-tabs":{label:"Gráficas (pestañas)",nuevo:()=>({tipo:"chart-tabs",graficas:[{titulo:"",id:""}]})},
+  highlights:{label:"Cifras destacadas",nuevo:()=>({tipo:"highlights",datos:[{numero:"",texto:""},{numero:"",texto:""},{numero:"",texto:""},{numero:"",texto:""}]})},
   mapa:{label:"Mapa",nuevo:()=>({tipo:"mapa",titulo:"",data:null})},
   iframe:{label:"Iframe",nuevo:()=>({tipo:"iframe",titulo:"",url:"",alto:600})},
 };
@@ -212,12 +218,13 @@ function render(){
   cont.querySelectorAll(".rte").forEach(ed=>{const [i,field]=ed.dataset.rte.split("::");ed.addEventListener("input",()=>{if(field==="parrafos")estado.bloques[+i].parrafos=leerParrafos(ed);else estado.bloques[+i][field]=sanitInline(ed.innerHTML);pintar()})});
   cont.querySelectorAll(".rtb button").forEach(btn=>{btn.addEventListener("mousedown",e=>e.preventDefault());btn.addEventListener("click",()=>{const cmd=btn.dataset.cmd,rte=btn.closest(".rte-wrap").querySelector(".rte");rte.focus();if(cmd==="mark")resaltar(rte);else if(cmd==="link"){const u=prompt("Enlace (URL):","https://");if(u)document.execCommand("createLink",false,u)}else document.execCommand(cmd,false,null);rte.dispatchEvent(new Event("input"))})});
   cont.querySelectorAll("[data-graf]").forEach(btn=>{const i=+btn.dataset.graf;if(btn.dataset.gadd!=null)btn.onclick=()=>{estado.bloques[i].graficas.push({titulo:"",id:""});render();pintar()};if(btn.dataset.gdel!=null)btn.onclick=()=>{estado.bloques[i].graficas.splice(+btn.dataset.gdel,1);render();pintar()}});
+  cont.querySelectorAll("[data-hl]").forEach(btn=>{const i=+btn.dataset.hl;if(btn.dataset.hadd!=null)btn.onclick=()=>{estado.bloques[i].datos.push({numero:"",texto:""});render();pintar()};if(btn.dataset.hdel!=null)btn.onclick=()=>{estado.bloques[i].datos.splice(+btn.dataset.hdel,1);render();pintar()}});
   cont.querySelectorAll("[data-lead]").forEach(chk=>chk.onchange=()=>{estado.bloques[+chk.dataset.lead].lead=chk.checked;pintar()});
   cont.querySelectorAll("[data-mapa]").forEach(t=>t.addEventListener("input",()=>{estado.bloques[+t.dataset.mapa].data=extraerMapa(t.value);pintar()}));
 }
 function refCab(){const h=document.querySelector("#cab h1");if(h)h.textContent=estado.titulo||"Nueva página"}
 function resaltar(rte){const sel=window.getSelection();if(!sel.rangeCount||sel.isCollapsed)return;let n=sel.anchorNode;while(n&&n!==rte){if(n.nodeType===1&&n.tagName==="MARK"){n.replaceWith(...n.childNodes);return}n=n.parentNode}const r=sel.getRangeAt(0),d=document.createElement("div");d.appendChild(r.cloneContents());document.execCommand("insertHTML",false,"<mark>"+d.innerHTML+"</mark>")}
-function setBind(i,path,val){const b=estado.bloques[i];const m=path.match(/^__g(\d+)([ti])$/);if(m){const g=b.graficas[+m[1]];if(m[2]==="t")g.titulo=val;else g.id=val;return}b[path]=val}
+function setBind(i,path,val){const b=estado.bloques[i];const m=path.match(/^__g(\d+)([ti])$/);if(m){const g=b.graficas[+m[1]];if(m[2]==="t")g.titulo=val;else g.id=val;return}const h=path.match(/^__h(\d+)([nt])$/);if(h){const d=b.datos[+h[1]];if(h[2]==="n")d.numero=val;else d.texto=val;return}b[path]=val}
 function bloqueForm(b,i){
   const cab=t=>`<div class="bloque__cab"><b>${t}</b><span class="sp"></span><button data-act="up" data-i="${i}">▲</button><button data-act="down" data-i="${i}">▼</button><button data-act="del" data-i="${i}">✕</button></div>`;
   const inp=(label,path,val,ta,help)=>`<div class="campo"><label>${label}</label>`+(ta?`<textarea data-bind="${i}::${path}">${esc(val)}</textarea>`:`<input data-bind="${i}::${path}" value="${esc(val)}"/>`)+(help?`<small>${help}</small>`:"")+`</div>`;
@@ -232,6 +239,7 @@ function bloqueForm(b,i){
   if(b.tipo==="video")   return `<div class="bloque">${cab("Vídeo")}<div class="bloque__cuerpo">${inp("Enlace de YouTube","youtube",b.youtube||"","","La portada se coge automáticamente de YouTube.")}</div></div>`;
   if(b.tipo==="chart")   return `<div class="bloque">${cab("Gráfica")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("Infogram (id o iframe pegado)","id",b.id||"","","Pega el embed de Infogram o su id.")}${inp("Pie de texto (opcional)","caption",b.caption||"",true)}</div></div>`;
   if(b.tipo==="chart-tabs") return `<div class="bloque">${cab("Gráficas (pestañas)")}<div class="bloque__cuerpo">`+b.graficas.map((g,gi)=>`<div class="grafica-fila"><input data-bind="${i}::__g${gi}t" value="${esc(g.titulo)}" placeholder="Título de la pestaña"/><input data-bind="${i}::__g${gi}i" value="${esc(g.id)}" placeholder="Infogram (id o iframe)"/><button data-graf="${i}" data-gdel="${gi}">✕</button></div>`).join("")+`<button data-graf="${i}" data-gadd>+ pestaña</button></div></div>`;
+  if(b.tipo==="highlights") return `<div class="bloque">${cab("Cifras destacadas")}<div class="bloque__cuerpo">`+(b.datos||[]).map((d,di)=>`<div class="grafica-fila"><input data-bind="${i}::__h${di}n" value="${esc(d.numero)}" placeholder="Cifra (ej. 79%)"/><input data-bind="${i}::__h${di}t" value="${esc(d.texto)}" placeholder="Descripción"/><button data-hl="${i}" data-hdel="${di}">✕</button></div>`).join("")+`<button data-hl="${i}" data-hadd>+ cifra</button></div></div>`;
   if(b.tipo==="mapa")    return `<div class="bloque">${cab("Mapa")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}<label>Mapa exportado <small>(pega el HTML que exporta tu app)</small></label><textarea data-mapa="${i}" placeholder="&lt;savills-map&gt;…">${b.data?esc(JSON.stringify(b.data)):""}</textarea>${b.data?'<small style="color:#2a7">✓ mapa cargado</small>':''}</div></div>`;
   if(b.tipo==="iframe")  return `<div class="bloque">${cab("Iframe")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("URL","url",b.url||"")}${inp("Alto en píxeles","alto",b.alto||600)}</div></div>`;
   return "";
@@ -248,6 +256,7 @@ function pvBloque(b){const hasTit="titulo" in b,hasPar="parrafos" in b;
   if(b.tipo==="video"){const id=ytId(b.youtube);const bg=id?`style="background-image:url(https://i.ytimg.com/vi/${id}/hqdefault.jpg)"`:"";return `<div class="pv-video" ${bg}><div class="pv-play"></div></div>`}
   if(b.tipo==="chart")return `${b.titulo?`<h2 class="pv-titular">${esc(b.titulo)}</h2>`:""}<div class="pv-img"><div class="ph" style="aspect-ratio:16/7">${b.id?"Gráfica Infogram":"(gráfica)"}</div></div>${b.caption?`<p class="pv-cap">${esc(b.caption)}</p>`:""}`;
   if(b.tipo==="chart-tabs")return `<div class="pv-tabs"><div class="cont"><div class="chart">Gráfica Infogram</div><div class="btns">${(b.graficas||[]).map((g,i)=>`<span class="${i===0?"act":""}">${esc(g.titulo)||"Pestaña"}</span>`).join("")}</div></div></div>`;
+  if(b.tipo==="highlights")return `<div class="pv-highlights">${(b.datos||[]).map(d=>`<div class="pv-hl"><span class="pv-hl-num">${esc(d.numero)||"00"}</span><span class="pv-hl-txt">${esc(d.texto)||"Descripción"}</span></div>`).join("")}</div>`;
   if(b.tipo==="mapa")return `${b.titulo?`<h2 class="pv-titular">${esc(b.titulo)}</h2>`:""}<div class="pv-map"><div class="box">${b.data?"Mapa ✓":"(pega el mapa exportado)"}</div></div>`;
   if(b.tipo==="iframe")return `${b.titulo?`<h2 class="pv-titular">${esc(b.titulo)}</h2>`:""}<div class="pv-iframe"><div class="box">${b.url?esc(b.url):"(iframe)"}</div></div>`;
   return ""}
@@ -261,6 +270,7 @@ function construir(){const slug=slugify(estado.slug||estado.titulo);const bloque
   if(b.tipo==="video")return {tipo:"video",youtube:b.youtube};
   if(b.tipo==="chart"){const o={tipo:"chart",id:infoId(b.id)};if(b.titulo)o.titulo=b.titulo;if(b.caption)o.caption=b.caption;return o}
   if(b.tipo==="chart-tabs")return {tipo:"chart-tabs",graficas:(b.graficas||[]).filter(g=>g.titulo||g.id).map(g=>({titulo:g.titulo,id:infoId(g.id)}))};
+  if(b.tipo==="highlights")return {tipo:"highlights",datos:(b.datos||[]).filter(d=>d.numero||d.texto).map(d=>({numero:d.numero,texto:d.texto}))};
   if(b.tipo==="mapa"){const o={tipo:"mapa",data:b.data||null};if(b.titulo)o.titulo=b.titulo;return o}
   if(b.tipo==="iframe"){const o={tipo:"iframe",url:b.url};if(b.titulo)o.titulo=b.titulo;if(b.alto)o.alto=parseInt(b.alto,10)||undefined;return o}
 }).filter(Boolean);

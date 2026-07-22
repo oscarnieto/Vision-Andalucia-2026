@@ -14,7 +14,7 @@ const src = asset(image ?? "");
 
 <section class="shero" class:list={[{ "shero--placeholder": !src }]}>
   {src && <img class="shero__img" src={src} alt="" />}
-  <div class="shero__overlay"></div>
+  <div class="shero__grad"></div>
   <div class="contenedor shero__inner">
     <div class="shero__text">
       {badge && <span class="shero__badge">{badge}</span>}
@@ -22,8 +22,7 @@ const src = asset(image ?? "");
       {
         (autor || rol) && (
           <p class="shero__autor">
-            {autor && <span class="shero__autor-nombre">{autor}</span>}
-            {rol && <span class="shero__autor-rol">{rol}</span>}
+            {autor && <strong>{autor}</strong>}{autor && rol ? ", " : ""}{rol && <span>{rol}</span>}
           </p>
         )
       }
@@ -39,7 +38,7 @@ const src = asset(image ?? "");
     min-height: 460px;
     overflow: hidden;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
   }
   .shero--placeholder {
     background: var(--color-gris-placeholder);
@@ -51,29 +50,23 @@ const src = asset(image ?? "");
     height: 100%;
     object-fit: cover;
   }
-  /* Degradado para legibilidad del texto sobre la foto */
-  .shero__overlay {
+  /* Degradado inferior para legibilidad del texto */
+  .shero__grad {
     position: absolute;
     inset: 0;
     background: linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.6) 0%,
-      rgba(0, 0, 0, 0.35) 45%,
-      rgba(0, 0, 0, 0) 75%
+      to top,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.4) 28%,
+      rgba(0, 0, 0, 0) 55%
     );
   }
   .shero__inner {
     position: relative;
     width: 100%;
-  }
-  /* En escritorio, el texto se sitúa un poco por debajo del centro */
-  @media (min-width: 901px) {
-    .shero__inner {
-      transform: translateY(10vh);
-    }
+    padding-bottom: clamp(2rem, 5vh, 3.5rem);
   }
   .shero__text {
-    max-width: 650px;
     color: #fff;
   }
   .shero__badge {
@@ -82,8 +75,8 @@ const src = asset(image ?? "");
     color: var(--color-negro);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+    letter-spacing: 0.04em;
+    font-size: clamp(0.8rem, 1.2vw, 0.95rem);
     padding: 0.4rem 1rem;
     margin-bottom: 1.5rem;
   }
@@ -92,32 +85,17 @@ const src = asset(image ?? "");
     font-weight: 400;
     font-size: clamp(1.9rem, 4.4vw, 3.125rem);
     line-height: 1.05;
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
+    max-width: 1140px;
   }
   .shero__autor {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+    line-height: 1.4;
   }
-  .shero__autor-nombre {
+  .shero__autor strong {
     font-weight: 700;
-    text-transform: uppercase;
-    font-size: clamp(0.9rem, 1.3vw, 1rem);
-    letter-spacing: 0.02em;
   }
-  .shero__autor-rol {
-    font-size: 0.85rem;
-    opacity: 0.9;
-  }
-
-  /* En móvil: hero a pantalla completa y texto alineado abajo */
-  @media (max-width: 900px) {
-    .shero {
-      height: 100svh;
-      align-items: flex-end;
-    }
-    .shero__inner {
-      padding-bottom: clamp(2.5rem, 8vh, 5rem);
-    }
+  .shero__autor span {
+    font-weight: 400;
   }
 </style>
