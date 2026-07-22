@@ -3,7 +3,7 @@
   "titulo": "retail-malaga",
   "hero": {
     "badge": "",
-    "titulo": "",
+    "titulo": "retail-malaga",
     "autor": "",
     "rol": "",
     "image": ""
@@ -23,6 +23,10 @@
         "En esta edición, profundizamos en los tiempos de evolución, cómo ha crecido cada segmento en los últimos 20 años, el comportamiento del mercado de suelo, los problemas de oferta, y las posibles soluciones a corto y medio plazo para un crecimiento sostenible a largo plazo.<br>"
       ],
       "titulo": "sadsadasdsa"
+    },
+    {
+      "tipo": "highlights",
+      "datos": []
     }
   ]
 }
