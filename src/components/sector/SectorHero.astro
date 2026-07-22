@@ -98,4 +98,13 @@ const src = asset(image ?? "");
   .shero__autor span {
     font-weight: 400;
   }
+
+  /* En móvil el hero llena la pantalla: 100% del viewport menos la barra
+     superior (sticky, siempre visible), para que el texto inferior no quede
+     cortado bajo el borde. */
+  @media (max-width: 900px) {
+    .shero {
+      height: calc(100svh - var(--altura-topbar));
+    }
+  }
 </style>
