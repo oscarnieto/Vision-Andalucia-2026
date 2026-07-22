@@ -74,3 +74,12 @@ function mapaData(nombre: string) {
     disclaimer={inicio.footer.disclaimer}
   />
 </BaseLayout>
+
+<style>
+  /* Aire entre el hero y el primer bloque, y antes del footer */
+  main {
+    display: block;
+    padding-top: clamp(2.25rem, 5vw, 3.5rem);
+    padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  }
+</style>
