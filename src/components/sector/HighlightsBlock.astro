@@ -74,7 +74,7 @@ const { datos } = Astro.props;
       flex: 0 0 auto;
       width: 66%;
       max-width: 240px;
-      scroll-snap-align: start;
+      scroll-snap-align: center;
     }
     /* Oculta la barra de scroll manteniendo el gesto */
     .highlights__grid {
@@ -83,5 +83,70 @@ const { datos } = Astro.props;
     .highlights__grid::-webkit-scrollbar {
       display: none;
     }
+
+    /* Efecto foco: las tarjetas no activas se desenfocan y se
+       enfocan suavemente al convertirse en la visible (clase añadida
+       por JS; sin JS, todas quedan nítidas). */
+    .highlights__grid.hl-carousel .highlight {
+      filter: blur(5px);
+      opacity: 0.5;
+      transform: scale(0.94);
+      transition:
+        filter 0.4s ease,
+        opacity 0.4s ease,
+        transform 0.4s ease;
+    }
+    .highlights__grid.hl-carousel .highlight.is-focus {
+      filter: none;
+      opacity: 1;
+      transform: none;
+    }
   }
 </style>
+
+<script>
+  // Efecto foco del carrusel de cifras (solo en móvil): la tarjeta más
+  // centrada queda nítida; el resto, desenfocadas. El enfoque transiciona
+  // de forma suave vía CSS. Sin JS, ninguna se desenfoca.
+  function initHighlights(grid: HTMLElement) {
+    const cards = Array.from(grid.children) as HTMLElement[];
+    if (!cards.length) return;
+    const mq = window.matchMedia("(max-width: 780px)");
+    let raf = 0;
+
+    const update = () => {
+      if (!mq.matches) {
+        grid.classList.remove("hl-carousel");
+        cards.forEach((c) => c.classList.remove("is-focus"));
+        return;
+      }
+      grid.classList.add("hl-carousel");
+      const gr = grid.getBoundingClientRect();
+      const center = gr.left + gr.width / 2;
+      let best = cards[0];
+      let bestDist = Infinity;
+      for (const c of cards) {
+        const r = c.getBoundingClientRect();
+        const dist = Math.abs(r.left + r.width / 2 - center);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = c;
+        }
+      }
+      cards.forEach((c) => c.classList.toggle("is-focus", c === best));
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+
+    grid.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  }
+
+  document
+    .querySelectorAll<HTMLElement>(".highlights__grid")
+    .forEach(initHighlights);
+</script>
