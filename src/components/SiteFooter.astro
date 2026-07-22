@@ -134,4 +134,17 @@ const { menu, contacto, disclaimer } = Astro.props;
       max-width: 100%;
     }
   }
+
+  /* En móvil, el footer se apila en una sola columna */
+  @media (max-width: 600px) {
+    .footer__top {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+    .footer__brand {
+      flex-basis: auto;
+    }
+  }
 </style>
