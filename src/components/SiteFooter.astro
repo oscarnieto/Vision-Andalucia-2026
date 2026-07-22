@@ -122,21 +122,8 @@ const { menu, contacto, disclaimer } = Astro.props;
     line-height: 1.6;
   }
 
-  @media (max-width: 900px) {
-    .footer__top {
-      flex-wrap: wrap;
-      gap: 1.5rem 2rem;
-    }
-    .footer__brand {
-      flex-basis: 100%;
-    }
-    .footer__disclaimer {
-      max-width: 100%;
-    }
-  }
-
   /* En móvil, el footer se apila en una sola columna */
-  @media (max-width: 600px) {
+  @media (max-width: 900px) {
     .footer__top {
       flex-direction: column;
       flex-wrap: nowrap;
@@ -145,6 +132,9 @@ const { menu, contacto, disclaimer } = Astro.props;
     }
     .footer__brand {
       flex-basis: auto;
+    }
+    .footer__disclaimer {
+      max-width: 100%;
     }
   }
 </style>
