@@ -38,6 +38,14 @@ jobs:
         with:
           path: ./dist
 
+      # Web construida como ZIP descargable, para subirla al servidor
+      # de la empresa (Actions → run → sección "Artifacts" → sitio-construido).
+      - name: Empaquetar web construida (dist.zip)
+        uses: actions/upload-artifact@v4
+        with:
+          name: sitio-construido
+          path: ./dist
+
   deploy:
     needs: build
     environment:
