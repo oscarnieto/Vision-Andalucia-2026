@@ -1,0 +1,18 @@
+{
+  "slug": "retail-sevilla",
+  "titulo": "Retail en Sevilla",
+  "hero": {
+    "badge": "25 aniversario",
+    "titulo": "El retail de Sevilla en plena transformación",
+    "autor": "",
+    "rol": "",
+    "image": ""
+  },
+  "bloques": [
+    {
+      "tipo": "texto",
+      "lead": true,
+      "parrafos": ["Página de ejemplo para comprobar el enlazado automático desde el menú (Retail → Sevilla)."]
+    }
+  ]
+}

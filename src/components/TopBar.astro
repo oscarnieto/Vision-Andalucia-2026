@@ -12,11 +12,33 @@ import { asset } from "../lib/asset";
 const { nav } = Astro.props;
 const base = import.meta.env.BASE_URL;
 
-// Submenú común a todas las secciones (excepto "Ediciones anteriores")
-const submenu = [
-  { label: "Málaga", href: "#" },
-  { label: "Sevilla", href: "#" },
+const slugify = (s: string) =>
+  s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+// Slugs de las páginas de sector que ya existen (src/data/sectores/*.json)
+const sectorMods = import.meta.glob("../data/sectores/*.json", { eager: true });
+const sectores = new Set(
+  Object.values(sectorMods).map((m: any) => (m.default ?? m).slug).filter(Boolean)
+);
+
+// Ciudades del submenú. La página de cada una sigue la convención
+// "<sección>-<ciudad>" (p. ej. retail-sevilla). Solo se enlaza si existe.
+const ciudades = [
+  { label: "Málaga", key: "malaga" },
+  { label: "Sevilla", key: "sevilla" },
 ];
+
+// Enriquecemos cada sección con su submenú (solo ciudades con página)
+const items = nav.map((item) => {
+  if (item.strong) return { ...item, sub: [] as { label: string; href: string }[] };
+  const bs = slugify(item.label);
+  const raiz = base.replace(/\/$/, "");
+  const sub = ciudades
+    .filter((c) => sectores.has(`${bs}-${c.key}`))
+    .map((c) => ({ label: c.label, href: `${raiz}/sector/${bs}-${c.key}` }));
+  return { ...item, sub };
+});
 ---
 
 <header class="topbar">
@@ -52,8 +74,8 @@ const submenu = [
         </a>
       </li>
       {
-        nav.map((item) => (
-          <li class:list={["topmenu__item", { "topmenu__item--has-sub": !item.strong }]}>
+        items.map((item) => (
+          <li class:list={["topmenu__item", { "topmenu__item--has-sub": item.sub.length > 0 }]}>
             <a
               href={item.href}
               data-label={item.label}
@@ -61,9 +83,9 @@ const submenu = [
             >
               <span class="topmenu__link-text">{item.label}</span>
             </a>
-            {!item.strong && (
+            {item.sub.length > 0 && (
               <ul class="submenu" aria-label={`Ediciones de ${item.label}`}>
-                {submenu.map((s) => (
+                {item.sub.map((s) => (
                   <li>
                     <a class="submenu__link" href={s.href}>
                       {s.label}
@@ -85,8 +107,7 @@ const submenu = [
     <!-- Panel de submenú (solo móvil): se abre al tocar una sección -->
     <div class="topmenu__submobile">
       <p class="topmenu__submobile-title"></p>
-      <a class="topmenu__submobile-link" href="#">Málaga</a>
-      <a class="topmenu__submobile-link" href="#">Sevilla</a>
+      <div class="topmenu__submobile-links"></div>
       <button class="topmenu__back" type="button">volver</button>
       <a class="topmenu__submobile-savills" href="https://www.savills.es">savills.es</a>
     </div>
@@ -426,6 +447,12 @@ const submenu = [
       padding-block: clamp(0.1rem, 0.8vh, 0.5rem);
       margin-bottom: clamp(0.3rem, 1.5vh, 0.9rem);
     }
+    .topmenu__submobile-links {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
     .topmenu__submobile-link,
     .topmenu__back {
       font-size: clamp(1rem, 3.4vh, 1.9rem);
@@ -460,6 +487,7 @@ const submenu = [
   const toggle = menu?.querySelector<HTMLButtonElement>(".topmenu__toggle");
 
   const subTitle = menu?.querySelector<HTMLElement>(".topmenu__submobile-title");
+  const subLinks = menu?.querySelector<HTMLElement>(".topmenu__submobile-links");
   const backBtn = menu?.querySelector<HTMLButtonElement>(".topmenu__back");
   const isMobile = () => window.matchMedia("(max-width: 900px)").matches;
 
@@ -487,6 +515,18 @@ const submenu = [
         // En móvil, tocar una sección abre su submenú (no navega)
         e.preventDefault();
         if (subTitle) subTitle.textContent = link.textContent?.trim() ?? "";
+        // Copiamos los enlaces de ciudad de esta sección al panel móvil
+        if (subLinks && li) {
+          subLinks.innerHTML = "";
+          li.querySelectorAll<HTMLAnchorElement>(".submenu a").forEach((a) => {
+            const na = document.createElement("a");
+            na.className = "topmenu__submobile-link";
+            na.href = a.getAttribute("href") ?? "#";
+            na.textContent = a.textContent?.trim() ?? "";
+            na.addEventListener("click", () => setOpen(false));
+            subLinks.appendChild(na);
+          });
+        }
         menu?.setAttribute("data-sub", "true");
       } else {
         // Inicio, Ediciones anteriores, savills.es o escritorio: navega y cierra
@@ -497,11 +537,6 @@ const submenu = [
 
   // "volver" regresa al primer nivel
   backBtn?.addEventListener("click", () => menu?.removeAttribute("data-sub"));
-
-  // Los enlaces de ciudad cierran el menú
-  menu?.querySelectorAll(".topmenu__submobile-link").forEach((link) =>
-    link.addEventListener("click", () => setOpen(false))
-  );
 
   // Escape: si hay submenú abierto vuelve al nivel 1; si no, cierra el menú
   document.addEventListener("keydown", (e) => {
