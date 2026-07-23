@@ -127,7 +127,20 @@ const TIPOS = {
 
 const esc = s => (s==null?"":String(s)).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
 const slugify = s => (s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
-const infoId = s => { if(!s)return""; let m=s.match(/e\.infogram\.com\/([a-z0-9-]+)/i)||s.match(/([\w-]{6,})/); return m?m[1]:s.trim(); };
+// Convierte lo que pegue el usuario (embed completo de Infogram, la URL o
+// solo el id) en un iframe responsive autónomo. Conserva la proporción
+// (padding %) si venía en el embed pegado; si no, usa una por defecto.
+const infogramEmbed = s => {
+  if(!s) return "";
+  s = String(s).trim();
+  const idm = s.match(/e\.infogram\.com\/([a-z0-9-]{6,})/i)
+    || s.match(/data-id=["']([a-z0-9-]{6,})["']/i)
+    || s.match(/^([a-z0-9-]{6,})$/i);
+  if(!idm) return "";
+  const padm = s.match(/padding[^:]*:\s*([\d.]+)%/i);
+  const pad = padm ? padm[1] : "56.25";
+  return `<div style="position:relative;width:100%;height:0;padding-top:${pad}%;overflow:hidden"><iframe src="https://e.infogram.com/${idm[1]}?src=embed&embed_type=responsive_iframe" title="Infogram" allowfullscreen allow="fullscreen" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0"></iframe></div>`;
+};
 const ytId = u => { const m=(u||"").match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/); return m?m[1]:""; };
 
 // limpia HTML enriquecido (solo formato inline seguro)
@@ -308,7 +321,7 @@ function bloqueForm(b,i){
   if(b.tipo==="quote")   return `<div class="bloque">${cab("Cita")}<div class="bloque__cuerpo">${rteP("Texto de la cita","texto",b.texto||"")}${inp("Autor (opcional)","autor",b.autor||"")}</div></div>`;
   if(b.tipo==="imagen")  return `<div class="bloque">${cab("Titular imagen")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("Archivo de imagen","imagen",b.imagen||"","","Súbelo a public/img/. Ej: puerto-malaga.jpg")}${inp("Pie de foto (opcional)","pie",b.pie||"")}</div></div>`;
   if(b.tipo==="video")   return `<div class="bloque">${cab("Vídeo")}<div class="bloque__cuerpo">${inp("Enlace de YouTube","youtube",b.youtube||"","","La portada se coge automáticamente de YouTube.")}</div></div>`;
-  if(b.tipo==="chart")   return `<div class="bloque">${cab("Gráfica")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("Infogram (id o iframe pegado)","id",b.id||"","","Pega el embed de Infogram o su id.")}${inp("Pie de texto (opcional)","caption",b.caption||"",true)}</div></div>`;
+  if(b.tipo==="chart")   return `<div class="bloque">${cab("Gráfica")}<div class="bloque__cuerpo">${inp("Título (opcional)","titulo",b.titulo||"")}${inp("Infogram (pega el código embed)","id",b.id||"",true,"Pega el código completo del embed de Infogram (Compartir → Insertar → Iframe responsive).")}${inp("Pie de texto (opcional)","caption",b.caption||"",true)}</div></div>`;
   if(b.tipo==="chart-tabs") return `<div class="bloque">${cab("Gráficas (pestañas)")}<div class="bloque__cuerpo">`+
     b.graficas.map((g,gi)=>`<div class="grafica-fila"><input data-bind="${i}::__g${gi}t" value="${esc(g.titulo)}" placeholder="Título de la pestaña"/><input data-bind="${i}::__g${gi}i" value="${esc(g.id)}" placeholder="Infogram (id o iframe)"/><button data-graf="${i}" data-gdel="${gi}">✕</button></div>`).join("")+
     `<button data-graf="${i}" data-gadd>+ pestaña</button></div></div>`;
@@ -363,8 +376,8 @@ function construir(){
     if(b.tipo==="quote"){const o={tipo:"quote",texto:b.texto}; if(b.autor)o.autor=b.autor; return o;}
     if(b.tipo==="imagen"){const o={tipo:"imagen",imagen:rutaImg(b.imagen)}; if(b.titulo)o.titulo=b.titulo; if(b.pie)o.pie=b.pie; return o;}
     if(b.tipo==="video") return {tipo:"video",youtube:b.youtube};
-    if(b.tipo==="chart"){const o={tipo:"chart",id:infoId(b.id)}; if(b.titulo)o.titulo=b.titulo; if(b.caption)o.caption=b.caption; return o;}
-    if(b.tipo==="chart-tabs") return {tipo:"chart-tabs",graficas:(b.graficas||[]).filter(g=>g.titulo||g.id).map(g=>({titulo:g.titulo,id:infoId(g.id)}))};
+    if(b.tipo==="chart"){const o={tipo:"chart",embed:infogramEmbed(b.id)}; if(b.titulo)o.titulo=b.titulo; if(b.caption)o.caption=b.caption; return o;}
+    if(b.tipo==="chart-tabs") return {tipo:"chart-tabs",graficas:(b.graficas||[]).filter(g=>g.titulo||g.id).map(g=>({titulo:g.titulo,embed:infogramEmbed(g.id)}))};
     if(b.tipo==="highlights") return {tipo:"highlights",datos:(b.datos||[]).filter(d=>d.numero||d.texto).map(d=>({numero:d.numero,texto:d.texto}))};
     if(b.tipo==="mapa"){const o={tipo:"mapa",data:b.data||null}; if(b.titulo)o.titulo=b.titulo; return o;}
     if(b.tipo==="iframe"){const o={tipo:"iframe",url:b.url}; if(b.titulo)o.titulo=b.titulo; if(b.alto)o.alto=parseInt(b.alto,10)||undefined; return o;}
@@ -376,7 +389,12 @@ function aEstado(d){
   const e=nuevaPagina();
   e.slug=d.slug||""; e.titulo=d.hero?.titulo||d.titulo||""; e.autor=d.hero?.autor||""; e.rol=d.hero?.rol||""; e.badge=d.hero?.badge||"";
   e.image=(d.hero?.image||"").replace(/^img\/hero\//,"");
-  e.bloques=(d.bloques||[]).map(b=> b.tipo==="imagen" ? {...b,imagen:(b.imagen||"").replace(/^img\/noticias\//,"")} : {...b});
+  e.bloques=(d.bloques||[]).map(b=>{
+    if(b.tipo==="imagen") return {...b,imagen:(b.imagen||"").replace(/^img\/noticias\//,"")};
+    if(b.tipo==="chart") return {...b,id:b.id||b.embed||""};
+    if(b.tipo==="chart-tabs") return {...b,graficas:(b.graficas||[]).map(g=>({...g,id:g.id||g.embed||""}))};
+    return {...b};
+  });
   return e;
 }
 function descargarJSON(data){
