@@ -1,0 +1,288 @@
+{
+  "slug": "logistico-cadiz",
+  "titulo": "Málaga afronta 2026 como uno de los mercados inmobiliarios más dinámicos del sur de Europa, con la vivienda, la inversión y la sostenibilidad marcando el rumbo de una ciudad en plena transformación",
+  "hero": {
+    "badge": "página de demostración",
+    "titulo": "Málaga afronta 2026 como uno de los mercados inmobiliarios más dinámicos del sur de Europa, con la vivienda, la inversión y la sostenibilidad marcando el rumbo de una ciudad en plena transformación",
+    "autor": "José Félix Pérez-Peña",
+    "rol": "Director Ejecutivo Savills Andalucía",
+    "image": "img/noticias/card-noticia3.jpg"
+  },
+  "bloques": [
+    {
+      "tipo": "texto",
+      "parrafos": [
+        "Bienvenidos a esta página de demostración de Visión Andalucía 2026. Su objetivo es mostrar, en un solo documento, todos los tipos de contenido que el equipo puede componer desde el editor: entradillas, titulares, texto con formato, cifras destacadas, citas, imágenes, gráficas, mapas interactivos, vídeos e informes embebidos."
+      ],
+      "lead": true
+    },
+    {
+      "tipo": "texto",
+      "parrafos": [
+        "El mercado residencial de Málaga cierra el ejercicio con una demanda que no da tregua y una oferta que se esfuerza por seguir su ritmo. La ciudad se ha convertido en uno de los destinos preferidos tanto para el comprador nacional como para el <strong>inversor internacional</strong>, atraídos por su calidad de vida, su ecosistema tecnológico y una conectividad que ya no tiene nada que envidiar a las grandes capitales europeas.",
+        "Durante los últimos doce meses, la compraventa de vivienda en la provincia ha mantenido un tono firme, apoyada en un comprador cada vez más diverso. Al perfil tradicional de reposición se han sumado profesionales del sector tecnológico, teletrabajadores del norte de Europa y fondos que buscan producto en <em>build to rent</em>.",
+        "Este empuje ha tensionado los precios en los barrios mejor conectados, donde la escasez de suelo finalista actúa como principal freno. La respuesta del mercado pasa por la <mark>regeneración de entornos urbanos consolidados</mark> y por proyectos de obra nueva que apuestan por la eficiencia energética como argumento de venta. La combinación de estos factores dibuja un escenario en el que la calidad, y no solo la cantidad, será determinante en los próximos años."
+      ],
+      "titulo": "Un mercado que no deja de crecer"
+    },
+    {
+      "tipo": "highlights",
+      "datos": [
+        {
+          "numero": "3.240€",
+          "texto": "Precio medio del m² en obra nueva"
+        },
+        {
+          "numero": "+8,4%",
+          "texto": "Variación interanual del precio residencial"
+        },
+        {
+          "numero": "62%",
+          "texto": "De la demanda busca vivienda sostenible"
+        },
+        {
+          "numero": "1.980",
+          "texto": "Viviendas en pipeline para 2026-2027"
+        }
+      ]
+    },
+    {
+      "tipo": "quote",
+      "texto": "Málaga ya no compite por atraer talento: compite por ofrecerle un hogar a la altura de sus expectativas.",
+      "autor": "José Félix Pérez-Peña"
+    },
+    {
+      "tipo": "texto",
+      "parrafos": [
+        "La evolución de precios refleja dos realidades que conviven en la misma provincia. En el litoral y en el centro histórico, la limitada disponibilidad de producto empuja los valores al alza. En la corona metropolitana, en cambio, la incorporación de nueva oferta permite un crecimiento más contenido y sostenible en el tiempo.",
+        "Los expertos coinciden en que el recorrido al alza continuará, aunque a un ritmo más moderado que en ejercicios anteriores. La clave estará en la capacidad de la ciudad para movilizar suelo y agilizar los plazos administrativos, dos factores que históricamente han lastrado la incorporación de nueva vivienda al mercado."
+      ],
+      "titulo": "El precio, entre la presión y la contención"
+    },
+    {
+      "tipo": "imagen",
+      "imagen": "img/noticias/card-noticia7.jpg",
+      "titulo": "Regeneración urbana en el centro",
+      "pie": "Nuevos desarrollos en el entorno del Soho, Málaga"
+    },
+    {
+      "tipo": "texto",
+      "parrafos": [
+        "Más allá del residencial, otros segmentos muestran una dinámica propia. El <strong>retail prime</strong> recupera protagonismo en los ejes comerciales del centro, el logístico consolida su papel en el corredor del Guadalhorce y las oficinas flexibles ganan cuota al calor del ecosistema tecnológico. Las siguientes gráficas resumen la evolución de los principales indicadores."
+      ],
+      "titulo": "Cómo se comporta cada segmento"
+    },
+    {
+      "tipo": "chart",
+      "embed": "<div style=\"position:relative;width:100%;height:0;padding-top:38.75%;overflow:hidden\"><iframe src=\"https://e.infogram.com/19ba0024-552e-4f1f-ad56-f9c04f118a02?src=embed&embed_type=responsive_iframe\" title=\"Infogram\" allowfullscreen allow=\"fullscreen\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\"></iframe></div>",
+      "titulo": "Evolución del precio medio residencial",
+      "caption": "Serie ilustrativa. Fuente: elaboración propia."
+    },
+    {
+      "tipo": "chart-tabs",
+      "graficas": [
+        {
+          "titulo": "Compraventas por trimestre",
+          "embed": "<div style=\"position:relative;width:100%;height:0;padding-top:38.75%;overflow:hidden\"><iframe src=\"https://e.infogram.com/19ba0024-552e-4f1f-ad56-f9c04f118a02?src=embed&embed_type=responsive_iframe\" title=\"Infogram\" allowfullscreen allow=\"fullscreen\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\"></iframe></div>"
+        },
+        {
+          "titulo": "Demanda por perfil de comprador",
+          "embed": "<div style=\"position:relative;width:100%;height:0;padding-top:38.75%;overflow:hidden\"><iframe src=\"https://e.infogram.com/19ba0024-552e-4f1f-ad56-f9c04f118a02?src=embed&embed_type=responsive_iframe\" title=\"Infogram\" allowfullscreen allow=\"fullscreen\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\"></iframe></div>"
+        },
+        {
+          "titulo": "Pipeline de obra nueva 2026-2027",
+          "embed": "<div style=\"position:relative;width:100%;height:0;padding-top:38.75%;overflow:hidden\"><iframe src=\"https://e.infogram.com/19ba0024-552e-4f1f-ad56-f9c04f118a02?src=embed&embed_type=responsive_iframe\" title=\"Infogram\" allowfullscreen allow=\"fullscreen\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\"></iframe></div>"
+        }
+      ]
+    },
+    {
+      "tipo": "texto",
+      "parrafos": [
+        "El mapa del residencial malagueño se expande siguiendo las grandes infraestructuras. El eje del Guadalhorce, la fachada litoral oriental y los municipios del área metropolitana concentran la mayor parte de la nueva promoción, mientras el centro consolidado se reserva para la rehabilitación y el producto <em>prime</em>. El siguiente mapa recoge los principales polos de desarrollo."
+      ],
+      "titulo": "Dónde crece la ciudad"
+    },
+    {
+      "tipo": "mapa",
+      "data": {
+        "config": {
+          "basemap": "positron",
+          "fit": "auto",
+          "center": [
+            36.72,
+            -4.42
+          ],
+          "zoom": 10,
+          "dot": "#161615",
+          "area": "#F2C500",
+          "height": "540px",
+          "tiles": {
+            "url": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+            "attr": "© OpenStreetMap © CARTO"
+          }
+        },
+        "points": [
+          {
+            "lat": 36.7213,
+            "lng": -4.4213,
+            "titulo": "Málaga centro",
+            "descripcion": "Rehabilitación y producto prime",
+            "color": null,
+            "tabla": {
+              "columns": [
+                "Indicador",
+                "2025",
+                "2026e"
+              ],
+              "rows": [
+                [
+                  "Precio €/m²",
+                  "4.100",
+                  "4.350"
+                ],
+                [
+                  "Obra nueva",
+                  "180 uds",
+                  "240 uds"
+                ],
+                [
+                  "Absorción",
+                  "9 meses",
+                  "7 meses"
+                ]
+              ]
+            }
+          },
+          {
+            "lat": 36.6749,
+            "lng": -4.5006,
+            "titulo": "Guadalhorce",
+            "descripcion": "Nuevo suelo residencial",
+            "color": null
+          },
+          {
+            "lat": 36.5098,
+            "lng": -4.8846,
+            "titulo": "Marbella",
+            "descripcion": "Segunda residencia y lujo",
+            "color": null
+          },
+          {
+            "lat": 36.7509,
+            "lng": -4.0555,
+            "titulo": "Vélez-Málaga",
+            "descripcion": "Corona metropolitana este",
+            "color": null
+          }
+        ],
+        "areas": [
+          {
+            "tipo": "poligono",
+            "rings": [
+              [
+                [
+                  37.274,
+                  -4.407
+                ],
+                [
+                  37.015,
+                  -4.273
+                ],
+                [
+                  36.855,
+                  -3.827
+                ],
+                [
+                  36.738,
+                  -3.777
+                ],
+                [
+                  36.717,
+                  -4.419
+                ],
+                [
+                  36.507,
+                  -4.638
+                ],
+                [
+                  36.5,
+                  -4.935
+                ],
+                [
+                  36.414,
+                  -5.177
+                ],
+                [
+                  36.31,
+                  -5.248
+                ],
+                [
+                  36.533,
+                  -5.43
+                ],
+                [
+                  36.512,
+                  -5.608
+                ],
+                [
+                  36.673,
+                  -5.324
+                ],
+                [
+                  36.87,
+                  -5.302
+                ],
+                [
+                  36.839,
+                  -5.133
+                ],
+                [
+                  36.905,
+                  -5.087
+                ],
+                [
+                  37.006,
+                  -5.142
+                ],
+                [
+                  37.115,
+                  -4.908
+                ],
+                [
+                  37.176,
+                  -4.94
+                ],
+                [
+                  37.274,
+                  -4.407
+                ]
+              ]
+            ],
+            "titulo": "Provincia de Málaga",
+            "descripcion": "Ámbito de análisis",
+            "color": null
+          }
+        ]
+      },
+      "titulo": "Principales polos de desarrollo residencial"
+    },
+    {
+      "tipo": "video",
+      "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    },
+    {
+      "tipo": "iframe",
+      "url": "https://www.savills.es/",
+      "titulo": "Informe interactivo",
+      "alto": 500
+    },
+    {
+      "tipo": "texto",
+      "parrafos": [
+        "De cara al próximo ejercicio, el consenso apunta a un mercado activo pero más selectivo. La vivienda sostenible, la mejora de los procesos de licencia y la llegada de capital institucional al alquiler serán los factores que marquen la diferencia.",
+        "Málaga afronta 2026 con la ambición de crecer sin renunciar a la habitabilidad. El reto: convertir la presión de la demanda en una oportunidad para construir una ciudad más equilibrada, conectada y preparada para las próximas décadas."
+      ],
+      "titulo": "Perspectivas para 2026"
+    }
+  ]
+}
