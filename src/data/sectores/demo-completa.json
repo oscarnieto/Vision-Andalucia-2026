@@ -63,15 +63,15 @@
     {
       "tipo": "chart",
       "titulo": "Evolución del precio medio residencial",
-      "embed": "<div style=\"position:relative;width:100%;height:0;padding-top:38.75%;overflow:hidden\"><iframe loading=\"lazy\" src=\"https://e.infogram.com/19ba0024-552e-4f1f-ad56-f9c04f118a02?src=embed&embed_type=responsive_iframe\" title=\"ESP-hoteles-5\" allowfullscreen allow=\"fullscreen\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\"></iframe></div>",
+      "embed": "<div style=\"position:relative;width:100%;height:0;padding-top:38.75%;overflow:hidden\"><iframe src=\"https://e.infogram.com/19ba0024-552e-4f1f-ad56-f9c04f118a02?src=embed&embed_type=responsive_iframe\" title=\"ESP-hoteles-5\" allowfullscreen allow=\"fullscreen\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\"></iframe></div>",
       "caption": "Serie ilustrativa. Fuente: elaboración propia."
     },
     {
       "tipo": "chart-tabs",
       "graficas": [
-        { "titulo": "Compraventas por trimestre", "embed": "<div style=\"position:relative;width:100%;height:0;padding-top:38.75%;overflow:hidden\"><iframe loading=\"lazy\" src=\"https://e.infogram.com/19ba0024-552e-4f1f-ad56-f9c04f118a02?src=embed&embed_type=responsive_iframe\" title=\"ESP-hoteles-5\" allowfullscreen allow=\"fullscreen\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\"></iframe></div>" },
-        { "titulo": "Demanda por perfil de comprador", "embed": "<div style=\"position:relative;width:100%;height:0;padding-top:38.75%;overflow:hidden\"><iframe loading=\"lazy\" src=\"https://e.infogram.com/19ba0024-552e-4f1f-ad56-f9c04f118a02?src=embed&embed_type=responsive_iframe\" title=\"ESP-hoteles-5\" allowfullscreen allow=\"fullscreen\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\"></iframe></div>" },
-        { "titulo": "Pipeline de obra nueva 2026-2027", "embed": "<div style=\"position:relative;width:100%;height:0;padding-top:38.75%;overflow:hidden\"><iframe loading=\"lazy\" src=\"https://e.infogram.com/19ba0024-552e-4f1f-ad56-f9c04f118a02?src=embed&embed_type=responsive_iframe\" title=\"ESP-hoteles-5\" allowfullscreen allow=\"fullscreen\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\"></iframe></div>" }
+        { "titulo": "Compraventas por trimestre", "embed": "<div style=\"position:relative;width:100%;height:0;padding-top:38.75%;overflow:hidden\"><iframe src=\"https://e.infogram.com/19ba0024-552e-4f1f-ad56-f9c04f118a02?src=embed&embed_type=responsive_iframe\" title=\"ESP-hoteles-5\" allowfullscreen allow=\"fullscreen\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\"></iframe></div>" },
+        { "titulo": "Demanda por perfil de comprador", "embed": "<div style=\"position:relative;width:100%;height:0;padding-top:38.75%;overflow:hidden\"><iframe src=\"https://e.infogram.com/19ba0024-552e-4f1f-ad56-f9c04f118a02?src=embed&embed_type=responsive_iframe\" title=\"ESP-hoteles-5\" allowfullscreen allow=\"fullscreen\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\"></iframe></div>" },
+        { "titulo": "Pipeline de obra nueva 2026-2027", "embed": "<div style=\"position:relative;width:100%;height:0;padding-top:38.75%;overflow:hidden\"><iframe src=\"https://e.infogram.com/19ba0024-552e-4f1f-ad56-f9c04f118a02?src=embed&embed_type=responsive_iframe\" title=\"ESP-hoteles-5\" allowfullscreen allow=\"fullscreen\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;border:0\"></iframe></div>" }
       ]
     },
     {

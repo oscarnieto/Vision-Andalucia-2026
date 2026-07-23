@@ -9,11 +9,17 @@ interface Props {
   titulo?: string;
 }
 const { embed, id, titulo } = Astro.props;
+
+// Aplaza la carga del iframe: cambia src -> data-src para que la gráfica
+// NO se descargue durante la carga inicial de la página. Un script la
+// activa en cuanto la página termina de cargar (precarga en segundo plano),
+// de modo que ya está lista cuando el usuario llega a ella.
+const embedDiferido = (embed ?? "").replace(/(<iframe\b[^>]*?)\ssrc=/i, "$1 data-src=");
 ---
 
 {
   embed ? (
-    <div class="infogram" set:html={embed} />
+    <div class="infogram" set:html={embedDiferido} />
   ) : id ? (
     <div class="infogram infogram-embed" data-id={id} data-type="interactive" />
   ) : (
@@ -43,8 +49,20 @@ const { embed, id, titulo } = Astro.props;
 </style>
 
 <script>
-  // Carga el loader de Infogram una sola vez, solo si hay gráficas reales
-  // (bloques con clase .infogram-embed y un data-id) en la página.
+  // 1) Precarga en segundo plano: una vez cargada la página, activa el src
+  //    de los iframes de Infogram aplazados (para que estén listos al llegar).
+  const activarGraficas = () => {
+    document
+      .querySelectorAll<HTMLIFrameElement>(".infogram iframe[data-src]")
+      .forEach((f) => {
+        f.src = f.getAttribute("data-src") || "";
+        f.removeAttribute("data-src");
+      });
+  };
+  if (document.readyState === "complete") activarGraficas();
+  else window.addEventListener("load", activarGraficas);
+
+  // 2) Loader de Infogram (solo si se usan gráficas por id, no por embed).
   const w = window as any;
   if (!w.__infogramLoaded && document.querySelector(".infogram-embed")) {
     w.__infogramLoaded = true;
